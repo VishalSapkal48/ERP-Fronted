@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import Home from '../Components/Inventory_Module/pages/Home';
+import Home from '../Components/Inventory_Module/pages/Dashbord';
 import Products from '../Components/Inventory_Module/pages/Products';
 import Categories from '../Components/Inventory_Module/pages/Categories';
 import Customers from '../Components/Inventory_Module/pages/Customers';
@@ -18,19 +18,19 @@ function InventoryRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/inventory" element={<Inventory />} />
-      <Route path="/stock-management" element={<StockManagement />} />
-      <Route path="/price-tax" element={<PriceTaxManagement />} />
-      <Route path="/products" element={<Products />} />
-      <Route path="/categories" element={<Categories />} />
-      <Route path="/customers" element={<Customers />} />
-      <Route path="/suppliers" element={<Suppliers />} />
-      <Route path="/purchases" element={<Purchases />} />
-      <Route path="/invoices" element={<Invoices />} />
-      <Route path="/pos" element={<POSPage />} />
-      <Route path="/accounts" element={<Accounts />} />
-      <Route path="/reports" element={<Reports />} />
-      <Route path="/settings" element={<SettingsPage />} />
+      <Route path="inventory" element={<Inventory />} />
+      <Route path="stock-management" element={<StockManagement />} />
+      <Route path="price-tax" element={<PriceTaxManagement />} />
+      <Route path="products" element={<Products />} />
+      <Route path="categories" element={<Categories />} />
+      <Route path="customers" element={<Customers />} />
+      <Route path="suppliers" element={<Suppliers />} />
+      <Route path="purchases" element={<Purchases />} />
+      <Route path="invoices" element={<Invoices />} />
+      <Route path="pos" element={<POSPage />} />
+      <Route path="accounts" element={<Accounts />} />
+      <Route path="reports" element={<Reports />} />
+      <Route path="settings" element={<SettingsPage />} />
     </Routes>
   );
 }

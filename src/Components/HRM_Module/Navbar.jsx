@@ -9,7 +9,7 @@ const Navbar = ({ toggleSidebar }) => {
   });
 
   return (
-    <nav className="bg-white shadow-md border-b border-gray-200 px-4 py-3">
+    <nav className="bg-white shadow-md border-b border-gray-200 px-4 py-3 p-6 ml-64">
       <div className="flex items-center justify-between">
         {/* Left: Toggle and Brand */}
         <div className="flex items-center space-x-4">

@@ -12,23 +12,23 @@ import TaskManagement from "../components/CRM_Module/TaskManagement";
 import Utilities from "../components/CRM_Module/Utilities";
 import Settings from "../Components/CRM_Module/Settings";
 import Expenses from "../components/CRM_Module/Expenses";
-
-const Crmroutes = () => (
+const CrmRoutes = () => (
   <Routes>
-   
-    <Route path="/leads" element={<LeadManagement />} />
-    <Route path="/customers" element={<CustomerManagement />} />
-    <Route path="/follow-ups" element={<FollowUps />} />
-    <Route path="/reminders" element={<Reminders />} />
-    <Route path="/proposals" element={<Proposals />} />
-    <Route path="/sales" element={<SalesReports />} />
-    <Route path="/contracts" element={<Contracts />} />
-    <Route path="/projects" element={<Projects />} />
-    <Route path="/tasks" element={<TaskManagement />} />
-    <Route path="/utilities" element={<Utilities />} />
-    <Route path="/settings" element={<Settings />} />
-    <Route path="/expenses" element={<Expenses />} />
+    <Route path="/" element={<LeadManagement />} /> {/* Default route for /crm */}
+    <Route path="leads" element={<LeadManagement />} />
+    <Route path="customers" element={<CustomerManagement />} />
+    <Route path="follow-ups" element={<FollowUps />} />
+    <Route path="reminders" element={<Reminders />} />
+    <Route path="proposals" element={<Proposals />} />
+    <Route path="sales" element={<SalesReports />} />
+    <Route path="contracts" element={<Contracts />} />
+    <Route path="projects" element={<Projects />} />
+    <Route path="tasks" element={<TaskManagement />} />
+    <Route path="utilities" element={<Utilities />} />
+    <Route path="settings" element={<Settings />} />
+    <Route path="expenses" element={<Expenses />} />
+    <Route path="*" element={<div>404 - Page Not Found</div>} /> {/* Catch-All for invalid routes */}
   </Routes>
 );
 
-export default Crmroutes;
+export default CrmRoutes;
