@@ -8,17 +8,29 @@ import Leaves from "../Components/HRM_Module/Leaves";
 import Payroll from "../Components/HRM_Module/Payroll";
 import Settings from "../Components/HRM_Module/Settings";
 import AddEmployee from '../Components/HRM_Module/AddEmployee';
-
+import EditEmployee from '../Components/HRM_Module/EditEmployee';
+import AddAttendance from '../Components/HRM_Module/AddAttendance';
+import Holiday from "../Components/HRM_Module/Holiday";
+import CustomCalendar from "../Components/HRM_Module/CustomCalendar";
 const HrmRoutes = () => {
+  const currentDate = new Date("2025-07-08"); // Current date as per requirement
   return (
     <Routes>
       <Route path="/" element={<Dashboard />} />
       <Route path="attendance" element={<Attendance />} />
       <Route path="employees" element={<Employees />} />
       <Route path="employees/add" element={<AddEmployee />} />
-      <Route path="leaves" element={<Leaves />} />
-      <Route path="payroll" element={<Payroll />} />
+        <Route path="employee/edit/:id" element={<EditEmployee />} />
+      <Route path="attendance/add" element={<AddAttendance />} />
+   
+    <Route path="/holiday" element={<Holiday currentDate={currentDate} />} />
+
+      <Route path='/calculate' element={<CustomCalendar
+        currentDate={currentDate} />}></Route>
       <Route path="settings" element={<Settings />} />
+   <Route path="leaves" element={<Leaves />} />
+      <Route path="payroll" element={<Payroll />} />
+
       <Route
         path="*"
         element={
