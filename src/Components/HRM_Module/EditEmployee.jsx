@@ -24,17 +24,24 @@ const EditEmployee = () => {
     country: '',
     hireDate: '',
     joiningDate: '',
-    basicSalary: '',
+    netSalary: '',
+
+    hra: '',
+    specialBonus: '',
+    conveyance: '',
+    travelAllowances: '',
+    shiftAllowances: '',
+    overtime: '',
+    taxRate: '',
     paymentMethod: '',
     employeeType: '',
     bankName: '',
     accountTitle: '',
-    branchCode: '',
     accountNo: '',
-    swiftCode: '',
+    IFSCCode: '',
     location: '',
     designation: '',
-    cnnic: '',
+    CNIC: '',
     pfAccountNumber: '',
     pfType: '',
     employerContributionPf: '',
@@ -45,11 +52,15 @@ const EditEmployee = () => {
     eobiType: '',
     employerContributionEobi: '',
     employeeContributionEobi: '',
+    esicType: '',
+    employerContributionEsic: '',
+    employeeContributionEsic: '',
     status: '',
     separationDate: '',
     username: '',
     password: '',
     reenterPassword: '',
+    profileImage: '',
   });
   const [errors, setErrors] = useState({});
   const [profileImage, setProfileImage] = useState('https://via.placeholder.com/100');
@@ -59,8 +70,16 @@ const EditEmployee = () => {
 
   useEffect(() => {
     const fetchEmployee = async () => {
+      if (!id) {
+        setError('Invalid employee ID');
+        setLoading(false);
+        return;
+      }
+
       try {
+        console.log(`Fetching employee with ID: ${id}`);
         const data = await hrmApi.getEmployeeById(id);
+        console.log('Fetched data:', data);
         setFormData({
           employeeId: data.employeeId || '',
           name: data.name || '',
@@ -73,23 +92,30 @@ const EditEmployee = () => {
           homePhone: data.homePhone || '',
           emergencyPhone: data.emergencyPhone || '',
           gender: data.gender || '',
-          dob: data.dob ? data.dob.split('T')[0] : '',
+          dob: data.dob ? new Date(data.dob).toISOString().split('T')[0] : '',
           address: data.address || '',
           city: data.city || '',
           country: data.country || '',
-          hireDate: data.hireDate ? data.hireDate.split('T')[0] : '',
-          joiningDate: data.joiningDate ? data.joiningDate.split('T')[0] : '',
-          basicSalary: data.basicSalary || '',
+          hireDate: data.hireDate ? new Date(data.hireDate).toISOString().split('T')[0] : '',
+          joiningDate: data.joiningDate ? new Date(data.joiningDate).toISOString().split('T')[0] : '',
+          netSalary: data.netSalary || '',
+  
+          hra: data.hra || '',
+          specialBonus: data.specialBonus || '',
+          conveyance: data.conveyance || '',
+          travelAllowances: data.travelAllowances || '',
+          shiftAllowances: data.shiftAllowances || '',
+          overtime: data.overtime || '',
+          taxRate: data.taxRate || '',
           paymentMethod: data.paymentMethod || '',
           employeeType: data.employeeType || '',
           bankName: data.bankName || '',
           accountTitle: data.accountTitle || '',
-          branchCode: data.branchCode || '',
           accountNo: data.accountNo || '',
-          swiftCode: data.swiftCode || '',
+          IFSCCode: data.IFSCCode || '',
           location: data.location || '',
           designation: data.designation || '',
-          cnnic: data.cnnic || '',
+          CNIC: data.CNIC || '',
           pfAccountNumber: data.pfAccountNumber || '',
           pfType: data.pfType || '',
           employerContributionPf: data.employerContributionPf || '',
@@ -100,16 +126,20 @@ const EditEmployee = () => {
           eobiType: data.eobiType || '',
           employerContributionEobi: data.employerContributionEobi || '',
           employeeContributionEobi: data.employeeContributionEobi || '',
-          status: data.status || '',
-          separationDate: data.separationDate ? data.separationDate.split('T')[0] : '',
+          esicType: data.esicType || '',
+          employerContributionEsic: data.employerContributionEsic || '',
+          employeeContributionEsic: data.employeeContributionEsic || '',
+          status: data.status ? data.status.toLowerCase() : '',
+          separationDate: data.separationDate ? new Date(data.separationDate).toISOString().split('T')[0] : '',
           username: data.username || '',
           password: '',
           reenterPassword: '',
+          profileImage: data.profileImage || '',
         });
         setProfileImage(data.profileImage || 'https://via.placeholder.com/100');
       } catch (err) {
-        setError('Failed to fetch employee data');
-        console.error('Error fetching employee:', err);
+        console.error('API Error:', err);
+        setError(`Failed to fetch employee data: ${err.message || 'Unknown error'}`);
       } finally {
         setLoading(false);
       }
@@ -124,6 +154,16 @@ const EditEmployee = () => {
       if (!formData.name.trim()) newErrors.name = 'Name is required';
       if (!formData.department.trim()) newErrors.department = 'Department is required';
       if (!formData.jobTitle.trim()) newErrors.jobTitle = 'Job Title is required';
+      if (!formData.email.trim()) {
+        newErrors.email = 'Email is required';
+      } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+        newErrors.email = 'Invalid email format';
+      }
+      if (!formData.workPhone.trim()) newErrors.workPhone = 'Work phone is required';
+      if (!formData.homePhone.trim()) newErrors.homePhone = 'Home phone is required';
+      if (!formData.emergencyPhone.trim()) newErrors.emergencyPhone = 'Emergency phone is required';
+      if (!formData.workLocation.trim()) newErrors.workLocation = 'Work Location is required';
+      if (!formData.status) newErrors.status = 'Status is required';
     }
     if (activeTab === 'Contact') {
       if (!formData.email.trim()) {
@@ -137,6 +177,7 @@ const EditEmployee = () => {
       if (!formData.workLocation.trim()) newErrors.workLocation = 'Work Location is required';
     }
     if (activeTab === 'Payroll') {
+      if (!formData.netSalary && formData.netSalary !== 0) newErrors.netSalary = 'Net Salary is required';
       if (!formData.basicSalary && formData.basicSalary !== 0) newErrors.basicSalary = 'Basic Salary is required';
       if (!formData.paymentMethod.trim()) newErrors.paymentMethod = 'Payment Method is required';
       if (!formData.employeeType.trim()) newErrors.employeeType = 'Employee Type is required';
@@ -144,7 +185,24 @@ const EditEmployee = () => {
         if (!formData.bankName.trim()) newErrors.bankName = 'Bank Name is required';
         if (!formData.accountTitle.trim()) newErrors.accountTitle = 'Account Title is required';
         if (!formData.accountNo.trim()) newErrors.accountNo = 'Account Number is required';
+        if (!formData.IFSCCode.trim()) newErrors.IFSCCode = 'IFSC Code is required';
       }
+      const salaryFields = [
+        'netSalary',
+        'basicSalary',
+        'hra',
+        'specialBonus',
+        'conveyance',
+        'travelAllowances',
+        'shiftAllowances',
+        'overtime',
+        'taxRate',
+      ];
+      salaryFields.forEach((field) => {
+        if (formData[field] && isNaN(Number(formData[field]))) {
+          newErrors[field] = `${field.replace(/([A-Z])/g, ' $1').trim()} must be a number`;
+        }
+      });
     }
     if (activeTab === 'PfAccount') {
       if (formData.pfType && !formData.employerContributionPf && formData.employerContributionPf !== 0)
@@ -159,6 +217,10 @@ const EditEmployee = () => {
         newErrors.employerContributionEobi = 'Employer EOBI Contribution is required';
       if (formData.eobiType && !formData.employeeContributionEobi && formData.employeeContributionEobi !== 0)
         newErrors.employeeContributionEobi = 'Employee EOBI Contribution is required';
+      if (formData.esicType && !formData.employerContributionEsic && formData.employerContributionEsic !== 0)
+        newErrors.employerContributionEsic = 'Employer ESIC Contribution is required';
+      if (formData.esicType && !formData.employeeContributionEsic && formData.employeeContributionEsic !== 0)
+        newErrors.employeeContributionEsic = 'Employee ESIC Contribution is required';
       const numericFields = [
         'employerContributionPf',
         'employeeContributionPf',
@@ -166,6 +228,8 @@ const EditEmployee = () => {
         'employeeContributionSses',
         'employerContributionEobi',
         'employeeContributionEobi',
+        'employerContributionEsic',
+        'employeeContributionEsic',
       ];
       numericFields.forEach((field) => {
         if (formData[field] && isNaN(Number(formData[field]))) {
@@ -184,19 +248,31 @@ const EditEmployee = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     const numericFields = [
-      'basicSalary',
+      'netSalary',
+     
+      'hra',
+      'specialBonus',
+      'conveyance',
+      'travelAllowances',
+      'shiftAllowances',
+      'overtime',
+      'taxRate',
       'employerContributionPf',
       'employeeContributionPf',
       'employerContributionSses',
       'employeeContributionSses',
       'employerContributionEobi',
       'employeeContributionEobi',
+      'employerContributionEsic',
+      'employeeContributionEsic',
     ];
     const dateFields = ['dob', 'hireDate', 'joiningDate', 'separationDate'];
 
     let newValue = value;
 
-    if (numericFields.includes(name)) {
+    if (name === 'status') {
+      newValue = value.toLowerCase();
+    } else if (numericFields.includes(name)) {
       newValue = value === '' ? '' : Number(value) || '';
     } else if (dateFields.includes(name)) {
       newValue = value ? new Date(value).toISOString().split('T')[0] : '';
@@ -236,13 +312,23 @@ const EditEmployee = () => {
 
     const employeeData = { ...formData, profileImage };
     const numericFields = [
-      'basicSalary',
+      'netSalary',
+      
+      'hra',
+      'specialBonus',
+      'conveyance',
+      'travelAllowances',
+      'shiftAllowances',
+      'overtime',
+      'taxRate',
       'employerContributionPf',
       'employeeContributionPf',
       'employerContributionSses',
       'employeeContributionSses',
       'employerContributionEobi',
       'employeeContributionEobi',
+      'employerContributionEsic',
+      'employeeContributionEsic',
     ];
     const dateFields = ['dob', 'hireDate', 'joiningDate', 'separationDate'];
 
@@ -265,6 +351,7 @@ const EditEmployee = () => {
     delete employeeData.reenterPassword;
 
     try {
+      console.log('Employee Data being sent:', employeeData);
       await hrmApi.updateEmployee(id, employeeData);
       setShowModal(true);
     } catch (error) {
@@ -418,9 +505,10 @@ const EditEmployee = () => {
                     className="mt-1 w-full p-2 border border-gray-300 rounded"
                   >
                     <option value="">Select</option>
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
                   </select>
+                  {errors.status && <p className="text-red-500 text-sm mt-1">{errors.status}</p>}
                 </div>
                 <div className="col-span-2 sm:col-span-1">
                   <label className="block text-sm font-medium text-gray-700">Separation Date</label>
@@ -526,15 +614,93 @@ const EditEmployee = () => {
             {activeTab === 'Payroll' && (
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Basic Salary</label>
+                  <label className="block text-sm font-medium text-gray-700">Net Salary</label>
                   <input
                     type="number"
-                    name="basicSalary"
-                    value={formData.basicSalary}
+                    name="netSalary"
+                    value={formData.netSalary}
                     onChange={handleChange}
                     className="mt-1 w-full p-2 border border-gray-300 rounded"
                   />
-                  {errors.basicSalary && <p className="text-red-500 text-sm mt-1">{errors.basicSalary}</p>}
+                  {errors.netSalary && <p className="text-red-500 text-sm mt-1">{errors.netSalary}</p>}
+                </div>
+              
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">HRA</label>
+                  <input
+                    type="number"
+                    name="hra"
+                    value={formData.hra}
+                    onChange={handleChange}
+                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                  />
+                  {errors.hra && <p className="text-red-500 text-sm mt-1">{errors.hra}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Special Bonus</label>
+                  <input
+                    type="number"
+                    name="specialBonus"
+                    value={formData.specialBonus}
+                    onChange={handleChange}
+                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                  />
+                  {errors.specialBonus && <p className="text-red-500 text-sm mt-1">{errors.specialBonus}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Conveyance</label>
+                  <input
+                    type="number"
+                    name="conveyance"
+                    value={formData.conveyance}
+                    onChange={handleChange}
+                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                  />
+                  {errors.conveyance && <p className="text-red-500 text-sm mt-1">{errors.conveyance}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Travel Allowances</label>
+                  <input
+                    type="number"
+                    name="travelAllowances"
+                    value={formData.travelAllowances}
+                    onChange={handleChange}
+                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                  />
+                  {errors.travelAllowances && <p className="text-red-500 text-sm mt-1">{errors.travelAllowances}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Shift Allowances</label>
+                  <input
+                    type="number"
+                    name="shiftAllowances"
+                    value={formData.shiftAllowances}
+                    onChange={handleChange}
+                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                  />
+                  {errors.shiftAllowances && <p className="text-red-500 text-sm mt-1">{errors.shiftAllowances}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Overtime</label>
+                  <input
+                    type="number"
+                    name="overtime"
+                    value={formData.overtime}
+                    onChange={handleChange}
+                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                  />
+                  {errors.overtime && <p className="text-red-500 text-sm mt-1">{errors.overtime}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Tax Rate (%)</label>
+                  <input
+                    type="number"
+                    name="taxRate"
+                    value={formData.taxRate}
+                    onChange={handleChange}
+                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                  />
+                  {errors.taxRate && <p className="text-red-500 text-sm mt-1">{errors.taxRate}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Payment Method</label>
@@ -546,6 +712,8 @@ const EditEmployee = () => {
                   >
                     <option value="">Select</option>
                     <option value="Bank Transfer">Bank Transfer</option>
+                    <option value="NFT">NFT</option>
+                    <option value="RTGS">RTGS</option>
                     <option value="Cash">Cash</option>
                   </select>
                   {errors.paymentMethod && <p className="text-red-500 text-sm mt-1">{errors.paymentMethod}</p>}
@@ -587,16 +755,6 @@ const EditEmployee = () => {
                   {errors.accountTitle && <p className="text-red-500 text-sm mt-1">{errors.accountTitle}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Branch Code</label>
-                  <input
-                    type="text"
-                    name="branchCode"
-                    value={formData.branchCode}
-                    onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
-                  />
-                </div>
-                <div>
                   <label className="block text-sm font-medium text-gray-700">Account No</label>
                   <input
                     type="text"
@@ -608,14 +766,15 @@ const EditEmployee = () => {
                   {errors.accountNo && <p className="text-red-500 text-sm mt-1">{errors.accountNo}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Swift Code</label>
+                  <label className="block text-sm font-medium text-gray-700">IFSC Code</label>
                   <input
                     type="text"
-                    name="swiftCode"
-                    value={formData.swiftCode}
+                    name="IFSCCode"
+                    value={formData.IFSCCode}
                     onChange={handleChange}
                     className="mt-1 w-full p-2 border border-gray-300 rounded"
                   />
+                  {errors.IFSCCode && <p className="text-red-500 text-sm mt-1">{errors.IFSCCode}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Location</label>
@@ -641,8 +800,8 @@ const EditEmployee = () => {
                   <label className="block text-sm font-medium text-gray-700">CNIC</label>
                   <input
                     type="text"
-                    name="cnnic"
-                    value={formData.cnnic}
+                    name="CNIC"
+                    value={formData.CNIC}
                     onChange={handleChange}
                     className="mt-1 w-full p-2 border border-gray-300 rounded"
                   />
@@ -651,6 +810,16 @@ const EditEmployee = () => {
             )}
             {activeTab === 'PfAccount' && (
               <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">PF Account Number</label>
+                  <input
+                    type="text"
+                    name="pfAccountNumber"
+                    value={formData.pfAccountNumber}
+                    onChange={handleChange}
+                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">PF Type</label>
                   <select
@@ -752,6 +921,40 @@ const EditEmployee = () => {
                     className="mt-1 w-full p-2 border border-gray-300 rounded"
                   />
                   {errors.employeeContributionEobi && <p className="text-red-500 text-sm mt-1">{errors.employeeContributionEobi}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">ESIC Type</label>
+                  <select
+                    name="esicType"
+                    value={formData.esicType}
+                    onChange={handleChange}
+                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                  >
+                    <option value="">Select</option>
+                    <option value="ESIC">ESIC</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Employer Contribution ESIC</label>
+                  <input
+                    type="number"
+                    name="employerContributionEsic"
+                    value={formData.employerContributionEsic}
+                    onChange={handleChange}
+                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                  />
+                  {errors.employerContributionEsic && <p className="text-red-500 text-sm mt-1">{errors.employerContributionEsic}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Employee Contribution ESIC</label>
+                  <input
+                    type="number"
+                    name="employeeContributionEsic"
+                    value={formData.employeeContributionEsic}
+                    onChange={handleChange}
+                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                  />
+                  {errors.employeeContributionEsic && <p className="text-red-500 text-sm mt-1">{errors.employeeContributionEsic}</p>}
                 </div>
               </div>
             )}

@@ -36,7 +36,7 @@ const AddAttendance = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    let updatedFormData = { ...formData, [name]: value };
 
     // Reset errors and message on change
     setError(null);
@@ -53,11 +53,16 @@ const AddAttendance = () => {
       }
     }
 
-    // Calculate work hours preview for 'present' status
-    if (name === "checkIn" || name === "checkOut") {
-      const updatedFormData = { ...formData, [name]: value };
-      const { checkIn, checkOut } = updatedFormData;
-      if (checkIn && checkOut && updatedFormData.status === "present") {
+    // Handle status change to clear times for absent/leave
+    if (name === "status" && (value === "absent" || value === "leave")) {
+      updatedFormData = { ...updatedFormData, checkIn: "", checkOut: "" };
+      setWorkHoursPreview(null);
+    }
+
+    // Calculate work hours preview only for 'present' status
+    if (name === "checkIn" || name === "checkOut" || name === "status") {
+      const { checkIn, checkOut, status } = updatedFormData;
+      if (status === "present" && checkIn && checkOut) {
         try {
           const checkInTime = new Date(`1970-01-01T${checkIn}:00Z`);
           const checkOutTime = new Date(`1970-01-01T${checkOut}:00Z`);
@@ -76,6 +81,8 @@ const AddAttendance = () => {
         setWorkHoursPreview(null);
       }
     }
+
+    setFormData(updatedFormData);
   };
 
   const handleSubmit = async (e) => {
@@ -173,7 +180,7 @@ const AddAttendance = () => {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:ml-64 min-h-screen bg-gray-50">
+    <div className="ml-64 p-6 bg-gray-screen100 min-h-">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-800">Add Attendance</h1>
         <div className="bg-white p-6 rounded-lg shadow">

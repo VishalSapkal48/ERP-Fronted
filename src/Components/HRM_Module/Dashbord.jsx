@@ -1,184 +1,778 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Calendar, Edit, CheckCircle, XCircle, Trash2, Bell, CheckSquare } from "lucide-react";
+import CustomCalendar from "./CustomCalendar";
+import hrmApi from "../../ApiCalling/Hrm_Api";
 
 const Dashboard = () => {
-  // Mock data for dashboard metrics
-  const metrics = [
-    { title: "Total Employees", value: 120, icon: "👥", link: "/hrm/employees" },
-    { title: "Attendance Rate", value: "92%", icon: "📅", link: "/hrm/attendance" },
-    { title: "Pending Leaves", value: 8, icon: "🍃", link: "/hrm/leaves" },
-    { title: "Payroll Due", value: "3 Days", icon: "💰", link: "/hrm/payroll" },
-  ];
+  const [events, setEvents] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedEvents, setSelectedEvents] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [priorityTasks, setPriorityTasks] = useState([]);
+  const [workTasks, setWorkTasks] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [loadingEvents, setLoadingEvents] = useState(true);
+  const [loadingTasks, setLoadingTasks] = useState(true);
+  const [loadingAction, setLoadingAction] = useState(false);
+  const [errorEvents, setErrorEvents] = useState(null);
+  const [errorTasks, setErrorTasks] = useState(null);
+  const [newTask, setNewTask] = useState({
+    title: "",
+    type: "General",
+    dueDate: new Date().toISOString().split("T")[0],
+    time: "",
+    priority: false,
+  });
+  const [taskError, setTaskError] = useState(null);
+  const [editingTask, setEditingTask] = useState(null);
 
-  // Mock data for recent activities
-  const recentActivities = [
-    { id: 1, employee: "John Doe", action: "Submitted leave request", date: "2025-07-04" },
-    { id: 2, employee: "Jane Smith", action: "Clocked in", date: "2025-07-04" },
-    { id: 3, employee: "Bob Johnson", action: "Added as new employee", date: "2025-07-03" },
-  ];
-
-  // Event data (anniversaries, festivals, birthdays)
-  const currentDate = new Date("2025-07-08"); // Current date
-  const anniversaries = [
-    { name: "YNK Anniversary", date: "11th November" },
-  ];
-
-  const festivals = [
-    { name: "Gudipadwa" },
-    { name: "Independence Day", date: "15th August" },
-    { name: "Ganesh Chaturthi" },
-    { name: "Diwali" },
-    { name: "Vijaya Dashami (Dussehra)" },
-    { name: "Republic Day", date: "26th January" },
-    { name: "Yogini Ekadashi" },
-    { name: "Maharashtra Day", date: "1st May" },
-    { name: "Gandhi Jayanti", date: "2nd October" },
-    { name: "Women's Day", date: "8th March" },
-  ];
-
-  const directors = [
-    { name: "Navnath Sir", dob: "7th October" },
-    { name: "Vishwas Sir", dob: "7th March" },
-    { name: "Amar Sir", dob: "17th February" },
-    { name: "Amol Sir", dob: "21st November" },
-    { name: "Datta Sir", dob: "2nd June" },
-  ];
-
-  const employees = [
-    { name: "Dipak Gayakar Sir", dob: "27/05/1987" },
-    { name: "Mauli Jadhav Sir", dob: "18/04/1999" },
-    { name: "Sainath Kamble", dob: "07-01-1996" },
-    { name: "Prashant Hanwate", dob: "08-07-1990" },
-    { name: "Shubham Pund", dob: "26/11/2000" },
-    { name: "Sainath Jorgewar", dob: "24/11/1999" },
-    { name: "Sayali More Ma'am", dob: "23/04/2001" },
-    { name: "Mukeshkumar Koli Sir", dob: "16/09/2001" },
-    { name: "Rinkoo Shakya Sir", dob: "11-01-1999" },
-    { name: "Santoshi Ganjare Ma'am", dob: "18/09/1988" },
-    { name: "Madhuri Pangare Ma'am", dob: "28/01/1990" },
-    { name: "Aboli Sawant Ma'am", dob: "20/02/1993" },
-    { name: "Bhushan Devrukhkar Sir", dob: "12-05-1988" },
-    { name: "Vicky Ingle Sir", dob: "15/08/1999" },
-    { name: "Pooja Lamdade Ma'am", dob: "26/11/1998" },
-    { name: "Nilam Bhosale Ma'am", dob: "16/03/1998" },
-  ];
-
-  // Helper function to parse dates and create event objects
-  const parseDate = (dateStr, type, name) => {
-    if (!dateStr) return null;
-    let day, month;
-    if (dateStr.includes("/")) {
-      // Format: DD/MM/YYYY or DD-MM-YYYY
-      const parts = dateStr.includes("/") ? dateStr.split("/") : dateStr.split("-");
-      day = parseInt(parts[0], 10);
-      month = parseInt(parts[1], 10) - 1; // Months are 0-based in JS
-    } else {
-      // Format: "DDth Month" (e.g., "11th November")
-      const match = dateStr.match(/^(\d{1,2})(?:st|nd|rd|th)?\s(\w+)/);
-      if (match) {
-        day = parseInt(match[1], 10);
-        const monthNames = [
-          "January", "February", "March", "April", "May", "June",
-          "July", "August", "September", "October", "November", "December"
-        ];
-        month = monthNames.indexOf(match[2]);
-      } else {
-        return null;
-      }
+  // Request browser notification permission on component mount
+  useEffect(() => {
+    if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+      Notification.requestPermission();
     }
-    return { name, type, date: new Date(2025, month, day) };
+  }, []);
+
+  // Fetch events
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setLoadingEvents(true);
+        const data = await hrmApi.getEvents();
+        setEvents(data.map(event => ({ ...event, date: new Date(event.date) })));
+        setLoadingEvents(false);
+      } catch (error) {
+        console.error("Fetch Events Error:", error.response?.data || error);
+        setErrorEvents("Failed to fetch events. Please try again.");
+        setLoadingEvents(false);
+      }
+    };
+    fetchEvents();
+  }, []);
+
+  // Fetch tasks
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        setLoadingTasks(true);
+        const data = await hrmApi.getTasks();
+        setTasks(data);
+        setPriorityTasks(data.filter(task => task.priority === true));
+        setWorkTasks(data.filter(task => task.priority === false));
+        setLoadingTasks(false);
+      } catch (error) {
+        console.error("Fetch Tasks Error:", error.response?.data || error);
+        setErrorTasks("Failed to fetch tasks. Please try again.");
+        setLoadingTasks(false);
+      }
+    };
+    fetchTasks();
+  }, []);
+
+  // Check for upcoming meetings and trigger notifications
+  useEffect(() => {
+    const checkUpcomingMeetings = () => {
+      const now = new Date();
+      const upcomingMeetings = tasks.filter(task => {
+        if (task.type === "Meeting" && task.status === "pending" && task.time) {
+          const [hours, minutes] = task.time.split(":").map(Number);
+          const taskDateTime = new Date(task.dueDate);
+          taskDateTime.setHours(hours, minutes, 0, 0);
+          const diffMinutes = (taskDateTime - now) / (1000 * 60);
+          return diffMinutes > 0 && diffMinutes <= 30;
+        }
+        return false;
+      });
+
+      const newNotifications = upcomingMeetings.map(task => ({
+        id: task._id,
+        message: `Meeting "${task.title}" is starting at ${task.time} on ${new Date(task.dueDate).toLocaleDateString("en-GB")}`,
+      }));
+
+      setNotifications(newNotifications);
+
+      // Trigger browser notifications if permission is granted
+      if (Notification.permission === "granted") {
+        newNotifications.forEach(notification => {
+          new Notification("HRM Dashboard", {
+            body: notification.message,
+            icon: "/path/to/icon.png", // Replace with your icon path
+          });
+        });
+      }
+    };
+
+    checkUpcomingMeetings();
+    const interval = setInterval(checkUpcomingMeetings, 60 * 1000);
+    return () => clearInterval(interval);
+  }, [tasks]);
+
+  // Dismiss notification
+  const dismissNotification = (id) => {
+    setNotifications(prev => prev.filter(notification => notification.id !== id));
   };
 
-  // Combine all events
-  const allEvents = [
-    ...anniversaries.map(a => parseDate(a.date, "Anniversary", a.name)).filter(Boolean),
-    ...festivals
-      .map(f => parseDate(f.date, "Festival", f.name))
-      .filter(Boolean), // Filter out festivals without dates
-    ...directors.map(d => parseDate(d.dob, "Director Birthday", d.name)).filter(Boolean),
-    ...employees.map(e => parseDate(e.dob, "Employee Birthday", e.name)).filter(Boolean),
-  ];
+  // Handle date change
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    const eventsOnDate = events.filter(
+      (event) =>
+        event.date.toDateString() === date.toDateString() ||
+        (event.type.includes("Birthday") &&
+          event.date.getDate() === date.getDate() &&
+          event.date.getMonth() === date.getMonth())
+    );
+    setSelectedEvents(eventsOnDate);
+  };
 
-  // Sort events by date and filter upcoming events (within 30 days)
-  const upcomingEvents = allEvents
-    .filter(event => {
-      const diffTime = event.date - currentDate;
+  const getEventColor = (type) => {
+    switch (type) {
+      case "Festival": return "bg-green-500";
+      case "Anniversary": return "bg-purple-500";
+      case "Director Birthday": return "bg-red-500";
+      case "Employee Birthday": return "bg-blue-500";
+      default: return "bg-gray-500";
+    }
+  };
+
+  const upcomingEvents = events
+    .filter((event) => {
+      const diffTime = event.date - new Date();
       const diffDays = diffTime / (1000 * 60 * 60 * 24);
-      return diffDays >= 0 && diffDays <= 30; // Events in the next 30 days
+      return diffDays >= 0 && diffDays <= 30;
     })
     .sort((a, b) => a.date - b.date);
 
+  // Handle task action (approve, reject, complete)
+  const handleTaskAction = async (taskId, action) => {
+    try {
+      setLoadingAction(true);
+      await hrmApi.updateTask(taskId, { status: action });
+      const data = await hrmApi.getTasks();
+      setTasks(data);
+      setPriorityTasks(data.filter(task => task.priority === true));
+      setWorkTasks(data.filter(task => task.priority === false));
+      setErrorTasks(null);
+      setLoadingAction(false);
+    } catch (error) {
+      console.error("Task Action Error:", error.response?.data || error);
+      setErrorTasks("Failed to update task. Please try again.");
+      setLoadingAction(false);
+    }
+  };
+
+  // Handle edit task
+  const handleEditTask = (task) => {
+    setEditingTask(task._id);
+    setNewTask({
+      title: task.title,
+      type: task.type,
+      dueDate: new Date(task.dueDate).toISOString().split("T")[0],
+      time: task.time || "",
+      priority: task.priority,
+    });
+  };
+
+  // Handle update task
+  const handleUpdateTask = async (e, taskId) => {
+    e.preventDefault();
+    if (!newTask.title || !newTask.dueDate || (newTask.type === "Meeting" && !newTask.time)) {
+      setTaskError("Title, Due Date, and Time (for Meetings) are required.");
+      return;
+    }
+    try {
+      setLoadingAction(true);
+      const taskData = {
+        ...newTask,
+        dueDate: new Date(newTask.dueDate),
+      };
+      if (newTask.type !== "Meeting") {
+        delete taskData.time;
+      }
+      await hrmApi.updateTask(taskId, taskData);
+      const data = await hrmApi.getTasks();
+      setTasks(data);
+      setPriorityTasks(data.filter(task => task.priority === true));
+      setWorkTasks(data.filter(task => task.priority === false));
+      setEditingTask(null);
+      setNewTask({
+        title: "",
+        type: "General",
+        dueDate: new Date().toISOString().split("T")[0],
+        time: "",
+        priority: false,
+      });
+      setTaskError(null);
+      setLoadingAction(false);
+    } catch (error) {
+      console.error("Update Task Error:", error.response?.data || error);
+      setTaskError("Failed to update task. Please try again.");
+      setLoadingAction(false);
+    }
+  };
+
+  // Handle delete task
+  const handleDeleteTask = async (taskId) => {
+    try {
+      setLoadingAction(true);
+      await hrmApi.deleteTask(taskId);
+      const data = await hrmApi.getTasks();
+      setTasks(data);
+      setPriorityTasks(data.filter(task => task.priority === true));
+      setWorkTasks(data.filter(task => task.priority === false));
+      setErrorTasks(null);
+      setLoadingAction(false);
+    } catch (error) {
+      console.error("Delete Task Error:", error.response?.data || error);
+      setErrorTasks("Failed to delete task. Please try again.");
+      setLoadingAction(false);
+    }
+  };
+
+  // Handle new task input changes
+  const handleNewTaskChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setNewTask((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  // Handle new task submission
+  const handleAddTask = async (e) => {
+    e.preventDefault();
+    if (!newTask.title || !newTask.dueDate || (newTask.type === "Meeting" && !newTask.time)) {
+      setTaskError("Title, Due Date, and Time (for Meetings) are required.");
+      return;
+    }
+    try {
+      const taskData = {
+        ...newTask,
+        dueDate: new Date(newTask.dueDate),
+      };
+      if (newTask.type !== "Meeting") {
+        delete taskData.time;
+      }
+      const createdTask = await hrmApi.createTask(taskData);
+      setTasks((prev) => [...prev, createdTask]);
+      if (createdTask.priority) {
+        setPriorityTasks((prev) => [...prev, createdTask]);
+      } else {
+        setWorkTasks((prev) => [...prev, createdTask]);
+      }
+      setNewTask({
+        title: "",
+        type: "General",
+        dueDate: new Date().toISOString().split("T")[0],
+        time: "",
+        priority: false,
+      });
+      setTaskError(null);
+    } catch (error) {
+      console.error("Add Task Error:", error.response?.data || error);
+      setTaskError("Failed to add task. Please try again.");
+    }
+  };
+
   return (
     <div className="ml-64 p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">HRM Dashboard</h2>
+      <h2 className="text-3xl font-bold mb-8 text-gray-800">HRM Dashboard</h2>
 
-      {/* Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {metrics.map((metric, index) => (
-          <Link
-            key={index}
-            to={metric.link}
-            className="bg-white p-4 rounded-lg shadow-md hover:bg-gray-50 transition"
-          >
-            <div className="flex items-center">
-              <span className="text-3xl mr-4">{metric.icon}</span>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-700">{metric.title}</h3>
-                <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
-              </div>
+      {/* Notifications Section */}
+      {notifications.length > 0 && (
+        <div className="mb-6 bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-lg shadow-md animate-fade-in">
+          <h3 className="text-lg font-semibold text-yellow-800 flex items-center gap-2">
+            <Bell className="w-5 h-5" />
+            Upcoming Meetings
+          </h3>
+          {notifications.map((notification) => (
+            <div key={notification.id} className="mt-2 text-yellow-700 flex justify-between items-center">
+              <span>{notification.message}</span>
+              <button
+                onClick={() => dismissNotification(notification.id)}
+                className="text-yellow-900 hover:text-yellow-700 font-medium"
+              >
+                Dismiss
+              </button>
             </div>
-          </Link>
-        ))}
+          ))}
+        </div>
+      )}
+
+      {/* Task Sections: Add New Task | Priority & Work Tasks */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        {/* Add New Task */}
+        <div className="lg:col-span-1 bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+          <h3 className="text-xl font-semibold mb-4 text-gray-700 flex items-center gap-2">
+            <CheckCircle className="w-6 h-6 text-blue-600" />
+            {editingTask ? "Edit Task" : "Add New Task"}
+          </h3>
+          <form onSubmit={(e) => editingTask ? handleUpdateTask(e, editingTask) : handleAddTask(e)} className="grid grid-cols-1 gap-4">
+            <div>
+              <label className="block text-gray-600 text-sm font-medium mb-2" htmlFor="title">
+                Task Title
+              </label>
+              <input
+                type="text"
+                name="title"
+                value={newTask.title}
+                onChange={handleNewTaskChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                placeholder="Enter task title"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-600 text-sm font-medium mb-2" htmlFor="type">
+                Task Type
+              </label>
+              <select
+                name="type"
+                value={newTask.type}
+                onChange={handleNewTaskChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              >
+                <option value="General">General</option>
+                <option value="Meeting">Meeting</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-gray-600 text-sm font-medium mb-2" htmlFor="dueDate">
+                Due Date
+              </label>
+              <input
+                type="date"
+                name="dueDate"
+                value={newTask.dueDate}
+                onChange={handleNewTaskChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              />
+            </div>
+            {newTask.type === "Meeting" && (
+              <div>
+                <label className="block text-gray-600 text-sm font-medium mb-2" htmlFor="time">
+                  Meeting Time
+                </label>
+                <input
+                  type="time"
+                  name="time"
+                  value={newTask.time}
+                  onChange={handleNewTaskChange}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                  required
+                />
+              </div>
+            )}
+            <div>
+              <label className="flex items-center gap-2 text-gray-600 text-sm font-medium">
+                <input
+                  type="checkbox"
+                  name="priority"
+                  checked={newTask.priority}
+                  onChange={handleNewTaskChange}
+                  className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                Priority Task
+              </label>
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition font-medium disabled:opacity-50"
+              disabled={loadingAction}
+            >
+              {loadingAction ? (editingTask ? "Updating..." : "Adding...") : editingTask ? "Update Task" : "Add Task"}
+            </button>
+            {editingTask && (
+              <button
+                type="button"
+                onClick={() => {
+                  setEditingTask(null);
+                  setNewTask({
+                    title: "",
+                    type: "General",
+                    dueDate: new Date().toISOString().split("T")[0],
+                    time: "",
+                    priority: false,
+                  });
+                  setTaskError(null);
+                }}
+                className="w-full bg-gray-600 text-white p-3 rounded-lg hover:bg-gray-700 transition mt-2"
+              >
+                Cancel
+              </button>
+            )}
+          </form>
+          {taskError && (
+            <div className="bg-red-100 text-red-600 px-4 py-3 rounded-lg mt-4">
+              {taskError}
+            </div>
+          )}
+        </div>
+
+        {/* Priority and Work Tasks */}
+        <div className="lg:col-span-2 flex flex-col gap-6">
+          {/* Priority Tasks */}
+          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+            <h3 className="text-xl font-semibold mb-4 text-gray-700 flex items-center gap-2">
+              <CheckCircle className="w-6 h-6 text-red-600" />
+              Priority Tasks
+            </h3>
+            {loadingTasks ? (
+              <div className="flex justify-center py-8">
+                <div className="animate-spin h-8 w-8 border-b-2 border-blue-600 rounded-full"></div>
+              </div>
+            ) : errorTasks ? (
+              <div className="bg-red-100 text-red-600 px-4 py-3 rounded-lg">{errorTasks}</div>
+            ) : priorityTasks.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="bg-gray-200 text-gray-600">
+                      <th className="p-3 font-medium">Task</th>
+                      <th className="p-3 font-medium">Type</th>
+                      <th className="p-3 font-medium">Due Date</th>
+                      <th className="p-3 font-medium">Time</th>
+                      <th className="p-3 font-medium">Status</th>
+                      <th className="p-3 font-medium">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {priorityTasks.map((task) =>
+                      task._id && (
+                        <tr key={task._id} className="border-b hover:bg-gray-50">
+                          <td className={`p-3 ${task.status !== "pending" ? "line-through text-gray-500" : ""}`}>
+                            {task.title}
+                          </td>
+                          <td className="p-3">{task.type}</td>
+                          <td className="p-3">
+                            {new Date(task.dueDate).toLocaleDateString("en-GB", {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            })}
+                          </td>
+                          <td className="p-3">{task.time || "-"}</td>
+                          <td className="p-3">
+                            <span
+                              className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
+                                task.status === "approved" ? "bg-green-100 text-green-600" :
+                                task.status === "rejected" ? "bg-red-100 text-red-600" :
+                                task.status === "completed" ? "bg-blue-100 text-blue-600" :
+                                "bg-yellow-100 text-yellow-600"
+                              }`}
+                            >
+                              {task.status}
+                            </span>
+                          </td>
+                          <td className="p-3 flex gap-2">
+                            {task.type === "Leave Approval" && task.status === "pending" ? (
+                              <>
+                                <button
+                                  onClick={() => handleTaskAction(task._id, "approved")}
+                                  className="text-green-600 hover:text-green-800 disabled:opacity-50"
+                                  title="Approve"
+                                  disabled={loadingAction}
+                                >
+                                  <CheckCircle className="w-5 h-5" />
+                                </button>
+                                <button
+                                  onClick={() => handleTaskAction(task._id, "rejected")}
+                                  className="text-red-600 hover:text-red-800 disabled:opacity-50"
+                                  title="Reject"
+                                  disabled={loadingAction}
+                                >
+                                  <XCircle className="w-5 h-5" />
+                                </button>
+                              </>
+                            ) : task.status !== "completed" ? (
+                              <>
+                                <button
+                                  onClick={() => handleEditTask(task)}
+                                  className="text-yellow-600 hover:text-yellow-800 disabled:opacity-50"
+                                  title="Edit"
+                                  disabled={loadingAction}
+                                >
+                                  <Edit className="w-5 h-5" />
+                                </button>
+                                <button
+                                  onClick={() => handleTaskAction(task._id, "completed")}
+                                  className="text-blue-600 hover:text-blue-800 disabled:opacity-50"
+                                  title="Mark as Completed"
+                                  disabled={loadingAction}
+                                >
+                                  <CheckSquare className="w-5 h-5" />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteTask(task._id)}
+                                  className="text-red-600 hover:text-red-800 disabled:opacity-50"
+                                  title="Delete"
+                                  disabled={loadingAction}
+                                >
+                                  <Trash2 className="w-5 h-5" />
+                                </button>
+                              </>
+                            ) : (
+                              <button
+                                onClick={() => handleDeleteTask(task._id)}
+                                className="text-red-600 hover:text-red-800 disabled:opacity-50"
+                                title="Delete"
+                                disabled={loadingAction}
+                              >
+                                <Trash2 className="w-5 h-5" />
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      )
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p className="text-gray-600">No priority tasks assigned.</p>
+            )}
+          </div>
+
+          {/* Work Tasks */}
+          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+            <h3 className="text-xl font-semibold mb-4 text-gray-700 flex items-center gap-2">
+              <CheckCircle className="w-6 h-6 text-blue-600" />
+              Work Tasks
+            </h3>
+            {loadingTasks ? (
+              <div className="flex justify-center py-8">
+                <div className="animate-spin h-8 w-8 border-b-2 border-blue-600 rounded-full"></div>
+              </div>
+            ) : errorTasks ? (
+              <div className="bg-red-100 text-red-600 px-4 py-3 rounded-lg">{errorTasks}</div>
+            ) : workTasks.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="bg-gray-200 text-gray-600">
+                      <th className="p-3 font-medium">Task</th>
+                      <th className="p-3 font-medium">Type</th>
+                      <th className="p-3 font-medium">Due Date</th>
+                      <th className="p-3 font-medium">Time</th>
+                      <th className="p-3 font-medium">Status</th>
+                      <th className="p-3 font-medium">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {workTasks.map((task) =>
+                      task._id && (
+                        <tr key={task._id} className="border-b hover:bg-gray-50">
+                          <td className={`p-3 ${task.status !== "pending" ? "line-through text-gray-500" : ""}`}>
+                            {task.title}
+                          </td>
+                          <td className="p-3">{task.type}</td>
+                          <td className="p-3">
+                            {new Date(task.dueDate).toLocaleDateString("en-GB", {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            })}
+                          </td>
+                          <td className="p-3">{task.time || "-"}</td>
+                          <td className="p-3">
+                            <span
+                              className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
+                                task.status === "approved" ? "bg-green-100 text-green-600" :
+                                task.status === "rejected" ? "bg-red-100 text-red-600" :
+                                task.status === "completed" ? "bg-blue-100 text-blue-600" :
+                                "bg-yellow-100 text-yellow-600"
+                              }`}
+                            >
+                              {task.status}
+                            </span>
+                          </td>
+                          <td className="p-3 flex gap-2">
+                            {task.type === "Leave Approval" && task.status === "pending" ? (
+                              <>
+                                <button
+                                  onClick={() => handleTaskAction(task._id, "approved")}
+                                  className="text-green-600 hover:text-green-800 disabled:opacity-50"
+                                  title="Approve"
+                                  disabled={loadingAction}
+                                >
+                                  <CheckCircle className="w-5 h-5" />
+                                </button>
+                                <button
+                                  onClick={() => handleTaskAction(task._id, "rejected")}
+                                  className="text-red-600 hover:text-red-800 disabled:opacity-50"
+                                  title="Reject"
+                                  disabled={loadingAction}
+                                >
+                                  <XCircle className="w-5 h-5" />
+                                </button>
+                              </>
+                            ) : task.status !== "completed" ? (
+                              <>
+                                <button
+                                  onClick={() => handleEditTask(task)}
+                                  className="text-yellow-600 hover:text-yellow-800 disabled:opacity-50"
+                                  title="Edit"
+                                  disabled={loadingAction}
+                                >
+                                  <Edit className="w-5 h-5" />
+                                </button>
+                                <button
+                                  onClick={() => handleTaskAction(task._id, "completed")}
+                                  className="text-blue-600 hover:text-blue-800 disabled:opacity-50"
+                                  title="Mark as Completed"
+                                  disabled={loadingAction}
+                                >
+                                  <CheckSquare className="w-5 h-5" />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteTask(task._id)}
+                                  className="text-red-600 hover:text-red-800 disabled:opacity-50"
+                                  title="Delete"
+                                  disabled={loadingAction}
+                                >
+                                  <Trash2 className="w-5 h-5" />
+                                </button>
+                              </>
+                            ) : (
+                              <button
+                                onClick={() => handleDeleteTask(task._id)}
+                                className="text-red-600 hover:text-red-800 disabled:opacity-50"
+                                title="Delete"
+                                disabled={loadingAction}
+                              >
+                                <Trash2 className="w-5 h-5" />
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      )
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p className="text-gray-600">No work tasks assigned.</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Calendar and Selected Events */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+          <h3 className="text-xl font-semibold mb-4 text-gray-700 flex items-center gap-2">
+            <Calendar className="w-6 h-6 text-blue-600" />
+            Event Calendar
+          </h3>
+          {loadingEvents ? (
+            <div className="flex justify-center py-8">
+              <div className="animate-spin h-8 w-8 border-b-2 border-blue-600 rounded-full"></div>
+            </div>
+          ) : errorEvents ? (
+            <div className="bg-red-100 text-red-600 px-4 py-3 rounded-lg">{errorEvents}</div>
+          ) : (
+            <CustomCalendar
+              selectedDate={selectedDate}
+              onDateChange={handleDateChange}
+              events={events}
+              getEventColor={getEventColor}
+            />
+          )}
+        </div>
+
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+          <h3 className="text-xl font-semibold mb-4 text-gray-700">
+            Events on{" "}
+            {selectedDate.toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </h3>
+          {selectedEvents.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="bg-gray-200 text-gray-600">
+                    <th className="p-3 font-medium">Event</th>
+                    <th className="p-3 font-medium">Type</th>
+                    <th className="p-3 font-medium">Date</th>
+                    <th className="p-3 font-medium">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {selectedEvents.map((event) =>
+                    event._id && (
+                      <tr key={event._id} className="border-b hover:bg-gray-50">
+                        <td className="p-3 flex items-center gap-2">
+                          <span className={`w-3 h-3 rounded-full ${getEventColor(event.type)}`} />
+                          {event.name}
+                        </td>
+                        <td className="p-3">{event.type}</td>
+                        <td className="p-3">
+                          {event.date.toLocaleDateString("en-GB", {
+                            day: "numeric",
+                            month: "long",
+                          })}
+                        </td>
+                        <td className="p-3">
+                          <Link to="/holiday" className="text-blue-600 hover:text-blue-800">
+                            <Edit className="w-5 h-5" />
+                          </Link>
+                        </td>
+                      </tr>
+                    )
+                  )}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-gray-600">No events on this date.</p>
+          )}
+        </div>
       </div>
 
       {/* Upcoming Events */}
-      <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Upcoming Events (Next 30 Days)</h3>
+      <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+        <h3 className="text-xl font-semibold mb-4 text-gray-700 flex items-center gap-2">
+          <Calendar className="w-6 h-6 text-blue-600" />
+          Upcoming Events (Next 30 Days)
+        </h3>
         {upcomingEvents.length > 0 ? (
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="p-2">Event</th>
-                <th className="p-2">Type</th>
-                <th className="p-2">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {upcomingEvents.map((event, index) => (
-                <tr key={index} className="border-b">
-                  <td className="p-2">{event.name}</td>
-                  <td className="p-2">{event.type}</td>
-                  <td className="p-2">{event.date.toLocaleDateString("en-GB", { day: "numeric", month: "long" })}</td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-gray-200 text-gray-600">
+                  <th className="p-3 font-medium">Event</th>
+                  <th className="p-3 font-medium">Type</th>
+                  <th className="p-3 font-medium">Date</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {upcomingEvents.map((event) =>
+                  event._id && (
+                    <tr key={event._id} className="border-b hover:bg-gray-50">
+                      <td className="p-3 flex items-center gap-2">
+                        <span className={`w-3 h-3 rounded-full ${getEventColor(event.type)}`} />
+                        {event.name}
+                      </td>
+                      <td className="p-3">{event.type}</td>
+                      <td className="p-3">
+                        {event.date.toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "long",
+                        })}
+                      </td>
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </table>
+          </div>
         ) : (
           <p className="text-gray-600">No events in the next 30 days.</p>
         )}
-      </div>
-
-      {/* Recent Activities */}
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Recent Activities</h3>
-        <table className="w-full text-left">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="p-2">Employee</th>
-              <th className="p-2">Action</th>
-              <th className="p-2">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recentActivities.map((activity) => (
-              <tr key={activity.id} className="border-b">
-                <td className="p-2">{activity.employee}</td>
-                <td className="p-2">{activity.action}</td>
-                <td className="p-2">{activity.date}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
     </div>
   );

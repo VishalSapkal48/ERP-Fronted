@@ -62,7 +62,7 @@ import HrmLayout from "./Layout/HrmLayout";
 
 const App = () => (
   <Router>
-    <HrmLayout />
+    <HrmLayout  />
   </Router>
 );
 

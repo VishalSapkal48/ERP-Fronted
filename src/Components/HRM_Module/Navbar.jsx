@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu } from 'lucide-react'; // Make sure lucide-react is installed
 
 const Navbar = ({ toggleSidebar }) => {
-  const currentDateTime = new Date().toLocaleString('en-IN', {
-    timeZone: 'Asia/Kolkata',
-    hour12: true,
-  });
+  const [currentDateTime, setCurrentDateTime] = useState(
+    new Date().toLocaleString('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      hour12: true,
+    })
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDateTime(
+        new Date().toLocaleString('en-IN', {
+          timeZone: 'Asia/Kolkata',
+          hour12: true,
+        })
+      );
+    }, 1000); // Update every second
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
 
   return (
     <nav className="bg-white shadow-md border-b border px-4 py-3 p-6 ml-64">
@@ -23,8 +38,6 @@ const Navbar = ({ toggleSidebar }) => {
             Ynk-ERP
           </Link>
         </div>
-
-      
 
         {/* Right: Date/Time and Avatar */}
         <div className="flex items-center space-x-4">
