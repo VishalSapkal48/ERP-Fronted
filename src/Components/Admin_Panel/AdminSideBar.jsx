@@ -10,11 +10,18 @@ import {
   DocumentDuplicateIcon,
   CurrencyDollarIcon,
   ClockIcon,
+  UserPlusIcon,
+  ListBulletIcon,
+  PlusIcon,
+  CalendarIcon,
+  HomeIcon,
 } from '@heroicons/react/24/outline';
 
 function AdminSideBar() {
   const [activeModule, setActiveModule] = useState(null);
-  const location = useLocation(); // For highlighting active route
+  const [isEmployeeOpen, setIsEmployeeOpen] = useState(false);
+  const [isAttendanceOpen, setIsAttendanceOpen] = useState(false);
+  const location = useLocation();
 
   const modules = {
     crm: [
@@ -32,23 +39,26 @@ function AdminSideBar() {
       { path: '/crm/expenses', label: 'Expenses', icon: CurrencyDollarIcon },
     ],
     hrm: [
-      { path: '/hrm/attendance', label: 'Attendance', icon: ClockIcon },
-      { path: '/hrm/employees', label: 'Employees', icon: UserGroupIcon },
+      {
+        label: 'Employees',
+        icon: UserGroupIcon,
+        subItems: [
+          { path: '/hrm/employees/add', label: 'Add Employee', icon: UserPlusIcon },
+          { path: '/hrm/employees', label: 'Show All Employees', icon: ListBulletIcon },
+          { path: '/hrm/offerletter', label: 'Documentation', icon: DocumentTextIcon },
+        ],
+      },
+      {
+        label: 'Attendance',
+        icon: CalendarIcon,
+        subItems: [
+          { path: '/hrm/attendance/add', label: 'Add Attendance', icon: PlusIcon },
+          { path: '/hrm/attendance', label: 'View All Attendance', icon: ListBulletIcon },
+        ],
+      },
       { path: '/hrm/leaves', label: 'Leaves', icon: DocumentTextIcon },
       { path: '/hrm/payroll', label: 'Payroll', icon: CurrencyDollarIcon },
-      { path: '/hrm/settings', label: 'Settings', icon: DocumentTextIcon },
-      { path: '/hrm/employees/add', label: 'Add Employee', icon: UserGroupIcon },
-      { path: '/hrm/employee/edit/:id', label: 'Edit Employee', icon: UserGroupIcon },
-      { path: '/hrm/attendance/add', label: 'Add Attendance', icon: ClockIcon },
-      { path: '/hrm/holiday', label: 'Holiday', icon: DocumentTextIcon },
-      { path: '/hrm/profile', label: 'Profile', icon: UserGroupIcon },
-      { path: '/hrm/calculate', label: 'Custom Calendar', icon: ClockIcon },
-      { path: '/hrm/offerletter', label: 'Offer Letter', icon: DocumentTextIcon },
-      { path: '/hrm/appointmentletter', label: 'Appointment Letter', icon: DocumentTextIcon },
-      { path: '/hrm/experienceletter', label: 'Experience Letter', icon: DocumentTextIcon },
-      { path: '/hrm/travelpolicy', label: 'Travel Policy', icon: DocumentTextIcon },
-      { path: '/hrm/officerules', label: 'Office Rules', icon: DocumentTextIcon },
-      { path: '/hrm/salaryslip', label: 'Salary Slip', icon: CurrencyDollarIcon },
+      { path: '/hrm/holiday', label: 'Holiday', icon: CalendarIcon },
     ],
     inventory: [
       { path: '/inventory/inventory', label: 'Inventory', icon: DocumentDuplicateIcon },
@@ -67,20 +77,20 @@ function AdminSideBar() {
     ],
     purchase: [
       { path: '/purchase-orders/suppliers', label: 'Suppliers', icon: UserGroupIcon },
-      { path: '/purchase-orders/SupplierForm', label: 'Add Supplier', icon: UserGroupIcon },
-      { path: '/purchase-orders/SupplierDetails', label: 'Supplier Details', icon: DocumentMagnifyingGlassIcon },
-      { path: '/purchase-orders/PurchaseOrderList', label: 'Purchase Orders', icon: DocumentTextIcon },
-      { path: '/purchase-orders/PurchaseOrderForm', label: 'Add Purchase Order', icon: DocumentTextIcon },
-      { path: '/purchase-orders/PurchaseOrderDetails', label: 'Purchase Order Details', icon: DocumentMagnifyingGlassIcon },
-      { path: '/purchase-orders/QuotationList', label: 'Quotations', icon: DocumentDuplicateIcon },
-      { path: '/purchase-orders/QuotationForm', label: 'Add Quotation', icon: DocumentDuplicateIcon },
-      { path: '/purchase-orders/QuotationDetails', label: 'Quotation Details', icon: DocumentMagnifyingGlassIcon },
-      { path: '/purchase-orders/InvoiceList', label: 'Invoices', icon: DocumentCheckIcon },
-      { path: '/purchase-orders/InvoiceForm', label: 'Add Invoice', icon: DocumentCheckIcon },
-      { path: '/purchase-orders/InvoiceDetails', label: 'Invoice Details', icon: DocumentMagnifyingGlassIcon },
-      { path: '/purchase-orders/QuotationManager', label: 'Quotation Management', icon: DocumentDuplicateIcon },
-      { path: '/purchase-orders/MultiCurrencyPOGenerator', label: 'Multi-Currency PO', icon: CurrencyDollarIcon },
-      { path: '/purchase-orders/AmendmentHistory', label: 'Amendment History', icon: ClockIcon },
+      { path: '/purchase-orders/supplier-form', label: 'Add Supplier', icon: UserPlusIcon },
+      { path: '/purchase-orders/supplier-details', label: 'Supplier Details', icon: DocumentMagnifyingGlassIcon },
+      { path: '/purchase-orders/purchase-orders', label: 'Purchase Orders', icon: DocumentTextIcon },
+      { path: '/purchase-orders/purchase-order-form', label: 'Add Purchase Order', icon: DocumentTextIcon },
+      { path: '/purchase-orders/purchase-order-details', label: 'Purchase Order Details', icon: DocumentMagnifyingGlassIcon },
+      { path: '/purchase-orders/quotations', label: 'Quotations', icon: DocumentDuplicateIcon },
+      { path: '/purchase-orders/quotation-form', label: 'Add Quotation', icon: DocumentDuplicateIcon },
+      { path: '/purchase-orders/quotation-details', label: 'Quotation Details', icon: DocumentMagnifyingGlassIcon },
+      { path: '/purchase-orders/invoices', label: 'Invoices', icon: DocumentCheckIcon },
+      { path: '/purchase-orders/invoice-form', label: 'Add Invoice', icon: DocumentCheckIcon },
+      { path: '/purchase-orders/invoice-details', label: 'Invoice Details', icon: DocumentMagnifyingGlassIcon },
+      { path: '/purchase-orders/quotation-manager', label: 'Quotation Management', icon: DocumentDuplicateIcon },
+      { path: '/purchase-orders/multi-currency-po', label: 'Multi-Currency PO', icon: CurrencyDollarIcon },
+      { path: '/purchase-orders/amendment-history', label: 'Amendment History', icon: ClockIcon },
     ],
     reports: [
       { path: '/reports', label: 'Report Dashboard', icon: DocumentMagnifyingGlassIcon },
@@ -98,13 +108,10 @@ function AdminSideBar() {
 
   return (
     <div className="w-64 h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white p-6 fixed shadow-xl overflow-y-auto">
-      {/* Sidebar Header */}
       <div className="mb-8">
         <h2 className="text-2xl font-bold tracking-wide">Admin Dashboard</h2>
         <p className="text-sm text-gray-400">Manage your modules</p>
       </div>
-
-      {/* Module Sections */}
       {Object.keys(modules).map((module) => (
         <div key={module} className="mb-4">
           <h3
@@ -120,17 +127,64 @@ function AdminSideBar() {
           </h3>
           {activeModule === module && (
             <ul className="mt-2 space-y-1 animate-slide-in">
-              {modules[module].map((item) => (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    className={`flex items-center p-3 rounded-lg hover:bg-gray-600 hover:text-white transition-all duration-200 group ${
-                      location.pathname === item.path ? 'bg-blue-600 text-white' : ''
-                    }`}
-                  >
-                    <item.icon className="w-5 h-5 mr-3 text-gray-400 group-hover:text-white" />
-                    <span>{item.label}</span>
-                  </Link>
+              {modules[module].map((item, index) => (
+                <li key={item.path || `${module}-${index}`}>
+                  {item.subItems ? (
+                    <div>
+                      <div
+                        onClick={() =>
+                          item.label === 'Employees'
+                            ? setIsEmployeeOpen(!isEmployeeOpen)
+                            : setIsAttendanceOpen(!isAttendanceOpen)
+                        }
+                        className={`flex items-center justify-between cursor-pointer p-3 rounded-lg hover:bg-gray-600 transition-all duration-200 ${
+                          (item.label === 'Employees' && isEmployeeOpen) ||
+                          (item.label === 'Attendance' && isAttendanceOpen)
+                            ? 'bg-blue-600'
+                            : ''
+                        }`}
+                      >
+                        <div className="flex items-center">
+                          <item.icon className="w-5 h-5 mr-3 text-gray-400 group-hover:text-white" />
+                          <span>{item.label}</span>
+                        </div>
+                        {(item.label === 'Employees' && isEmployeeOpen) ||
+                        (item.label === 'Attendance' && isAttendanceOpen) ? (
+                          <ChevronUpIcon className="w-4 h-4" />
+                        ) : (
+                          <ChevronDownIcon className="w-4 h-4" />
+                        )}
+                      </div>
+                      {(item.label === 'Employees' && isEmployeeOpen) ||
+                      (item.label === 'Attendance' && isAttendanceOpen) ? (
+                        <ul className="ml-8 mt-1 space-y-1">
+                          {item.subItems.map((subItem) => (
+                            <li key={subItem.path}>
+                              <Link
+                                to={subItem.path}
+                                className={`flex items-center p-3 rounded-lg hover:bg-gray-600 hover:text-white transition-all duration-200 group ${
+                                  location.pathname === subItem.path ? 'bg-blue-600 text-white' : ''
+                                }`}
+                              >
+                                <subItem.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-white" />
+                                <span>{subItem.label}</span>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <Link
+                      to={item.path}
+                      className={`flex items-center p-3 rounded-lg hover:bg-gray-600 hover:text-white transition-all duration-200 group ${
+                        location.pathname === item.path ? 'bg-blue-600 text-white' : ''
+                      }`}
+                    >
+                      <item.icon className="w-5 h-5 mr-3 text-gray-400 group-hover:text-white" />
+                      <span>{item.label}</span>
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

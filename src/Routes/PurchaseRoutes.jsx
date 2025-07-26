@@ -19,21 +19,21 @@ import AmendmentHistory from '../Components/Purchase_Module/features/POAmendment
 function PurchaseRoutes() {
   return (
     <Routes>
-      <Route path="/purchase-orders/suppliers" element={<SupplierList />} />
-      <Route path="/purchase-orders/SupplierForm" element={<SupplierForm />} />
-      <Route path="/purchase-orders/SupplierDetails" element={<SupplierDetails />} />
-      <Route path="/purchase-orders/PurchaseOrderList" element={<PurchaseOrderList />} />
-      <Route path="/purchase-orders/PurchaseOrderForm" element={<PurchaseOrderForm />} />
-      <Route path="/purchase-orders/PurchaseOrderDetails" element={<PurchaseOrderDetails />} />
-      <Route path="/purchase-orders/QuotationList" element={<QuotationList />} />
-      <Route path="/purchase-orders/QuotationForm" element={<QuotationForm />} />
-      <Route path="/purchase-orders/QuotationDetails" element={<QuotationDetails />} />
-      <Route path="/purchase-orders/InvoiceList" element={<InvoiceList />} />
-      <Route path="/purchase-orders/InvoiceForm" element={<InvoiceForm />} />
-      <Route path="/purchase-orders/InvoiceDetails" element={<InvoiceDetails />} />
-      <Route path="/purchase-orders/QuotationManager" element={<QuotationManager />} />
-      <Route path="/purchase-orders/MultiCurrencyPOGenerator" element={<MultiCurrencyPOGenerator />} />
-      <Route path="/purchase-orders/AmendmentHistory" element={<AmendmentHistory />} />
+      <Route path="/suppliers" element={<SupplierList />} />
+      <Route path="/supplier-form" element={<SupplierForm />} />
+      <Route path="/supplier-details" element={<SupplierDetails />} />
+      <Route path="/purchase-orders" element={<PurchaseOrderList />} />
+      <Route path="/purchase-order-form" element={<PurchaseOrderForm />} />
+      <Route path="/purchase-order-details" element={<PurchaseOrderDetails />} />
+      <Route path="/quotations" element={<QuotationList />} />
+      <Route path="/quotation-form" element={<QuotationForm />} />
+      <Route path="/quotation-details" element={<QuotationDetails />} />
+      <Route path="/invoices" element={<InvoiceList />} />
+      <Route path="/invoice-form" element={<InvoiceForm />} />
+      <Route path="/invoice-details" element={<InvoiceDetails />} />
+      <Route path="/quotation-manager" element={<QuotationManager />} />
+      <Route path="/multi-currency-po" element={<MultiCurrencyPOGenerator />} />
+      <Route path="/amendment-history" element={<AmendmentHistory />} />
     </Routes>
   );
 }
