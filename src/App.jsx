@@ -57,14 +57,47 @@
 // export default App;
 
 
+// import React from "react";
+// import { BrowserRouter as Router } from "react-router-dom";
+// import HrmRoutes from "../src/Routes/HrmRoutes";
+// import HrmLayout from "./Layout/HrmLayout";
+
+// const App = () => (
+//   <Router>
+//     <HrmLayout  />
+//   </Router>
+// );
+
+// export default App;
+
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import HrmRoutes from "../src/Routes/HrmRoutes";
-import HrmLayout from "./Layout/HrmLayout";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AdminSideBar from "./Components/Admin_Panel/AdminSideBar";
+import AdminNavBar from "./Components/Admin_Panel/AdminNavBar";
+import AdminDashBoard from "./Components/Admin_Panel/AdminDashBoard";
+import CrmRoutes from "./Routes/CrmRoutes";
+import HrmRoutes from "./Routes/HrmRoutes";
+import InventoryRoutes from "./Routes/InventoryRoutes";
+import PurchaseRoutes from "./Routes/PurchaseRoutes";
+import ReportsRoutes from "./Routes/ReportsRoutes";
 
 const App = () => (
   <Router>
-    <HrmLayout  />
+    <div className="flex">
+      <AdminSideBar />
+      <div className="ml-64 flex-1 p-6">
+        <AdminNavBar />
+        <Routes>
+          <Route path="/crm/*" element={<CrmRoutes />} />
+          <Route path="/hrm/*" element={<HrmRoutes />} />
+          <Route path="/inventory/*" element={<InventoryRoutes />} />
+          <Route path="/purchase-orders/*" element={<PurchaseRoutes />} />
+          <Route path="/reports/*" element={<ReportsRoutes />} />
+          <Route path="/" element={<AdminDashBoard />} />
+          <Route path="*" element={<div className="text-center text-red-500">404 - Page Not Found</div>} />
+        </Routes>
+      </div>
+    </div>
   </Router>
 );
 
