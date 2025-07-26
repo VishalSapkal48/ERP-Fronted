@@ -8,17 +8,12 @@ import {
 
 function AdminNavBar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [currentTime, setCurrentTime] = useState(new Date());
+
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
   // Update time every second
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+
 
   // Close dropdown if clicked outside
   useEffect(() => {
@@ -37,26 +32,6 @@ function AdminNavBar() {
     navigate('/login');
   };
 
-  const formatTime = (date) => {
-    const options = {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: true,
-      timeZone: 'Asia/Kolkata',
-    };
-    return date.toLocaleString('en-US', options) + ' IST';
-  };
-
-  const formatDate = (date) => {
-    const options = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    };
-    return date.toLocaleString('en-US', options);
-  };
 
   return (
     <nav className="bg-blue-800 text-white p-4 shadow-lg fixed w-[83%] top-0 left-64 z-50">
