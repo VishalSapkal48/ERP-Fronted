@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import hrmApi from '../../ApiCalling/Hrm_Api';
 import * as XLSX from 'xlsx';
 
@@ -11,8 +11,8 @@ const Attendance = () => {
   const [departments, setDepartments] = useState(['All']);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [editingId, setEditingId] = useState(null);
-  const [editForm, setEditForm] = useState({ checkIn: '', checkOut: '', status: 'present', workHours: '' });
+  const [locationCard, setLocationCard] = useState({ show: false, type: '', data: null, position: { x: 0, y: 0 } });
+  const tableRef = useRef(null);
 
   useEffect(() => {
     if (new Date(endDate) < new Date(startDate)) {
@@ -38,6 +38,16 @@ const Attendance = () => {
       })
       .finally(() => setIsLoading(false));
   }, [startDate, endDate]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (locationCard.show && tableRef.current && !tableRef.current.contains(event.target)) {
+        setLocationCard({ show: false, type: '', data: null, position: { x: 0, y: 0 } });
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [locationCard.show]);
 
   const filteredStaff = attendanceData.filter((staff) => {
     const matchesSearch =
@@ -71,39 +81,6 @@ const Attendance = () => {
     }
   };
 
-  const handleEdit = (staff) => {
-    setEditingId(staff._id);
-    setEditForm({
-      checkIn: staff.checkIn || '',
-      checkOut: staff.checkOut || '',
-      status: staff.status || 'present',
-      workHours: staff.workHours || '',
-    });
-  };
-
-  const handleUpdate = async (id) => {
-    try {
-      const updatedData = { ...editForm };
-      if (updatedData.status !== 'present') {
-        updatedData.checkIn = undefined;
-        updatedData.checkOut = undefined;
-        updatedData.workHours = undefined;
-      } else if (updatedData.checkIn && updatedData.checkOut) {
-        const checkInTime = new Date(`1970-01-01T${updatedData.checkIn}:00Z`);
-        const checkOutTime = new Date(`1970-01-01T${updatedData.checkOut}:00Z`);
-        updatedData.workHours = ((checkOutTime - checkInTime) / (1000 * 60 * 60)).toFixed(2);
-      }
-      await hrmApi.updateAttendance(id, updatedData);
-      setAttendanceData((prev) =>
-        prev.map((item) => (item._id === id ? { ...item, ...updatedData } : item))
-      );
-      setEditingId(null);
-      setEditForm({ checkIn: '', checkOut: '', status: 'present', workHours: '' });
-    } catch (error) {
-      setError(error.message || 'Failed to update attendance');
-    }
-  };
-
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this attendance record?')) {
       try {
@@ -116,7 +93,7 @@ const Attendance = () => {
   };
 
   const handleExcelExport = () => {
-    const headers = ['Name', 'Department', 'jobTitle', 'Date', 'Check In', 'Check Out', 'Work Hours', 'Status'];
+    const headers = ['Name', 'Department', 'jobTitle', 'Date', 'Check In', 'Check Out', 'Work Hours', 'Status', 'Check In Location', 'Check Out Location'];
     const data = filteredStaff.map((staff) => [
       staff.employeeId?.name || 'Unknown',
       staff.employeeId?.department || 'N/A',
@@ -126,11 +103,27 @@ const Attendance = () => {
       staff.checkOut || 'N/A',
       staff.workHours || 'N/A',
       staff.status || 'N/A',
+      staff.checkInLocation ? JSON.stringify(staff.checkInLocation) : 'N/A',
+      staff.checkOutLocation ? JSON.stringify(staff.checkOutLocation) : 'N/A',
     ]);
     const ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Attendance');
     XLSX.writeFile(wb, `attendance_${startDate}_to_${endDate}.xlsx`);
+  };
+
+  const handleLocationClick = (e, type, locationData) => {
+    const rect = e.target.getBoundingClientRect();
+    setLocationCard({
+      show: true,
+      type,
+      data: locationData || { latitude: 'N/A', longitude: 'N/A', address: 'N/A' },
+      position: { x: rect.left, y: rect.bottom + window.scrollY },
+    });
+  };
+
+  const closeLocationCard = () => {
+    setLocationCard({ show: false, type: '', data: null, position: { x: 0, y: 0 } });
   };
 
   return (
@@ -227,7 +220,7 @@ const Attendance = () => {
           </div>
         </div>
 
-        <div className="overflow-x-auto bg-white rounded-lg shadow">
+        <div className="overflow-x-auto bg-white rounded-lg shadow relative" ref={tableRef}>
           {isLoading ? (
             <div className="p-4 text-center text-gray-600">Loading...</div>
           ) : error ? (
@@ -273,92 +266,79 @@ const Attendance = () => {
                       {staff.date ? new Date(staff.date).toLocaleDateString() : 'N/A'}
                     </td>
                     <td className="px-4 py-3 text-sm text-center">
-                      {editingId === staff._id ? (
-                        <input
-                          type="time"
-                          value={editForm.checkIn}
-                          onChange={(e) => setEditForm({ ...editForm, checkIn: e.target.value })}
-                          className="px-2 py-1 border rounded-md text-sm text-center"
-                          disabled={editForm.status !== 'present'}
-                        />
+                      {staff.checkIn ? (
+                        <span
+                          className="cursor-pointer text-blue-600 hover:underline"
+                          onClick={(e) => handleLocationClick(e, 'Check In', staff.checkInLocation)}
+                        >
+                          {staff.checkIn}
+                        </span>
                       ) : (
-                        staff.checkIn || 'N/A'
+                        'N/A'
                       )}
                     </td>
                     <td className="px-4 py-3 text-sm text-center">
-                      {editingId === staff._id ? (
-                        <input
-                          type="time"
-                          value={editForm.checkOut}
-                          onChange={(e) => setEditForm({ ...editForm, checkOut: e.target.value })}
-                          className="px-2 py-1 border rounded-md text-sm text-center"
-                          disabled={editForm.status !== 'present'}
-                        />
+                      {staff.checkOut ? (
+                        <span
+                          className="cursor-pointer text-blue-600 hover:underline"
+                          onClick={(e) => handleLocationClick(e, 'Check Out', staff.checkOutLocation)}
+                        >
+                          {staff.checkOut}
+                        </span>
                       ) : (
-                        staff.checkOut || 'N/A'
+                        'N/A'
                       )}
                     </td>
                     <td className="px-4 py-3 text-sm text-center hidden md:table-cell">
-                      {editingId === staff._id ? editForm.workHours || 'N/A' : staff.workHours || 'N/A'}
+                      {staff.workHours || 'N/A'}
                     </td>
                     <td className="px-4 py-3 text-center">
-                      {editingId === staff._id ? (
-                        <select
-                          value={editForm.status}
-                          onChange={(e) => setEditForm({ ...editForm, status: e.target.value })}
-                          className="px-2 py-1 border rounded-md text-sm text-center"
-                        >
-                          <option value="present">Present</option>
-                          <option value="absent">Absent</option>
-                          <option value="leave">Leave</option>
-                        </select>
-                      ) : (
-                        <span
-                          className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                            staff.status
-                          )}`}
-                        >
-                          {staff.status ? staff.status.charAt(0).toUpperCase() + staff.status.slice(1) : 'N/A'}
-                        </span>
-                      )}
+                      <span
+                        className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                          staff.status
+                        )}`}
+                      >
+                        {staff.status ? staff.status.charAt(0).toUpperCase() + staff.status.slice(1) : 'N/A'}
+                      </span>
                     </td>
                     <td className="px-4 py-3 flex gap-2 justify-center">
-                      {editingId === staff._id ? (
-                        <>
-                          <button
-                            onClick={() => handleUpdate(staff._id)}
-                            className="bg-blue-600 text-white px-2 py-1 rounded-md text-xs hover:bg-blue-700"
-                          >
-                            Save
-                          </button>
-                          <button
-                            onClick={() => setEditingId(null)}
-                            className="bg-gray-600 text-white px-2 py-1 rounded-md text-xs hover:bg-gray-600"
-                          >
-                            Cancel
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          {/* <button
-                            onClick={() => handleEdit(staff)}
-                            className="bg-blue-600 text-white px-2 py-1 rounded-md text-xs hover:bg-blue-700"
-                          >
-                            Edit
-                          </button> */}
-                          <button
-                            onClick={() => handleDelete(staff._id)}
-                            className="bg-red-600 text-white px-2 py-1 rounded-md text-xs hover:bg-red-800"
-                          >
-                            Delete
-                          </button>
-                        </>
-                      )}
+                      <button
+                        onClick={() => handleDelete(staff._id)}
+                        className="bg-red-600 text-white px-2 py-1 rounded-md text-xs hover:bg-red-800"
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          )}
+
+          {locationCard.show && (
+            <div
+              className="fixed bg-white p-4 rounded-lg shadow-lg border border-gray-200 z-50 max-w-sm"
+              style={{ top: locationCard.position.y, left: locationCard.position.x }}
+            >
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-lg font-semibold">{locationCard.type} Location</h3>
+                <button
+                  onClick={closeLocationCard}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+              </div>
+              <p className="text-sm text-gray-600">
+                <strong>Address:</strong> {locationCard.data?.address || 'N/A'}
+              </p>
+              <p className="text-sm text-gray-600">
+                <strong>Latitude:</strong> {locationCard.data?.latitude || 'N/A'}
+              </p>
+              <p className="text-sm text-gray-600">
+                <strong>Longitude:</strong> {locationCard.data?.longitude || 'N/A'}
+              </p>
+            </div>
           )}
         </div>
       </div>

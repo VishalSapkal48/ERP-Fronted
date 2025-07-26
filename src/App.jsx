@@ -5,27 +5,27 @@
 // import InventoryLayout from "./Layout/InventoryLayout";
 // import HrmRoutes from "./Routes/HrmRoutes";
 
-// // const ProtectedRoute = ({ children, allowedRole, currentRole }) => {
-// //   if (!currentRole || currentRole !== allowedRole) {
-// //     return <Navigate to="/" replace />;
-// //   }
-// //   return children;
-// // };
+// const ProtectedRoute = ({ children, allowedRole, currentRole }) => {
+//   if (!currentRole || currentRole !== allowedRole) {
+//     return <Navigate to="/" replace />;
+//   }
+//   return children;
+// };
 
 // const App = () => {
-//   // const [role, setRole] = useState(() => localStorage.getItem("role") || null);
+//   const [role, setRole] = useState(() => localStorage.getItem("role") || null);
 
-//   // useEffect(() => {
-//   //   if (role) {
-//   //     localStorage.setItem("role", role);
-//   //   } else {
-//   //     localStorage.removeItem("role");
-//   //   }
-//   // }, [role]);
+//   useEffect(() => {
+//     if (role) {
+//       localStorage.setItem("role", role);
+//     } else {
+//       localStorage.removeItem("role");
+//     }
+//   }, [role]);
 
 //   return (
 //     <Router>
-//       {/* <Routes>
+//       <Routes>
 //         <Route
 //           path="/"
 //           element={<Login onLogin={setRole} />}
@@ -47,7 +47,7 @@
 //           }
 //         />
 //         <Route path="*" element={<Navigate to="/" replace />} />
-//       </Routes> */}
+//       </Routes>
 
 //       <HrmRoutes/>
 //     </Router>
@@ -55,6 +55,8 @@
 // };
 
 // export default App;
+
+
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import HrmRoutes from "../src/Routes/HrmRoutes";
