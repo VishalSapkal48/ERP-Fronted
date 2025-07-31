@@ -100,7 +100,7 @@ export default function CALL1() {
               }}
             >
               <img
-                src="/logo.png"
+                src="../../../../../../public/Images/logo.png"
                 alt=""
                 style={{
                   width: "100%",

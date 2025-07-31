@@ -96,7 +96,7 @@ export default function CALL5() {
               }}
             >
               <img
-                src="/logo.png"
+                src="../../../../../../public/Images/logo.png"
                 alt="YNK Logo"
                 style={{
                   width: "100%",
