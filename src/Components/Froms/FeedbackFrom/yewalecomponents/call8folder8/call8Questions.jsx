@@ -1,0 +1,136 @@
+const call8Questions = [
+  {
+    id: 1,
+    mr: "तक्रार आयडी प्रविष्ट करा",
+    en: "Enter Complaint ID",
+    type: "text",
+  },
+  {
+    id: 2,
+    mr: "तांत्रिकाचे नाव नियुक्त करा",
+    en: "Assign Technician Name",
+    type: "text",
+  },
+  {
+    id: 3,
+    mr: "आउटलेटचे नाव प्रविष्ट करा",
+    en: "Enter Outlet Name",
+    type: "text",
+  },
+  {
+    id: 4,
+    mr: "मालकाचा संपर्क क्रमांक प्रविष्ट करा",
+    en: "Enter Owner's Contact Number",
+    type: "text",
+  },
+  {
+    id: 5,
+    mr: "भेटीचा दिनांक प्रविष्ट करा",
+    en: "Enter Visit Date",
+    type: "text",
+  },
+  {
+    id: 6,
+    mr: "स्टीमरमध्ये समस्या आहे का?",
+    en: "Is there an issue with the Steamer?",
+    type: "yesno",
+  },
+  {
+    id: 7,
+    mr: "बॉयलरमध्ये समस्या आहे का?",
+    en: "Is there an issue with the Boiler?",
+    type: "yesno",
+  },
+  {
+    id: 8,
+    mr: "कॉफी मशीनमध्ये समस्या आहे का?",
+    en: "Is there an issue with the Coffee Machine?",
+    type: "yesno",
+  },
+  {
+    id: 9,
+    mr: "गॅस बर्नर भट्टीमध्ये समस्या आहे का?",
+    en: "Is there an issue with the Gas Burner Bhatti?",
+    type: "yesno",
+  },
+  {
+    id: 10,
+    mr: "अकासा/थॉमसन फ्रायरमध्ये समस्या आहे का?",
+    en: "Is there an issue with the Akasa/Thomson Fryer?",
+    type: "yesno",
+  },
+  {
+    id: 11,
+    mr: "पॉस बिलिंग मशीनमध्ये समस्या आहे का?",
+    en: "Is there an issue with the POS Billing Machine?",
+    type: "yesno",
+  },
+  {
+    id: 12,
+    mr: "सॉफ्टवेअर आणि थर्मल प्रिंटरमध्ये समस्या आहे का?",
+    en: "Is there an issue with the Software and Thermal Printer?",
+    type: "yesno",
+  },
+  {
+    id: 13,
+    mr: "हॉट पॅन विथ बाऊलमध्ये समस्या आहे का?",
+    en: "Is there an issue with the Hot Pan with Bowl?",
+    type: "yesno",
+  },
+  {
+    id: 14,
+    mr: "लेटर बोर्ड, साइनेज बोर्डमध्ये समस्या आहे का?",
+    en: "Is there an issue with the Letter Board or Signage Board?",
+    type: "yesno",
+  },
+  {
+    id: 15,
+    mr: "मिक्सरमध्ये समस्या आहे का?",
+    en: "Is there an issue with the Mixer?",
+    type: "yesno",
+  },
+  {
+    id: 16,
+    mr: "फ्रिजमध्ये समस्या आहे का?",
+    en: "Is there an issue with the Fridge?",
+    type: "yesno",
+  },
+  {
+    id: 17,
+    mr: "जर काही समस्या असेल, तर काल तांत्रिक आला होता — समस्या सुटली आहे का?",
+    en: "If there was an issue, the technician came yesterday — has the issue been resolved?",
+    type: "yesno",
+  },
+  {
+    id: 18,
+    mr: "चाचणी आणि तपासणी झाली आहे का? मशीन व्यवस्थित काम करत आहे का?",
+    en: "Has the testing and checking been done? Is the machine working fine?",
+    type: "yesno",
+  },
+  {
+    id: 19,
+    mr: "जर काही समस्या असेल, तर 9767893000 वर कॉल करा.",
+    en: "If there is any issue, call on 9767893000.",
+    type: "info",
+  },
+  {
+    id: 20,
+    mr: "आम्ही प्रदान केलेल्या ग्राहक सेवेबद्दल तुम्ही समाधानी आहात का?",
+    en: "Are you satisfied with the customer service we provided?",
+    type: "yesno",
+  },
+  {
+    id: 21,
+    mr: "YNK टिमला तुम्ही किती रेटिंग देणार - 3, 4, 5, यापैकी?",
+    en: "What rating will you give to the YNK team - 3, 4, or 5?",
+    type: "rating",
+  },
+  {
+    id: 22,
+    mr: "अतिरिक्त टिप्पण्या/सूचना",
+    en: "Additional comments/suggestions",
+    type: "text",
+  },
+];
+
+export default call8Questions;

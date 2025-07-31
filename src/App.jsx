@@ -71,7 +71,6 @@
 // export default App;
 
 
-
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdminSideBar from "./Components/Admin_Panel/AdminSideBar";
@@ -82,20 +81,22 @@ import HrmRoutes from "./Routes/HrmRoutes";
 import InventoryRoutes from "./Routes/InventoryRoutes";
 import PurchaseRoutes from "./Routes/PurchaseRoutes";
 import ReportsRoutes from "./Routes/ReportsRoutes";
+import FeedbackRoutes from "./Routes/FeedbackRouts"; // Corrected import name
 
 const App = () => (
   <Router>
-    <div className="flex">
+    <div className="flex h-screen">
       <AdminSideBar />
-      <div className="flex-1 p-6">
+      <div className="flex-1 flex flex-col overflow-hidden">
         <AdminNavBar />
-        <div className="pt-16"> {/* Offset for navbar height (~64px) */}
+        <div className="pt-16 flex-1 overflow-y-auto"> {/* Offset for navbar height (~64px) */}
           <Routes>
             <Route path="/crm/*" element={<CrmRoutes />} />
             <Route path="/hrm/*" element={<HrmRoutes />} />
             <Route path="/inventory/*" element={<InventoryRoutes />} />
             <Route path="/purchase-orders/*" element={<PurchaseRoutes />} />
             <Route path="/reports/*" element={<ReportsRoutes />} />
+            <Route path="/feedback/*" element={<FeedbackRoutes />} /> {/* Added Feedback Routes */}
             <Route path="/" element={<AdminDashBoard />} />
             <Route path="*" element={<div className="text-center text-red-500">404 - Page Not Found</div>} />
           </Routes>

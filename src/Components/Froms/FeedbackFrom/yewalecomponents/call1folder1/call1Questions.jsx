@@ -1,0 +1,136 @@
+const call1Questions = [
+  {
+    id: 1,
+    mr: "नमस्कार सर मी YNK ग्रुप मधून बोलत आहे, फीडबॅक साठी कॉल आहे तुमच्याकडे 2 मिनिट वेळ आहे का ?",
+    en: "Hello Sir, I’m calling from YNK group for feedback. Do you have 2 minutes?",
+    type: "yesno",
+  },
+  {
+    id: 2,
+    mr: "सर आपण ----- हा प्रोजेक्ट घेतला त्याबद्दल तुम्हाला पूर्ण माहिती भेटली का ?",
+    en: "Did you receive complete information about the ----- project you undertook?",
+    type: "yesno",
+  },
+  {
+    id: 3,
+    mr: "सर आपल्याला YNK ऑफिस पर्यंत येण्यासाठी काही त्रास झाला का ?",
+    en: "Did you face any difficulties reaching the YNK office?",
+    type: "yesno",
+  },
+  {
+    id: 4,
+    mr: "सर आपल्याला आमच्या इंजिनीयरने सर्वे करताना माहिती व्यवस्थित दिली का ?",
+    en: "Did our engineer give you proper information during the survey?",
+    type: "yesno",
+  },
+  {
+    id: 5,
+    mr: "सर आमच्या ऑफिस मध्ये तुम्हाला रेसिप्शन मॅडमनि चहा, कॉफी, नाश्ता विचारला का ?",
+    en: "Did the receptionist offer you tea, coffee, or snacks at the office?",
+    type: "yesno",
+  },
+  {
+    id: 6,
+    mr: "सर आपल्याला आमच्या ऑफिसमध्ये ज्यांना भेटायच त्या बद्दल रीशप्शन मॅडम यांनी विचारले का ?",
+    en: "Did the receptionist ask you about whom you wanted to meet at the office?",
+    type: "yesno",
+  },
+  {
+    id: 7,
+    mr: "सर आपल्याला आमच्या ऑफिसला खुप वेळ बसावे लागले का ?",
+    en: "Did you have to wait for a long time at the office?",
+    type: "yesno",
+  },
+  {
+    id: 8,
+    mr: "सर आपण ज्यांना भेटायला आले त्यांनी वेळात आपल्या सोबत मीटिंग घेतली का ?",
+    en: "Did the person you came to meet conduct the meeting on time?",
+    type: "yesno",
+  },
+  {
+    id: 9,
+    mr: "सर आपल्याला आमच्या कंपनी मॅनेजर यांनी नमस्कार केला का ?",
+    en: "Did the company manager greet you properly?",
+    type: "yesno",
+  },
+  {
+    id: 10,
+    mr: "सर आपल्याला आमच्या कंपनी मॅनेजर यांनी चहा, नाश्ता या बद्दल विचारले का ?",
+    en: "Did the manager offer you tea or snacks?",
+    type: "yesno",
+  },
+  {
+    id: 11,
+    mr: "सर आपल्याला YNK मॅनेजर यांनी प्रोजेक्ट प्रझेंटेशन दाखवले का ?",
+    en: "Did the YNK manager show you the project presentation?",
+    type: "yesno",
+  },
+  {
+    id: 12,
+    mr: "सर आपल्याला नादब्रम्ह प्रोजेक्ट प्रझेंटेशन पूर्ण समजले का ?",
+    en: "Did you fully understand the Nadbrahma project presentation?",
+    type: "yesno",
+  },
+  {
+    id: 13,
+    mr: "सर आपल्याला अॅग्रीमेंट बद्दल पूर्ण माहिती मॅनेजर यांनी दिली का ?",
+    en: "Did the manager explain the agreement to you properly?",
+    type: "yesno",
+  },
+  {
+    id: 14,
+    mr: "सर आपल्याला शॉप मधील सर्व वस्तु बद्दल माहिती मॅनेजर यांनी दिली का ?",
+    en: "Did the manager explain all shop-related items to you?",
+    type: "yesno",
+  },
+  {
+    id: 15,
+    mr: "सर आपण घेतलेल्या शॉप मधील सर्व कामांची 2D प्लान सिव्हिल टीमने दिली का?",
+    en: "Did the civil team give you the 2D plan of the work done in your shop?",
+    type: "yesno",
+  },
+  {
+    id: 16,
+    mr: "सर आपल्याला मॅनेजर यांनी काही चुकीची माहिती दिली असे वाटत आहे का ?",
+    en: "Do you feel the manager provided any wrong information?",
+    type: "yesno",
+  },
+  {
+    id: 17,
+    mr: "सर आपल्याला आमच्या ऑफिस ला काही त्रास झाला का ?",
+    en: "Did you face any trouble at our office?",
+    type: "yesno",
+  },
+  {
+    id: 18,
+    mr: "सर आपल्याला कोना कडून कमिशन किंवा पेमेंट ची मागणी झाली का ?",
+    en: "Did anyone demand commission or payment from you?",
+    type: "yesno",
+  },
+  {
+    id: 19,
+    mr: "सर आपल्याला ऑफिस मधील कोणाची तक्रार कराची आहे का ?",
+    en: "Do you have any complaints about anyone in the office?",
+    type: "yesno",
+  },
+  {
+    id: 20,
+    mr: "सर माझे सर्व प्रश्न तुम्हाला समजलेत का ?",
+    en: "Did you understand all of my questions?",
+    type: "yesno",
+  },
+  {
+    id: 21,
+    mr: "सर तुम्ही आपले बहुमूल्य वेळ आम्हाला दिला त्या बद्दल आम्ही आपले आभारी आहोत.",
+    en: "Thank you for giving us your valuable time.",
+    type: "info",
+  },
+  {
+    id: 22,
+    mr: "सर तुम्ही मॅनेजर यांना किती रेटिंग देणार - 3, 4, 5, या पैकी ?",
+    en: "How much rating would you give the manager – 3, 4, or 5?",
+    type: "rating",
+  },
+];
+
+export default call1Questions;
