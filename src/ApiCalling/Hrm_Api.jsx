@@ -45,6 +45,9 @@ const hrmApi = {
     }
   },
 
+
+  //------------------------------------------------------------------
+
   // Attendance APIs
   createAttendance: async (attendanceData) => {
     try {
@@ -112,6 +115,8 @@ const hrmApi = {
       throw new Error(error.response?.data?.message || 'Failed to delete event. Please check the server connection.');
     }
   },
+
+  //--------------------------------------------
 
   // Payroll APIs
   getPayrollComponents: async (employeeId) => {

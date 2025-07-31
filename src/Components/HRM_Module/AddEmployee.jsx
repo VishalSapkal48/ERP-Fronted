@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import hrmApi from "../../ApiCalling/Hrm_Api";
 
@@ -26,14 +26,13 @@ const AddEmployee = () => {
     hireDate: "",
     joiningDate: "",
     netSalary: "",
-  
-    hra: "", // New field
-    specialBonus: "", // New field
-    conveyance: "", // New field
-    travelAllowances: "", // New field
-    shiftAllowances: "", // New field
-    overtime: "", // New field
-    taxRate: "", // New field
+    hra: "",
+    specialBonus: "",
+    conveyance: "",
+    travelAllowances: "",
+    shiftAllowances: "",
+    overtime: "",
+    taxRate: "",
     paymentMethod: "",
     employeeType: "",
     bankName: "",
@@ -66,43 +65,40 @@ const AddEmployee = () => {
   const [errors, setErrors] = useState({});
   const [profileImage, setProfileImage] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [dailySerial, setDailySerial] = useState(1); // Track daily serial number
+// Fetch existing employees to determine the next serial number
+  useEffect(() => {
+    const fetchNextSerial = async () => {
+      try {
+        const employees = await hrmApi.getEmployees();
+        const today = new Date().toISOString().split("T")[0];
+        const todayEmployees = employees.filter(emp =>
+          emp.employeeId && emp.employeeId.startsWith(today.slice(2, 10).replace(/-/g, ""))
+        );
+        const maxSerial = todayEmployees.length > 0
+          ? Math.max(...todayEmployees.map(emp => parseInt(emp.employeeId.slice(-2)))) + 1
+          : 1;
+        setDailySerial(maxSerial);
+      } catch (error) {
+        console.error("Failed to fetch employees for serial number:", error);
+        setDailySerial(1); // Fallback to 1 if fetch fails
+      }
+    };
+    fetchNextSerial();
+  }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const numericFields = [
-      "netSalary",
-     
-      "hra",
-      "specialBonus",
-      "conveyance",
-      "travelAllowances",
-      "shiftAllowances",
-      "overtime",
-      "taxRate",
-      "employerContributionPf",
-      "employeeContributionPf",
-      "employerContributionSses",
-      "employeeContributionSses",
-      "employerContributionEobi",
-      "employeeContributionEobi",
-      "employerContributionEsic",
-      "employeeContributionEsic",
-    ];
-    const dateFields = ["dob", "hireDate", "joiningDate", "separationDate", "date"];
+  // Generate Employee ID when dailySerial changes
+  useEffect(() => {
+    const today = new Date();
+    const year = today.getFullYear().toString().slice(-2); // Last two digits
+    const month = (today.getMonth() + 1).toString().padStart(2, "0"); // Month (01-12)
+    const day = today.getDate().toString().padStart(2, "0"); // Day (01-31)
+    const serial = dailySerial.toString().padStart(2, "0"); // Serial number (01, 02, etc.)
+    const employeeId = `${year}${month}${day}${serial}`;
+    setFormData((prev) => ({ ...prev, employeeId }));
+  }, [dailySerial]);
 
-    let newValue = value;
-    if (numericFields.includes(name)) {
-      newValue = value === "" ? "" : Number(value) || "";
-    } else if (dateFields.includes(name)) {
-      newValue = value ? new Date(value).toISOString().split("T")[0] : "";
-    }
-
-    setFormData({ ...formData, [name]: newValue });
-    if (errors[name] || errors.submit) {
-      setErrors({ ...errors, [name]: "", submit: "" });
-    }
-  };
-
+  // Handle image upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -123,10 +119,34 @@ const AddEmployee = () => {
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const numericFields = [
+      "netSalary", "hra", "specialBonus", "conveyance", "travelAllowances",
+      "shiftAllowances", "overtime", "taxRate", "employerContributionPf",
+      "employeeContributionPf", "employerContributionSses",
+      "employeeContributionSses", "employerContributionEobi",
+      "employeeContributionEobi", "employerContributionEsic",
+      "employeeContributionEsic",
+    ];
+    const dateFields = ["dob", "hireDate", "joiningDate", "separationDate", "date"];
+
+    let newValue = value;
+    if (numericFields.includes(name)) {
+      newValue = value === "" ? "" : Number(value) || "";
+    } else if (dateFields.includes(name)) {
+      newValue = value ? new Date(value).toISOString().split("T")[0] : "";
+    }
+
+    setFormData({ ...formData, [name]: newValue });
+    if (errors[name] || errors.submit) {
+      setErrors({ ...errors, [name]: "", submit: "" });
+    }
+  };
+
   const validateForm = () => {
     const newErrors = {};
     if (activeTab === "Employee Info") {
-      if (!formData.employeeId.trim()) newErrors.employeeId = "Employee ID is required";
       if (!formData.name.trim()) newErrors.name = "Name is required";
       if (!formData.department.trim()) newErrors.department = "Department is required";
       if (!formData.jobTitle.trim()) newErrors.jobTitle = "Job Title is required";
@@ -147,7 +167,6 @@ const AddEmployee = () => {
     }
     if (activeTab === "Payroll") {
       if (!formData.netSalary && formData.netSalary !== 0) newErrors.netSalary = "Net Salary is required";
-   
       if (!formData.hra && formData.hra !== 0) newErrors.hra = "HRA is required";
       if (!formData.specialBonus && formData.specialBonus !== 0) newErrors.specialBonus = "Special Bonus is required";
       if (!formData.conveyance && formData.conveyance !== 0) newErrors.conveyance = "Conveyance is required";
@@ -233,22 +252,11 @@ const AddEmployee = () => {
       };
 
       const numericFields = [
-        "netSalary",
-       
-        "hra",
-        "specialBonus",
-        "conveyance",
-        "travelAllowances",
-        "shiftAllowances",
-        "overtime",
-        "taxRate",
-        "employerContributionPf",
-        "employeeContributionPf",
-        "employerContributionSses",
-        "employeeContributionSses",
-        "employerContributionEobi",
-        "employeeContributionEobi",
-        "employerContributionEsic",
+        "netSalary", "hra", "specialBonus", "conveyance", "travelAllowances",
+        "shiftAllowances", "overtime", "taxRate", "employerContributionPf",
+        "employeeContributionPf", "employerContributionSses",
+        "employeeContributionSses", "employerContributionEobi",
+        "employeeContributionEobi", "employerContributionEsic",
         "employeeContributionEsic",
       ];
       const dateFields = ["dob", "hireDate", "joiningDate", "separationDate", "date"];
@@ -277,6 +285,8 @@ const AddEmployee = () => {
       const response = await hrmApi.createEmployee(employeeData);
       console.log("API Response:", response);
       setShowModal(true);
+      // Increment serial number for the next entry
+      setDailySerial((prev) => prev + 1);
     } catch (error) {
       let errorMessage = "Failed to add employee";
       if (error.message.includes("duplicate key")) {
@@ -349,10 +359,9 @@ const AddEmployee = () => {
                     type="text"
                     name="employeeId"
                     value={formData.employeeId}
-                    onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    readOnly
+                    className="mt-1 w-full p-2 border border-gray-300 rounded bg-gray-100"
                   />
-                  {errors.employeeId && <p className="text-red-500 text-sm mt-1">{errors.employeeId}</p>}
                 </div>
                 <div className="col-span-2 sm:col-span-1">
                   <label className="block text-sm font-medium text-gray-700">Name</label>
@@ -580,7 +589,6 @@ const AddEmployee = () => {
                   />
                   {errors.netSalary && <p className="text-red-500 text-sm mt-1">{errors.netSalary}</p>}
                 </div>
-              
                 <div>
                   <label className="block text-sm font-medium text-gray-700">HRA</label>
                   <input

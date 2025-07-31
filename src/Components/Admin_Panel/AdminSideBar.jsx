@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// src/components/AdminSideBar.js
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   ChevronDownIcon,
@@ -14,22 +15,44 @@ import {
   ListBulletIcon,
   PlusIcon,
   CalendarIcon,
+  Bars3Icon,
 } from '@heroicons/react/24/outline';
 
 function AdminSideBar() {
   const [activeModule, setActiveModule] = useState(null);
   const [openSubMenus, setOpenSubMenus] = useState({});
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // For mobile toggle
   const location = useLocation();
 
-  const toggleModule = (module) => {
-    setActiveModule(activeModule === module ? null : module);
-  };
+  // Load submenu state from localStorage
+  useEffect(() => {
+    const savedSubMenus = localStorage.getItem('openSubMenus');
+    if (savedSubMenus) {
+      setOpenSubMenus(JSON.parse(savedSubMenus));
+    }
+  }, []);
 
-  const toggleSubMenu = (label) => {
+  // Save submenu state to localStorage
+  useEffect(() => {
+    localStorage.setItem('openSubMenus', JSON.stringify(openSubMenus));
+  }, [openSubMenus]);
+
+  const toggleModule = useCallback((module) => {
+    setActiveModule((prev) => (prev === module ? null : module));
+  }, []);
+
+  const toggleSubMenu = useCallback((label) => {
     setOpenSubMenus((prev) => ({ ...prev, [label]: !prev[label] }));
-  };
+  }, []);
 
-  const isActivePath = (path) => location.pathname === path;
+  const isActivePath = useCallback(
+    (path) => location.pathname === path || location.pathname.startsWith(path + '/'),
+    [location.pathname]
+  );
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev);
+  };
 
   const modules = {
     crm: [
@@ -47,6 +70,7 @@ function AdminSideBar() {
       { path: '/crm/expenses', label: 'Expenses', icon: CurrencyDollarIcon },
     ],
     hrm: [
+      { path: '/hrm', label: 'HRM Dashboard', icon: UserPlusIcon },
       {
         label: 'Employees',
         icon: UserGroupIcon,
@@ -131,85 +155,109 @@ function AdminSideBar() {
   };
 
   return (
-    <aside className="w-64 h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white p-6 fixed overflow-y-auto shadow-xl z-40">
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold">Admin Dashboard</h2>
-        <p className="text-sm text-gray-400">Manage your modules</p>
-      </div>
+    <>
+      {/* Mobile Toggle Button */}
+      <button
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-gray-900 text-white rounded-md"
+        onClick={toggleSidebar}
+        aria-label={isSidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+      >
+        <Bars3Icon className="w-6 h-6" />
+      </button>
 
-      {Object.entries(modules).map(([moduleKey, items]) => (
-        <div key={moduleKey} className="mb-4">
-          <button
-            onClick={() => toggleModule(moduleKey)}
-            className="flex items-center justify-between w-full p-3 font-semibold text-lg rounded-lg hover:bg-gray-700 transition-all"
-          >
-            <span className="uppercase">{moduleKey}</span>
-            {activeModule === moduleKey ? (
-              <ChevronUpIcon className="w-5 h-5" />
-            ) : (
-              <ChevronDownIcon className="w-5 h-5" />
-            )}
-          </button>
-
-          {activeModule === moduleKey && (
-            <ul className="mt-2 space-y-1">
-              {items.map((item) => {
-                const isSubOpen = openSubMenus[item.label];
-                return item.subItems ? (
-                  <li key={item.label}>
-                    <div
-                      onClick={() => toggleSubMenu(item.label)}
-                      className={`flex items-center justify-between p-3 rounded-lg cursor-pointer hover:bg-gray-600 transition-all ${
-                        isSubOpen ? 'bg-blue-600' : ''
-                      }`}
-                    >
-                      <div className="flex items-center">
-                        <item.icon className="w-5 h-5 mr-3 text-gray-400" />
-                        {item.label}
-                      </div>
-                      {isSubOpen ? (
-                        <ChevronUpIcon className="w-4 h-4" />
-                      ) : (
-                        <ChevronDownIcon className="w-4 h-4" />
-                      )}
-                    </div>
-                    {isSubOpen && (
-                      <ul className="ml-6 mt-1 space-y-1">
-                        {item.subItems.map((subItem) => (
-                          <li key={subItem.path}>
-                            <Link
-                              to={subItem.path}
-                              className={`flex items-center p-2 rounded-lg group hover:bg-gray-600 transition ${
-                                isActivePath(subItem.path) ? 'bg-blue-600 text-white' : ''
-                              }`}
-                            >
-                              <subItem.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-white" />
-                              {subItem.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ) : (
-                  <li key={item.path}>
-                    <Link
-                      to={item.path}
-                      className={`flex items-center p-3 rounded-lg hover:bg-gray-600 transition group ${
-                        isActivePath(item.path) ? 'bg-blue-600 text-white' : ''
-                      }`}
-                    >
-                      <item.icon className="w-5 h-5 mr-3 text-gray-400 group-hover:text-white" />
-                      {item.label}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
+      {/* Sidebar */}
+      <aside
+        className={`w-64 h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white p-6 fixed overflow-y-auto shadow-xl z-40 transform transition-transform lg:translate-x-0 ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold">Admin Dashboard</h2>
+          <p className="text-sm text-gray-400">Manage your modules</p>
         </div>
-      ))}
-    </aside>
+
+        {Object.entries(modules).map(([moduleKey, items]) => (
+          <div key={moduleKey} className="mb-4">
+            <button
+              onClick={() => toggleModule(moduleKey)}
+              className="flex items-center justify-between w-full p-3 font-semibold text-lg rounded-lg hover:bg-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-expanded={activeModule === moduleKey}
+              aria-controls={`module-${moduleKey}`}
+            >
+              <span className="uppercase">{moduleKey}</span>
+              {activeModule === moduleKey ? (
+                <ChevronUpIcon className="w-5 h-5" />
+              ) : (
+                <ChevronDownIcon className="w-5 h-5" />
+              )}
+            </button>
+
+            {activeModule === moduleKey && (
+              <ul id={`module-${moduleKey}`} className="mt-2 space-y-1">
+                {items.map((item) => {
+                  const isSubOpen = openSubMenus[item.label];
+                  return item.subItems ? (
+                    <li key={item.label}>
+                      <div
+                        onClick={() => toggleSubMenu(item.label)}
+                        className={`flex items-center justify-between p-3 rounded-lg cursor-pointer hover:bg-gray-600 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                          isSubOpen ? 'bg-blue-600' : ''
+                        }`}
+                        tabIndex={0}
+                        onKeyDown={(e) => e.key === 'Enter' && toggleSubMenu(item.label)}
+                        aria-expanded={isSubOpen}
+                        aria-controls={`submenu-${item.label}`}
+                      >
+                        <div className="flex items-center">
+                          <item.icon className="w-5 h-5 mr-3 text-gray-400" />
+                          {item.label}
+                        </div>
+                        {isSubOpen ? (
+                          <ChevronUpIcon className="w-4 h-4" />
+                        ) : (
+                          <ChevronDownIcon className="w-4 h-4" />
+                        )}
+                      </div>
+                      {isSubOpen && (
+                        <ul id={`submenu-${item.label}`} className="ml-6 mt-1 space-y-1">
+                          {item.subItems.map((subItem) => (
+                            <li key={subItem.path}>
+                              <Link
+                                to={subItem.path}
+                                className={`flex items-center p-2 rounded-lg group hover:bg-gray-600 transition ${
+                                  isActivePath(subItem.path) ? 'bg-blue-600 text-white' : ''
+                                }`}
+                                onClick={() => setIsSidebarOpen(false)} // Close sidebar on mobile
+                              >
+                                <subItem.icon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-white" />
+                                {subItem.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ) : (
+                    <li key={item.path}>
+                      <Link
+                        to={item.path}
+                        className={`flex items-center p-3 rounded-lg hover:bg-gray-600 transition group ${
+                          isActivePath(item.path) ? 'bg-blue-600 text-white' : ''
+                        }`}
+                        onClick={() => setIsSidebarOpen(false)} // Close sidebar on mobile
+                      >
+                        <item.icon className="w-5 h-5 mr-3 text-gray-400 group-hover:text-white" />
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        ))}
+      </aside>
+    </>
   );
 }
 

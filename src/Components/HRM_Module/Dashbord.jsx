@@ -26,6 +26,16 @@ const Dashboard = () => {
   });
   const [taskError, setTaskError] = useState(null);
   const [editingTask, setEditingTask] = useState(null);
+  const [attendance, setAttendance] = useState({
+    checkIn: "",
+    checkOut: "",
+    checkInLocation: null,
+    checkOutLocation: null,
+    date: new Date().toISOString().split("T")[0],
+    status: "present",
+  });
+  const [attendanceMessage, setAttendanceMessage] = useState("");
+  const [attendanceError, setAttendanceError] = useState(null);
 
   // Request browser notification permission on component mount
   useEffect(() => {
@@ -92,7 +102,6 @@ const Dashboard = () => {
 
       setNotifications(newNotifications);
 
-      // Trigger browser notifications if permission is granted
       if (Notification.permission === "granted") {
         newNotifications.forEach(notification => {
           new Notification("HRM Dashboard", {
@@ -275,6 +284,64 @@ const Dashboard = () => {
     }
   };
 
+  // Handle attendance check-in/check-out
+  const handleAttendanceAction = async (type) => {
+    if (loadingAction) return;
+
+    setLoadingAction(true);
+    setAttendanceError(null);
+    setAttendanceMessage("");
+
+    const now = new Date();
+    const time = now.toTimeString().slice(0, 5); // HH:MM format
+    const date = now.toISOString().split("T")[0];
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const location = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+
+          let updatedAttendance = { ...attendance, date };
+          if (type === "checkIn") {
+            updatedAttendance = { ...updatedAttendance, checkIn: time, checkInLocation: location };
+          } else if (type === "checkOut") {
+            if (!attendance.checkIn) {
+              setAttendanceError("Please check in before checking out.");
+              setLoadingAction(false);
+              return;
+            }
+            updatedAttendance = { ...updatedAttendance, checkOut: time, checkOutLocation: location };
+          }
+
+          try {
+            await hrmApi.createAttendance({
+              ...updatedAttendance,
+              employeeId: "currentUserId", // Replace with actual user ID from auth
+              status: "present",
+            });
+            setAttendance(updatedAttendance);
+            setAttendanceMessage(`${type === "checkIn" ? "Checked in" : "Checked out"} successfully at ${time}`);
+          } catch (error) {
+            console.error(`Error ${type}:`, error.response?.data || error);
+            setAttendanceError(`Failed to ${type}. Please try again.`);
+          } finally {
+            setLoadingAction(false);
+          }
+        },
+        (error) => {
+          setAttendanceError(`Geolocation error: ${error.message}`);
+          setLoadingAction(false);
+        }
+      );
+    } else {
+      setAttendanceError("Geolocation is not supported by this browser.");
+      setLoadingAction(false);
+    }
+  };
+
   return (
     <div className="ml-64 p-6 bg-gray-100 min-h-screen">
       <h2 className="text-3xl font-bold mb-8 text-gray-800">HRM Dashboard</h2>
@@ -299,6 +366,42 @@ const Dashboard = () => {
           ))}
         </div>
       )}
+
+      {/* Attendance Section */}
+      <div className="mb-8 bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+        <h3 className="text-xl font-semibold mb-4 text-gray-700 flex items-center gap-2">
+          <Calendar className="w-6 h-6 text-blue-600" />
+          Attendance
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <button
+            onClick={() => handleAttendanceAction("checkIn")}
+            disabled={loadingAction || attendance.checkIn}
+            className={`w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition font-medium flex items-center justify-center gap-2 ${
+              loadingAction || attendance.checkIn ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            <CheckCircle className="w-5 h-5" />
+            {loadingAction ? "Checking In..." : "Check In"}
+          </button>
+          <button
+            onClick={() => handleAttendanceAction("checkOut")}
+            disabled={loadingAction || !attendance.checkIn || attendance.checkOut}
+            className={`w-full bg-red-600 text-white p-3 rounded-lg hover:bg-red-700 transition font-medium flex items-center justify-center gap-2 ${
+              loadingAction || !attendance.checkIn || attendance.checkOut ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            <XCircle className="w-5 h-5" />
+            {loadingAction ? "Checking Out..." : "Check Out"}
+          </button>
+        </div>
+        {attendanceMessage && (
+          <div className="mt-4 bg-green-100 text-green-800 px-4 py-3 rounded-lg">{attendanceMessage}</div>
+        )}
+        {attendanceError && (
+          <div className="mt-4 bg-red-100 text-red-600 px-4 py-3 rounded-lg">{attendanceError}</div>
+        )}
+      </div>
 
       {/* Task Sections: Add New Task | Priority & Work Tasks */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
