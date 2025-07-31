@@ -1,17 +1,16 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Menu } from 'lucide-react'; // Make sure lucide-react is installed
+import React from "react";
+import { Link } from "react-router-dom";
+import { Menu } from "lucide-react";
 
 const Navbar = ({ toggleSidebar }) => {
-  const currentDateTime = new Date().toLocaleString('en-IN', {
-    timeZone: 'Asia/Kolkata',
+  const currentDateTime = new Date().toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
     hour12: true,
   });
 
   return (
-    <nav className="bg-white shadow-md border-b border-gray-200 px-4 py-3">
+    <nav className="bg-white shadow-md border-b border-gray-200 px-4 py-3 fixed w-full z-10">
       <div className="flex items-center justify-between">
-        {/* Left: Toggle and Brand */}
         <div className="flex items-center space-x-4">
           <button
             onClick={toggleSidebar}
@@ -23,10 +22,6 @@ const Navbar = ({ toggleSidebar }) => {
             Ynk-ERP
           </Link>
         </div>
-
-      
-
-        {/* Right: Date/Time and Avatar */}
         <div className="flex items-center space-x-4">
           <span className="text-sm text-gray-500 hidden sm:block">
             {currentDateTime}
