@@ -73,7 +73,7 @@ function QuotationForm({ onSave, onCancel, initialData = null }) {
   };
 
   return (
-    <div className="ml-64 p-6 bg-gray-50 min-h-screen">
+    <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">{initialData ? 'Edit Quotation' : 'Create Quotation'}</h1>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

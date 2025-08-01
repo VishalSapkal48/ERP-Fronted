@@ -60,3 +60,4 @@ const HrmRoutes = () => {
 };
 
 export default HrmRoutes;
+

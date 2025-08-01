@@ -1,40 +1,110 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-// Menu items array
-const menuItems = [
-  { path: "/inventory", label: "Dashboard" },
-  { path: "/inventory/stock-management", label: "Stock Management" },
-  { path: "/inventory/price-tax", label: "Price & Tax" },
-  { path: "/inventory/products", label: "Products" },
-  { path: "/inventory/categories", label: "Categories" },
-  { path: "/inventory/customers", label: "Customers" },
-  { path: "/inventory/suppliers", label: "Suppliers" },
-  { path: "/inventory/purchases", label: "Purchases" },
-  { path: "/inventory/invoices", label: "Invoices" },
-  { path: "/inventory/pos", label: "POS" },
-  { path: "/inventory/accounts", label: "Accounts" },
-  { path: "/inventory/reports", label: "Reports" },
-  { path: "/inventory/settings", label: "Settings" },
-  { path: "/logout", label: "Logout" },
-];
+import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
   return (
-    <div className="w-64 bg-gray-900 text-white h-screen overflow p-4">
-      <h2 className="text-2xl font-bold mb-6">Inventory</h2>
-      <ul className="space-y-2">
-        {menuItems.map((item, index) => (
-          <li key={index}>
-            <Link
-              to={item.path}
-              className="block p-2 hover:bg-gray-700 rounded"
-            >
-              {item.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
+    <div className="w-64 bg-white shadow-md">
+      <div className="p-4">
+        <h2 className="text-xl font-bold">Inventory Module</h2>
+      </div>
+      <nav className="mt-4">
+        <NavLink
+          to="/inventory"
+          end
+          className={({ isActive }) =>
+            `block py-2 px-4 ${isActive ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-200'}`
+          }
+        >
+          Dashboard
+        </NavLink>
+        <NavLink
+          to="/inventory/inventory"
+          className={({ isActive }) =>
+            `block py-2 px-4 ${isActive ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-200'}`
+          }
+        >
+          Inventory
+        </NavLink>
+        <NavLink
+          to="/inventory/stock-management"
+          className={({ isActive }) =>
+            `block py-2 px-4 ${isActive ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-200'}`
+          }
+        >
+          Stock Management
+        </NavLink>
+        <NavLink
+          to="/inventory/products"
+          className={({ isActive }) =>
+            `block py-2 px-4 ${isActive ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-200'}`
+          }
+        >
+          Products
+        </NavLink>
+        <NavLink
+          to="/inventory/categories"
+          className={({ isActive }) =>
+            `block py-2 px-4 ${isActive ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-200'}`
+          }
+        >
+          Categories
+        </NavLink>
+        <NavLink
+          to="/inventory/customers"
+          className={({ isActive }) =>
+            `block py-2 px-4 ${isActive ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-200'}`
+          }
+        >
+          Customers
+        </NavLink>
+        <NavLink
+          to="/inventory/suppliers"
+          className={({ isActive }) =>
+            `block py-2 px-4 ${isActive ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-200'}`
+          }
+        >
+          Suppliers
+        </NavLink>
+        <NavLink
+          to="/inventory/purchases"
+          className={({ isActive }) =>
+            `block py-2 px-4 ${isActive ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-200'}`
+          }
+        >
+          Purchases
+        </NavLink>
+        <NavLink
+          to="/inventory/invoices"
+          className={({ isActive }) =>
+            `block py-2 px-4 ${isActive ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-200'}`
+          }
+        >
+          Invoices
+        </NavLink>
+        <NavLink
+          to="/inventory/pos"
+          className={({ isActive }) =>
+            `block py-2 px-4 ${isActive ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-200'}`
+          }
+        >
+          POS
+        </NavLink>
+        <NavLink
+          to="/inventory/accounts"
+          className={({ isActive }) =>
+            `block py-2 px-4 ${isActive ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-200'}`
+          }
+        >
+          Accounts
+        </NavLink>
+        <NavLink
+          to="/inventory/vendor-linkage"
+          className={({ isActive }) =>
+            `block py-2 px-4 ${isActive ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-200'}`
+          }
+        >
+          Vendor Linkage
+        </NavLink>
+      </nav>
     </div>
   );
 };

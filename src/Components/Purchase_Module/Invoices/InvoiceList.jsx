@@ -208,7 +208,7 @@ function InvoiceList() {
   }
 
   return (
-    <div className="ml-64 p-6 bg-gray-50 min-h-screen">
+    <div className="p-6 bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="mb-6">
         <div className="flex justify-between items-center mb-4">

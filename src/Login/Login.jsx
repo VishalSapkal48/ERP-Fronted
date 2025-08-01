@@ -1,29 +1,37 @@
-import { useState } from 'react';
+// src/components/Login.js
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
-  const users = [
-    { username: 'crm_user', password: 'crm123', role: 'crm' },
-    { username: 'inventory_user', password: 'inv123', role: 'inventory' },
-  ];
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const user = users.find(
-      (u) => u.username === username && u.password === password
-    );
+    setIsLoading(true);
+    setError('');
 
-    if (user) {
-      onLogin(user.role);
-      navigate(user.role === 'crm' ? '/crm' : '/inventory');
+    // Demo login credentials
+    const demoUsers = {
+      'crmuser': 'crm',
+      'invuser': 'inventory',
+      'hrmuser': 'hrm',
+      'repuser': 'reports',
+      'adminuser': 'admin',
+      'puruser': 'purchase' // Added for Purchase module
+    };
+
+    const userRole = demoUsers[username.toLowerCase()];
+    if (userRole && password === 'password123') {
+      onLogin(userRole, username);
+      navigate(`/${userRole}`);
     } else {
-      setError('Invalid username or password');
+      setError('Invalid username or password. Try: crmuser, invuser, hrmuser, repuser, adminuser, or puruser with password "password123"');
     }
+    setIsLoading(false);
   };
 
   return (
@@ -40,8 +48,9 @@ const Login = ({ onLogin }) => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full p-2 border rounded"
-              placeholder="Enter username"
+              placeholder="Enter username (e.g., puruser)"
               required
+              disabled={isLoading}
             />
           </div>
           <div className="mb-6">
@@ -54,13 +63,15 @@ const Login = ({ onLogin }) => {
               className="w-full p-2 border rounded"
               placeholder="Enter password"
               required
+              disabled={isLoading}
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:bg-blue-300"
+            disabled={isLoading}
           >
-            Login
+            {isLoading ? 'Logging in...' : 'Login'}
           </button>
         </form>
       </div>
