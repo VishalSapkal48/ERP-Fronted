@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { 
   Search, Filter, Eye, User, ChevronRight, Trash2, Edit, Plus, 
   Mail, Phone, MapPin, Building, Globe, MoreVertical, Download,
-  Users, TrendingUp, DollarSign
+  Users, TrendingUp, DollarSign, X
 } from 'lucide-react';
 
-function SupplierList() {
-  const navigate = (path) => alert(`Navigation to: ${path}`);
-  
+function SupplierManagement() {
   const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,6 +15,26 @@ function SupplierList() {
   const [sortOrder, setSortOrder] = useState('asc');
   const [selectedSuppliers, setSelectedSuppliers] = useState([]);
   const [showActions, setShowActions] = useState({});
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newSupplier, setNewSupplier] = useState({
+    id: '',
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    country: '',
+    website: '',
+    contactPerson: '',
+    businessType: '',
+    paymentTerms: '',
+    totalOrders: 0,
+    totalValue: 0,
+    lastOrderDate: '',
+    status: 'Active',
+    rating: 0
+  });
 
   useEffect(() => {
     const fetchSuppliers = async () => {
@@ -187,15 +205,60 @@ function SupplierList() {
   };
 
   const handleViewDetails = (supplier) => {
-    navigate(`/suppliers/details/${supplier.id}`);
+    alert(`Viewing details for: ${supplier.name}\nID: ${supplier.id}\nContact: ${supplier.contactPerson}\nEmail: ${supplier.email}`);
   };
 
   const handleEditSupplier = (supplier) => {
-    navigate(`/suppliers/edit/${supplier.id}`);
+    alert(`Edit functionality for: ${supplier.name}`);
   };
 
   const handleCreateSupplier = () => {
-    navigate('/suppliers/create');
+    setShowCreateModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowCreateModal(false);
+    setNewSupplier({
+      id: '',
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      city: '',
+      state: '',
+      country: '',
+      website: '',
+      contactPerson: '',
+      businessType: '',
+      paymentTerms: '',
+      totalOrders: 0,
+      totalValue: 0,
+      lastOrderDate: '',
+      status: 'Active',
+      rating: 0
+    });
+  };
+
+  const handleSubmitSupplier = (e) => {
+    e.preventDefault();
+    if (!newSupplier.name || !newSupplier.email || !newSupplier.contactPerson) {
+      alert('Please fill in all required fields (Name, Email, Contact Person).');
+      return;
+    }
+
+    const newId = `SUP${(suppliers.length + 1).toString().padStart(3, '0')}`;
+    const supplierData = {
+      ...newSupplier,
+      id: newId,
+      totalOrders: parseInt(newSupplier.totalOrders) || 0,
+      totalValue: parseFloat(newSupplier.totalValue) || 0,
+      rating: parseFloat(newSupplier.rating) || 0,
+      lastOrderDate: newSupplier.lastOrderDate || new Date().toISOString().split('T')[0]
+    };
+
+    setSuppliers(prev => [...prev, supplierData]);
+    alert('Supplier added successfully!');
+    handleCloseModal();
   };
 
   const handleDeleteSupplier = (supplierId) => {
@@ -239,7 +302,19 @@ function SupplierList() {
   };
 
   const exportSuppliers = () => {
-    alert('Export functionality would download CSV/Excel file');
+    const csvContent = "data:text/csv;charset=utf-8," 
+      + "ID,Name,Email,Phone,Contact Person,City,State,Status,Total Orders,Total Value,Rating\n"
+      + suppliers.map(s => 
+          `${s.id},${s.name},${s.email},${s.phone},${s.contactPerson},${s.city},${s.state},${s.status},${s.totalOrders},${s.totalValue},${s.rating}`
+        ).join("\n");
+    
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "suppliers.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   if (loading) {
@@ -267,10 +342,10 @@ function SupplierList() {
   const totalSuppliers = suppliers.length;
   const activeSuppliers = suppliers.filter(s => s.status === 'Active').length;
   const totalValue = suppliers.reduce((sum, s) => sum + s.totalValue, 0);
-  const avgRating = suppliers.reduce((sum, s) => sum + s.rating, 0) / suppliers.length;
+  const avgRating = suppliers.length > 0 ? suppliers.reduce((sum, s) => sum + s.rating, 0) / suppliers.length : 0;
 
   return (
-    <div className=" min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
@@ -386,7 +461,7 @@ function SupplierList() {
                   <option value="all">All Suppliers</option>
                   <option value="active">Active Only</option>
                   <option value="inactive">Inactive Only</option>
-                  <option value="high-value">High Value ($80K)</option>
+                  <option value="high-value">High Value ($80K+)</option>
                 </select>
               </div>
 
@@ -585,7 +660,7 @@ function SupplierList() {
           )}
         </div>
 
-        {/* Pagination could go here */}
+        {/* Pagination Info */}
         {filteredAndSortedSuppliers.length > 0 && (
           <div className="bg-white rounded-xl shadow-lg p-6 mt-6">
             <div className="flex items-center justify-between">
@@ -600,9 +675,221 @@ function SupplierList() {
             </div>
           </div>
         )}
+
+        {/* Create Supplier Modal */}
+        {showCreateModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 transition-opacity duration-300">
+            <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-3xl w-full max-h-[85vh] overflow-y-auto transform transition-all scale-95">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Create New Supplier</h2>
+                <button
+                  onClick={handleCloseModal}
+                  className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <form onSubmit={handleSubmitSupplier} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Name <span className="text-red-500">*</span></label>
+                    <input
+                      type="text"
+                      value={newSupplier.name}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, name: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Email <span className="text-red-500">*</span></label>
+                    <input
+                      type="email"
+                      value={newSupplier.email}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, email: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Contact Person <span className="text-red-500">*</span></label>
+                    <input
+                      type="text"
+                      value={newSupplier.contactPerson}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, contactPerson: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                    <input
+                      type="text"
+                      value={newSupplier.phone}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, phone: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                      placeholder="+1 (555) 123-4567"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                    <input
+                      type="text"
+                      value={newSupplier.address}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, address: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                      placeholder="123 Business Street"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+                    <input
+                      type="text"
+                      value={newSupplier.city}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, city: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                      placeholder="San Francisco"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
+                    <input
+                      type="text"
+                      value={newSupplier.state}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, state: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                      placeholder="CA"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                    <input
+                      type="text"
+                      value={newSupplier.country}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, country: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                      placeholder="United States"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Website</label>
+                    <input
+                      type="url"
+                      value={newSupplier.website}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, website: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                      placeholder="https://example.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Business Type</label>
+                    <select
+                      value={newSupplier.businessType}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, businessType: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                    >
+                      <option value="">Select Business Type</option>
+                      <option value="Corporation">Corporation</option>
+                      <option value="LLC">LLC</option>
+                      <option value="Partnership">Partnership</option>
+                      <option value="Sole Proprietorship">Sole Proprietorship</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Payment Terms</label>
+                    <select
+                      value={newSupplier.paymentTerms}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, paymentTerms: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                    >
+                      <option value="">Select Payment Terms</option>
+                      <option value="Net 15">Net 15</option>
+                      <option value="Net 30">Net 30</option>
+                      <option value="Net 45">Net 45</option>
+                      <option value="Net 60">Net 60</option>
+                      <option value="Due on Receipt">Due on Receipt</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <select
+                      value={newSupplier.status}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, status: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Total Orders</label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={newSupplier.totalOrders}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, totalOrders: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                      placeholder="0"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Total Value ($)</label>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={newSupplier.totalValue}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, totalValue: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                      placeholder="0.00"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Rating (0-5)</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      min="0"
+                      max="5"
+                      value={newSupplier.rating}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, rating: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                      placeholder="0.0"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Last Order Date</label>
+                    <input
+                      type="date"
+                      value={newSupplier.lastOrderDate}
+                      onChange={(e) => setNewSupplier({ ...newSupplier, lastOrderDate: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
+                  <button
+                    type="button"
+                    onClick={handleCloseModal}
+                    className="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-all duration-300 shadow-sm hover:shadow-md font-medium"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300 shadow-sm hover:shadow-md font-medium"
+                  >
+                    Add Supplier
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-export default SupplierList;
+export default SupplierManagement;

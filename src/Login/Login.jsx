@@ -78,9 +78,8 @@
 // };
 
 // export default Login;
-
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, User, Lock, AlertCircle, CheckCircle, LogIn } from 'lucide-react';
 
 const Login = ({ onLogin = () => {} }) => {
@@ -90,19 +89,16 @@ const Login = ({ onLogin = () => {} }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [focusedField, setFocusedField] = useState('');
-
-  // Mock navigate function
-  const navigate = (path) => {
-    console.log(`Navigating to: ${path}`);
-  };
+  const navigate = useNavigate();
 
   const demoUsers = [
-    { username: 'crmuser', role: 'crm', label: 'CRM User', color: 'bg-blue-500' },
-    { username: 'invuser', role: 'inventory', label: 'Inventory User', color: 'bg-green-500' },
-    { username: 'hrmuser', role: 'hrm', label: 'HRM User', color: 'bg-purple-500' },
-    { username: 'repuser', role: 'reports', label: 'Reports User', color: 'bg-orange-500' },
-    { username: 'adminuser', role: 'admin', label: 'Admin User', color: 'bg-red-500' },
-    { username: 'puruser', role: 'purchase', label: 'Purchase User', color: 'bg-indigo-500' },
+    { username: 'crmuser', role: 'crm', label: 'CRM User', color: 'bg-blue-600' },
+    { username: 'invuser', role: 'inventory', label: 'Inventory User', color: 'bg-green-600' },
+    { username: 'hrmuser', role: 'hrm', label: 'HRM User', color: 'bg-purple-600' },
+    { username: 'repuser', role: 'reports', label: 'Reports User', color: 'bg-orange-600' },
+    { username: 'adminuser', role: 'admin', label: 'Admin User', color: 'bg-red-600' },
+    { username: 'puruser', role: 'purchase', label: 'Purchase User', color: 'bg-indigo-600' },
+    { username: 'frmuser', role: 'froms', label: 'Forms User', color: 'bg-teal-600' }, // Added forms user
   ];
 
   const handleLogin = (e) => {
@@ -134,34 +130,35 @@ const Login = ({ onLogin = () => {} }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
-    
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 animate-pulse"></div>
+      
       <div className="relative w-full max-w-md z-10">
-        {/* Login Card */}
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <LogIn className="w-8 h-8 text-white" />
+        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl p-8 ring-1 ring-purple-500/20">
+          <div className="text-center mb-10">
+            <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-purple-700 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl transform hover:scale-105 transition-transform duration-300">
+              <LogIn className="w-10 h-10 text-white animate-pulse" />
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-            <p className="text-slate-300">Sign in to your account</p>
+            <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 tracking-tight">
+              Welcome Back
+            </h1>
+            <p className="text-slate-300 text-sm mt-2 opacity-80">Securely access your account</p>
           </div>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-xl flex items-start space-x-3">
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start space-x-3 animate-shake">
               <AlertCircle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
               <p className="text-red-300 text-sm">{error}</p>
             </div>
           )}
 
           <form onSubmit={handleLogin} className="space-y-6">
-            {/* Username */}
             <div>
-              <label htmlFor="username" className="text-sm font-medium text-slate-200 block mb-1">
+              <label htmlFor="username" className="text-sm font-medium text-slate-100 block mb-1.5">
                 Username
               </label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+              <div className="relative group">
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-hover:text-blue-400 transition-colors" />
                 <input
                   id="username"
                   type="text"
@@ -171,22 +168,21 @@ const Login = ({ onLogin = () => {} }) => {
                   onBlur={() => setFocusedField('')}
                   disabled={isLoading}
                   placeholder="Enter your username"
-                  className={`w-full pl-12 pr-4 py-3 rounded-xl bg-white/10 border text-white placeholder-slate-400 transition-all duration-200 ${
+                  className={`w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border text-white placeholder-slate-500 transition-all duration-300 ${
                     focusedField === 'username'
-                      ? 'border-blue-500 bg-white/20 shadow-lg'
-                      : 'border-white/20 hover:border-white/30'
-                  }`}
+                      ? 'border-blue-400 bg-white/10 shadow-lg ring-2 ring-blue-400/20'
+                      : 'border-white/10 hover:border-blue-400/30'
+                  } focus:outline-none focus:ring-2 focus:ring-blue-400/30`}
                 />
               </div>
             </div>
 
-            {/* Password */}
             <div>
-              <label htmlFor="password" className="text-sm font-medium text-slate-200 block mb-1">
+              <label htmlFor="password" className="text-sm font-medium text-slate-100 block mb-1.5">
                 Password
               </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+              <div className="relative group">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-hover:text-blue-400 transition-colors" />
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
@@ -196,31 +192,30 @@ const Login = ({ onLogin = () => {} }) => {
                   onBlur={() => setFocusedField('')}
                   disabled={isLoading}
                   placeholder="Enter your password"
-                  className={`w-full pl-12 pr-12 py-3 rounded-xl bg-white/10 border text-white placeholder-slate-400 transition-all duration-200 ${
+                  className={`w-full pl-12 pr-12 py-3.5 rounded-xl bg-white/5 border text-white placeholder-slate-500 transition-all duration-300 ${
                     focusedField === 'password'
-                      ? 'border-blue-500 bg-white/20 shadow-lg'
-                      : 'border-white/20 hover:border-white/30'
-                  }`}
+                      ? 'border-blue-400 bg-white/10 shadow-lg ring-2 ring-blue-400/20'
+                      : 'border-white/10 hover:border-blue-400/30'
+                  } focus:outline-none focus:ring-2 focus:ring-blue-400/30`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-blue-400 transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
             </div>
 
-            {/* Submit */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-medium transition-all duration-200 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3.5 rounded-xl font-semibold transition-all duration-300 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl hover:shadow-2xl transform hover:-translate-y-1 active:scale-95"
             >
               {isLoading ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                <div className="flex items-center justify-center space-x-3">
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                   <span>Signing in...</span>
                 </div>
               ) : (
@@ -230,32 +225,31 @@ const Login = ({ onLogin = () => {} }) => {
           </form>
         </div>
 
-        {/* Demo Users */}
-        <div className="mt-6 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-6">
+        <div className="mt-6 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl p-6 ring-1 ring-purple-500/20">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-            <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
+            <CheckCircle className="w-5 h-5 mr-2 text-green-400 animate-bounce" />
             Demo Users
           </h3>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             {demoUsers.map((user, index) => (
               <button
                 key={index}
                 onClick={() => handleDemoLogin(user)}
-                className="p-3 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl text-left group transition-all duration-200"
+                className="p-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-blue-400/30 rounded-xl text-left group transition-all duration-300 transform hover:-translate-y-0.5"
               >
-                <div className="flex items-center space-x-2">
-                  <div className={`w-3 h-3 ${user.color} rounded-full`}></div>
-                  <span className="text-white text-sm font-medium group-hover:text-blue-300">
+                <div className="flex items-center space-x-3">
+                  <div className={`w-4 h-4 ${user.color} rounded-full group-hover:scale-110 transition-transform`}></div>
+                  <span className="text-white text-sm font-semibold group-hover:text-blue-300">
                     {user.username}
                   </span>
                 </div>
-                <p className="text-slate-400 text-xs mt-1">{user.label}</p>
+                <p className="text-slate-400 text-xs mt-1.5">{user.label}</p>
               </button>
             ))}
           </div>
-          <div className="mt-4 p-3 bg-blue-500/20 border border-blue-500/30 rounded-xl">
-            <p className="text-blue-300 text-xs text-center">
-              Password for all demo users: <span className="font-mono font-bold">password123</span>
+          <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl">
+            <p className="text-blue-200 text-xs text-center">
+              Password for all demo users: <span className="font-mono font-bold text-blue-100">password123</span>
             </p>
           </div>
         </div>
@@ -265,4 +259,3 @@ const Login = ({ onLogin = () => {} }) => {
 };
 
 export default Login;
-

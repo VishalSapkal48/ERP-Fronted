@@ -203,6 +203,9 @@
 
 
 // src/App.js
+
+
+
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from '../src/Login/Login';
@@ -212,7 +215,7 @@ import HrmLayout from '../src/Layout/HrmLayout';
 import ReportsLayout from '../src/Layout/ReportsLayout';
 import AdminLayout from '../src/Layout/AdminLayout';
 import PurchasesLayout from '../src/Layout/PurcheseLayout';
-
+// import FromsLayout from '../src/Layout/FromsLayout';
 
 const App = () => {
   const [role, setRole] = useState(null);
@@ -259,6 +262,10 @@ const App = () => {
           path="/purchase/*"
           element={role === 'purchase' ? <PurchasesLayout /> : <Navigate to="/" replace />}
         />
+        {/* <Route
+          path="/froms/*"
+          element={role === 'froms' ? <FromsLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+        /> */}
         <Route
           path="*"
           element={

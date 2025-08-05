@@ -4,7 +4,8 @@ import { LayoutDashboard, Users, FileText, DollarSign, Clock, LogOut } from 'luc
 
 function SideBar({ closeSidebar }) {
   return (
-    <div className="p-4 h-full bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+   <div className="p-4 h-full bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+
       <div className="border-b border-gray-700 rounded-t-lg bg-gradient-to-r from-blue-900 to-gray-800 shadow-lg p-4 mb-4">
         <img
           src="/Images/logo.png"

@@ -11,31 +11,32 @@ function PurchasesLayout() {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="h-screen flex overflow-hidden bg-gray-100">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-gray-800 text-white transform ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0 lg:static lg:inset-0 transition-transform duration-300 ease-in-out z-30`}
+        className={`fixed inset-y-0 left-0 bg-gray-900 text-white transform transition-transform duration-300 z-40
+          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static`}
       >
-        <SideBar />
+        <SideBar closeSidebar={() => setIsSidebarOpen(false)} />
       </div>
 
-      {/* Overlay for mobile when sidebar is open */}
+      {/* Overlay */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 lg:hidden z-20"
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
           onClick={toggleSidebar}
-        ></div>
+        />
       )}
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      {/* Main content area */}
+      <div className="flex flex-col flex-1  h-full">
         {/* Navbar */}
-        <NavBar toggleSidebar={toggleSidebar} />
+        <div className="sticky top-0 z-20 bg-white shadow">
+          <NavBar toggleSidebar={toggleSidebar} />
+        </div>
 
-        {/* Content Area */}
-        <div className="p-6 bg-gray-100 flex-1">
+        {/* Scrollable content */}
+        <div className="flex-1 overflow-y-auto p-6">
           <PurchaseRoutes />
         </div>
       </div>
