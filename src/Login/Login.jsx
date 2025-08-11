@@ -78,6 +78,7 @@
 // };
 
 // export default Login;
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, User, Lock, AlertCircle, CheckCircle, LogIn } from 'lucide-react';
@@ -92,13 +93,14 @@ const Login = ({ onLogin = () => {} }) => {
   const navigate = useNavigate();
 
   const demoUsers = [
+    { username: 'accuser', role: 'account', label: 'Account User', color: 'bg-gray-600' },
     { username: 'crmuser', role: 'crm', label: 'CRM User', color: 'bg-blue-600' },
     { username: 'invuser', role: 'inventory', label: 'Inventory User', color: 'bg-green-600' },
     { username: 'hrmuser', role: 'hrm', label: 'HRM User', color: 'bg-purple-600' },
     { username: 'repuser', role: 'reports', label: 'Reports User', color: 'bg-orange-600' },
     { username: 'adminuser', role: 'admin', label: 'Admin User', color: 'bg-red-600' },
     { username: 'puruser', role: 'purchase', label: 'Purchase User', color: 'bg-indigo-600' },
-    { username: 'frmuser', role: 'froms', label: 'Forms User', color: 'bg-teal-600' }, // Added forms user
+    { username: 'frmuser', role: 'forms', label: 'Forms User', color: 'bg-teal-600' },
   ];
 
   const handleLogin = (e) => {
@@ -129,6 +131,17 @@ const Login = ({ onLogin = () => {} }) => {
     setError('');
   };
 
+  // Current date and time (IST)
+  const currentDate = new Date().toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    hour12: true,
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 animate-pulse"></div>
@@ -143,18 +156,19 @@ const Login = ({ onLogin = () => {} }) => {
               Welcome Back
             </h1>
             <p className="text-slate-300 text-sm mt-2 opacity-80">Securely access your account</p>
+            <p className="text-slate-400 text-xs mt-1">{currentDate} IST</p>
           </div>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start space-x-3 animate-shake">
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start space-x-3 animate-shake" role="alert">
               <AlertCircle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
               <p className="text-red-300 text-sm">{error}</p>
             </div>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form onSubmit={handleLogin} className="space-y-6" aria-label="Login Form">
             <div>
-              <label htmlFor="username" className="text-sm font-medium text-slate-100 block mb-1.5">
+              <label htmlFor="username" className="text-sm font-medium text-slate-100 block mb-1.5" aria-required="true">
                 Username
               </label>
               <div className="relative group">
@@ -173,12 +187,14 @@ const Login = ({ onLogin = () => {} }) => {
                       ? 'border-blue-400 bg-white/10 shadow-lg ring-2 ring-blue-400/20'
                       : 'border-white/10 hover:border-blue-400/30'
                   } focus:outline-none focus:ring-2 focus:ring-blue-400/30`}
+                  aria-describedby="username-error"
+                  required
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="password" className="text-sm font-medium text-slate-100 block mb-1.5">
+              <label htmlFor="password" className="text-sm font-medium text-slate-100 block mb-1.5" aria-required="true">
                 Password
               </label>
               <div className="relative group">
@@ -197,11 +213,14 @@ const Login = ({ onLogin = () => {} }) => {
                       ? 'border-blue-400 bg-white/10 shadow-lg ring-2 ring-blue-400/20'
                       : 'border-white/10 hover:border-blue-400/30'
                   } focus:outline-none focus:ring-2 focus:ring-blue-400/30`}
+                  aria-describedby="password-error"
+                  required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-blue-400 transition-colors"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -212,6 +231,7 @@ const Login = ({ onLogin = () => {} }) => {
               type="submit"
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3.5 rounded-xl font-semibold transition-all duration-300 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl hover:shadow-2xl transform hover:-translate-y-1 active:scale-95"
+              aria-label="Sign in"
             >
               {isLoading ? (
                 <div className="flex items-center justify-center space-x-3">
@@ -236,6 +256,7 @@ const Login = ({ onLogin = () => {} }) => {
                 key={index}
                 onClick={() => handleDemoLogin(user)}
                 className="p-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-blue-400/30 rounded-xl text-left group transition-all duration-300 transform hover:-translate-y-0.5"
+                aria-label={`Login as ${user.label}`}
               >
                 <div className="flex items-center space-x-3">
                   <div className={`w-4 h-4 ${user.color} rounded-full group-hover:scale-110 transition-transform`}></div>

@@ -1,25 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import logo from '../../../../public/Images/BoardWorksListForm/logo.png';
-import {
-  FaHome,
-  FaFolder,
-  FaFlask,
-  FaBolt,
-  FaMicroscope,
-  FaSignOutAlt,
-  FaChevronDown,
-  FaChevronRight,
-  FaBuilding,
-  FaUserTie,
-  FaFileContract,
-  FaClipboardList,
-  FaCamera,
-  FaPlug,
-  FaTools,
-} from 'react-icons/fa';
 
-// Translations object (Yewale + Nadbrahma + LetterOfUndertaking + PlanExplanation)
 const translations = {
   mr: {
     yewaleTitle: 'येवले प्रोजेक्ट',
@@ -156,90 +138,90 @@ const translations = {
 };
 
 const yewaleSteps = (t) => [
-  { name: t.terms, path: '/froms/projects/yewale/terms-and-condition' },
-  { name: t.preSurvey, path: '/froms/projects/yewale/pre-survey-script' },
-  { name: t.civilWork, path: '/froms/projects/yewale/civil-work-checklist-form' },
-  { name: t.internalDept, path: '/froms/projects/yewale/internal-department-working' },
-  { name: t.inspection, path: '/froms/projects/yewale/inspection-checklist' },
-  { name: t.material, path: '/froms/projects/yewale/material-checklist' },
-  { name: t.shopSetup, path: '/froms/projects/yewale/shop-setup-checklist' },
-  { name: t.projectFollowup, path: '/froms/projects/yewale/project-work-followup' },
-  { name: t.surveyInputs, path: '/froms/projects/yewale/survey-inputs' },
-  { name: t.survey, path: '/froms/projects/yewale/survey' },
-  { name: t.roughLayout, path: '/froms/projects/yewale/rough-layout' },
+  { name: t.terms, path: '/forms/projects/yewale/terms-and-condition' },
+  { name: t.preSurvey, path: '/forms/projects/yewale/pre-survey-script' },
+  { name: t.civilWork, path: '/forms/projects/yewale/civil-work-checklist-form' },
+  { name: t.internalDept, path: '/forms/projects/yewale/internal-department-working' },
+  { name: t.inspection, path: '/forms/projects/yewale/inspection-checklist' },
+  { name: t.material, path: '/forms/projects/yewale/material-checklist' },
+  { name: t.shopSetup, path: '/forms/projects/yewale/shop-setup-checklist' },
+  { name: t.projectFollowup, path: '/forms/projects/yewale/project-work-followup' },
+  { name: t.surveyInputs, path: '/forms/projects/yewale/survey-inputs' },
+  { name: t.survey, path: '/forms/projects/yewale/survey' },
+  { name: t.roughLayout, path: '/forms/projects/yewale/rough-layout' },
 ];
 
 const nadbrahmaSteps = (t) => [
-  { name: t.terms, path: '/froms/projects/nadbrahma/terms-and-condition' },
-  { name: t.preSurvey, path: '/froms/projects/nadbrahma/pre-survey-script' },
-  { name: t.civilWork, path: '/froms/projects/nadbrahma/civil-work-checklist-form' },
-  { name: t.internalDept, path: '/froms/projects/nadbrahma/internal-department-working' },
-  { name: t.inspection, path: '/froms/projects/nadbrahma/inspection-checklist' },
-  { name: t.material, path: '/froms/projects/nadbrahma/material-checklist' },
-  { name: t.shopSetup, path: '/froms/projects/nadbrahma/shop-setup-checklist' },
-  { name: t.projectFollowup, path: '/froms/projects/nadbrahma/project-work-followup' },
-  { name: t.surveyInputs, path: '/froms/projects/nadbrahma/survey-inputs' },
-  { name: t.survey, path: '/froms/projects/nadbrahma/survey' },
-  { name: t.roughLayout, path: '/froms/projects/nadbrahma/rough-layout' },
+  { name: t.terms, path: '/forms/projects/nadbrahma/terms-and-condition' },
+  { name: t.preSurvey, path: '/forms/projects/nadbrahma/pre-survey-script' },
+  { name: t.civilWork, path: '/forms/projects/nadbrahma/civil-work-checklist-form' },
+  { name: t.internalDept, path: '/forms/projects/nadbrahma/internal-department-working' },
+  { name: t.inspection, path: '/forms/projects/nadbrahma/inspection-checklist' },
+  { name: t.material, path: '/forms/projects/nadbrahma/material-checklist' },
+  { name: t.shopSetup, path: '/forms/projects/nadbrahma/shop-setup-checklist' },
+  { name: t.projectFollowup, path: '/forms/projects/nadbrahma/project-work-followup' },
+  { name: t.surveyInputs, path: '/forms/projects/nadbrahma/survey-inputs' },
+  { name: t.survey, path: '/forms/projects/nadbrahma/survey' },
+  { name: t.roughLayout, path: '/forms/projects/nadbrahma/rough-layout' },
 ];
 
 const yewaleFeedbacks = (t) => [
-  { name: t.agreementFeedback, path: '/froms/yewalecomponents/call1folder1', desc: t.agreementFeedbackDesc },
-  { name: t.civilWorkFeedback, path: '/froms/yewalecomponents/call2folder2', desc: t.civilWorkFeedbackDesc },
-  { name: t.setupFeedback, path: '/froms/yewalecomponents/call3folder3', desc: t.setupFeedbackDesc },
-  { name: t.finalDemoFeedback, path: '/froms/yewalecomponents/call4folder4', desc: t.finalDemoFeedbackDesc },
-  { name: t.oneMonthFeedback, path: '/froms/yewalecomponents/call5folder5', desc: t.oneMonthFeedbackDesc },
-  { name: t.oneMonthFeedback2, path: '/froms/yewalecomponents/call6folder6', desc: t.oneMonthFeedback2Desc },
-  { name: t.oneMonthFeedback7, path: '/froms/yewalecomponents/call7folder7', desc: t.oneMonthFeedback7Desc },
-  { name: t.oneMonthFeedback8, path: '/froms/yewalecomponents/call8folder8', desc: t.oneMonthFeedback8Desc },
-  { name: t.oneMonthFeedback9, path: '/froms/yewalecomponents/call9folder9', desc: t.oneMonthFeedback9Desc },
+  { name: t.agreementFeedback, path: '/forms/yewalecomponents/call1folder1', desc: t.agreementFeedbackDesc },
+  { name: t.civilWorkFeedback, path: '/forms/yewalecomponents/call2folder2', desc: t.civilWorkFeedbackDesc },
+  { name: t.setupFeedback, path: '/forms/yewalecomponents/call3folder3', desc: t.setupFeedbackDesc },
+  { name: t.finalDemoFeedback, path: '/forms/yewalecomponents/call4folder4', desc: t.finalDemoFeedbackDesc },
+  { name: t.oneMonthFeedback, path: '/forms/yewalecomponents/call5folder5', desc: t.oneMonthFeedbackDesc },
+  { name: t.oneMonthFeedback2, path: '/forms/yewalecomponents/call6folder6', desc: t.oneMonthFeedback2Desc },
+  { name: t.oneMonthFeedback7, path: '/forms/yewalecomponents/call7folder7', desc: t.oneMonthFeedback7Desc },
+  { name: t.oneMonthFeedback8, path: '/forms/yewalecomponents/call8folder8', desc: t.oneMonthFeedback8Desc },
+  { name: t.oneMonthFeedback9, path: '/forms/yewalecomponents/call9folder9', desc: t.oneMonthFeedback9Desc },
 ];
 
 const nadbrahmaFeedbacks = (t) => [
-  { name: t.agreementFeedbackN, path: '/froms/nadbrahmacomponents/call1folder1', desc: t.agreementFeedbackDescN },
-  { name: t.planExplanationFeedback, path: '/froms/nadbrahmacomponents/call2folder2', desc: t.planExplanationFeedbackDesc },
-  { name: t.inspectionFeedback, path: '/froms/nadbrahmacomponents/call3folder3', desc: t.inspectionFeedbackDesc },
-  { name: t.setupFeedbackN, path: '/froms/nadbrahmacomponents/call4folder4', desc: t.setupFeedbackDescN },
-  { name: t.openingFeedback, path: '/froms/nadbrahmacomponents/call5folder5', desc: t.openingFeedbackDesc },
-  { name: t.oneMonthFeedbackN, path: '/froms/nadbrahmacomponents/call6folder6', desc: t.oneMonthFeedbackDescN },
+  { name: t.agreementFeedbackN, path: '/forms/nadbrahmacomponents/call1folder1', desc: t.agreementFeedbackDescN },
+  { name: t.planExplanationFeedback, path: '/forms/nadbrahmacomponents/call2folder2', desc: t.planExplanationFeedbackDesc },
+  { name: t.inspectionFeedback, path: '/forms/nadbrahmacomponents/call3folder3', desc: t.inspectionFeedbackDesc },
+  { name: t.setupFeedbackN, path: '/forms/nadbrahmacomponents/call4folder4', desc: t.setupFeedbackDescN },
+  { name: t.openingFeedback, path: '/forms/nadbrahmacomponents/call5folder5', desc: t.openingFeedbackDesc },
+  { name: t.oneMonthFeedbackN, path: '/forms/nadbrahmacomponents/call6folder6', desc: t.oneMonthFeedbackDescN },
 ];
 
 const vendorRoutes = [
-  { name: 'Electrician', path: '/froms/vendors/electrician' },
-  { name: 'Plumber', path: '/froms/vendors/plumber' },
-  { name: 'Tiles vendor', path: '/froms/vendors/tiles' },
-  { name: 'POP vendor', path: '/froms/vendors/pop' },
-  { name: 'CCTV Installer', path: '/froms/vendors/cctv' },
-  { name: 'Internet Service Provider', path: '/froms/vendors/internet' },
-  { name: 'Painter', path: '/froms/vendors/painter' },
-  { name: 'Gas pipeline vendor', path: '/froms/vendors/gas' },
-  { name: 'Ducting vendor', path: '/froms/vendors/ducting' },
-  { name: 'Awing shed vendor', path: '/froms/vendors/awing' },
-  { name: 'Mason', path: '/froms/vendors/mason' },
-  { name: 'Board vendor', path: '/froms/vendors/board' },
-  { name: 'Fabricator', path: '/froms/vendors/fabricator' },
+  { name: 'Electrician', path: '/forms/vendors/electrician' },
+  { name: 'Plumber', path: '/forms/vendors/plumber' },
+  { name: 'Tiles vendor', path: '/forms/vendors/tiles' },
+  { name: 'POP vendor', path: '/forms/vendors/pop' },
+  { name: 'CCTV Installer', path: '/forms/vendors/cctv' },
+  { name: 'Internet Service Provider', path: '/forms/vendors/internet' },
+  { name: 'Painter', path: '/forms/vendors/painter' },
+  { name: 'Gas pipeline vendor', path: '/forms/vendors/gas' },
+  { name: 'Ducting vendor', path: '/forms/vendors/ducting' },
+  { name: 'Awing shed vendor', path: '/forms/vendors/awing' },
+  { name: 'Mason', path: '/forms/vendors/mason' },
+  { name: 'Board vendor', path: '/forms/vendors/board' },
+  { name: 'Fabricator', path: '/forms/vendors/fabricator' },
 ];
 
 const letterOfUndertakingForms = (t) => [
-  { name: t.boardWorks, path: '/froms/LetterOfUndertaking/BoardWorksForm', icon: <FaClipboardList /> },
-  { name: t.cameraSet, path: '/froms/LetterOfUndertaking/CameraSetForm', icon: <FaCamera /> },
-  { name: t.electricalWorks, path: '/froms/LetterOfUndertaking/ElectricalWorksForm', icon: <FaPlug /> },
-  { name: t.letterOfUndertakingForm, path: '/froms/LetterOfUndertaking/LetterOfUndertakingForm', icon: <FaFileContract /> },
-  { name: t.steelEquipment, path: '/froms/LetterOfUndertaking/SteelEquipmentForm', icon: <FaTools /> },
+  { name: t.boardWorks, path: '/forms/LetterOfUndertaking/BoardWorksForm', icon: '📋' },
+  { name: t.cameraSet, path: '/forms/LetterOfUndertaking/CameraSetForm', icon: '📷' },
+  { name: t.electricalWorks, path: '/forms/LetterOfUndertaking/ElectricalWorksForm', icon: '🔌' },
+  { name: t.letterOfUndertakingForm, path: '/forms/LetterOfUndertaking/LetterOfUndertakingForm', icon: '📜' },
+  { name: t.steelEquipment, path: '/forms/LetterOfUndertaking/SteelEquipmentForm', icon: '🛠' },
 ];
 
 const yewalePlanExplanationItems = (t) => [
-  { name: t.civilWorkWorking, path: '/froms/planexplanation/yewale/civil-work-working' },
-  { name: t.constructionForm, path: '/froms/planexplanation/yewale/construction-form' },
-  { name: t.materialChecklistPlanEx, path: '/froms/planexplanation/yewale/material-checklist' },
-  { name: t.warrantyFormPlanEx, path: '/froms/planexplanation/yewale/warranty-form' },
-  { name: t.revisedWorkFollowup, path: '/froms/planexplanation/yewale/revised-work-followup' },
+  { name: t.civilWorkWorking, path: '/forms/planexplanation/yewale/civil-work-working' },
+  { name: t.constructionForm, path: '/forms/planexplanation/yewale/construction-form' },
+  { name: t.materialChecklistPlanEx, path: '/forms/planexplanation/yewale/material-checklist' },
+  { name: t.warrantyFormPlanEx, path: '/forms/planexplanation/yewale/warranty-form' },
+  { name: t.revisedWorkFollowup, path: '/forms/planexplanation/yewale/revised-work-followup' },
 ];
 
 const nadbrahmaPlanExplanationItems = (t) => [
-  { name: t.ownerMaterial, path: '/froms/planexplanation/nadbrahma/owner-material' },
-  { name: t.warrantyPeriod, path: '/froms/planexplanation/nadbrahma/warranty-period' },
-  { name: t.workStepsFor, path: '/froms/planexplanation/nadbrahma/work-steps-for' },
+  { name: t.ownerMaterial, path: '/forms/planexplanation/nadbrahma/owner-material' },
+  { name: t.warrantyPeriod, path: '/forms/planexplanation/nadbrahma/warranty-period' },
+  { name: t.workStepsFor, path: '/forms/planexplanation/nadbrahma/work-steps-for' },
 ];
 
 const Sidebar = ({ onLogout }) => {
@@ -249,34 +231,34 @@ const Sidebar = ({ onLogout }) => {
   const location = useLocation();
 
   const sidebarMenu = [
-    { name: 'Home', icon: <FaHome />, path: '/froms/dashboard' },
+    { name: 'Home', icon: '🏠', path: '/forms/dashboard' },
     {
       name: t.yewaleTitle,
-      icon: <FaBuilding />,
+      icon: '🏢',
       subItems: [
         ...yewaleSteps(t),
-        { name: t.yewaleFeedback, icon: <FaFolder />, subItems: yewaleFeedbacks(t) },
+        { name: t.yewaleFeedback, icon: '📁', subItems: yewaleFeedbacks(t) },
       ],
     },
     {
       name: t.nadbrahmaTitle,
-      icon: <FaBuilding />,
+      icon: '🏢',
       subItems: [
         ...nadbrahmaSteps(t),
-        { name: t.nadbrahmaFeedback, icon: <FaFolder />, subItems: nadbrahmaFeedbacks(t) },
+        { name: t.nadbrahmaFeedback, icon: '📁', subItems: nadbrahmaFeedbacks(t) },
       ],
     },
-    { name: 'Vendors', icon: <FaUserTie />, subItems: vendorRoutes },
-    { name: t.letterOfUndertaking, icon: <FaFileContract />, subItems: letterOfUndertakingForms(t) },
+    { name: 'Vendors', icon: '👷', subItems: vendorRoutes },
+    { name: t.letterOfUndertaking, icon: '📜', subItems: letterOfUndertakingForms(t) },
     {
       name: t.planExplanationTitle,
-      icon: <FaClipboardList />,
+      icon: '📋',
       subItems: [
-        { name: t.yewalePlanExplanation, icon: <FaFolder />, subItems: yewalePlanExplanationItems(t) },
-        { name: t.nadbrahmaPlanExplanation, icon: <FaFolder />, subItems: nadbrahmaPlanExplanationItems(t) },
+        { name: t.yewalePlanExplanation, icon: '📁', subItems: yewalePlanExplanationItems(t) },
+        { name: t.nadbrahmaPlanExplanation, icon: '📁', subItems: nadbrahmaPlanExplanationItems(t) },
       ],
     },
-    { name: 'Test3', icon: <FaMicroscope />, path: '/froms/test3' },
+    { name: 'Test3', icon: '🔬', path: '/forms/test3' },
   ];
 
   const isAnySubItemActive = (subItems) => {
@@ -310,7 +292,6 @@ const Sidebar = ({ onLogout }) => {
 
   useEffect(() => {
     setOpenMenus(getInitialOpenMenus());
-    console.log('Current location:', location.pathname);
   }, [location.pathname, lang]);
 
   const handleNavigation = (path) => {
@@ -343,7 +324,6 @@ const Sidebar = ({ onLogout }) => {
   };
 
   const handleLogoutClick = () => {
-    console.log('Logging out');
     onLogout();
     navigate('/');
   };
@@ -371,7 +351,7 @@ const Sidebar = ({ onLogout }) => {
                 {item.icon && <span className="mr-3 text-base">{item.icon}</span>}
                 <span>{item.name}</span>
               </div>
-              <span className="text-xs">{isOpen ? <FaChevronDown /> : <FaChevronRight />}</span>
+              <span className="text-xs">{isOpen ? '▼' : '▶'}</span>
             </div>
             {isOpen && <div className="mt-1">{renderMenu(item.subItems, level + 1)}</div>}
           </div>
@@ -400,7 +380,7 @@ const Sidebar = ({ onLogout }) => {
       <div className="px-6 py-5 border-b border-gray-200 flex items-center justify-between">
         <div className="flex items-center">
           <div className="flex-shrink-0">
-            <img src={logo} alt="YNK ERP Logo" className="w-8 h-8 object-contain" />
+            <img src="/Images/BoardWorksListForm/logo.png" alt="YNK ERP Logo" className="w-8 h-8 object-contain" />
           </div>
           <div className="ml-3">
             <h1 className="text-xl font-bold text-gray-900">YNK ERP</h1>
@@ -415,27 +395,24 @@ const Sidebar = ({ onLogout }) => {
           {t.switchLang}
         </button>
       </div>
-
       <div className="flex-1 px-4 py-6 overflow-y-auto">
         <nav>
           <div className="mb-6">
             <h2 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Navigation</h2>
           </div>
           <div className="space-y-1">{renderMenu(sidebarMenu)}</div>
-
           <div className="mt-8 pt-6 border-t border-gray-200">
             <div
               onClick={handleLogoutClick}
               className="w-full flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors duration-200 cursor-pointer"
               title="Logout"
             >
-              <FaSignOutAlt className="mr-3 text-base" />
+              <span className="mr-3 text-base">🚪</span>
               <span>Logout</span>
             </div>
           </div>
         </nav>
       </div>
-
       <div className="px-4 py-4 border-t border-gray-200">
         <div className="flex items-center">
           <div className="flex-shrink-0">

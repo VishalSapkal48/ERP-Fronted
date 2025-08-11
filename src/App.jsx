@@ -205,23 +205,102 @@
 // src/App.js
 
 
+// import React, { useState } from 'react';
+// import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+// import Login from './Login/Login';
+// import CRMLayout from './Layout/CRMLayout';
+// import InventoryLayout from './Layout/InventoryLayout';
+// import HrmLayout from './Layout/HrmLayout';
+// import ReportsLayout from './Layout/ReportsLayout';
+// import AdminLayout from './Layout/AdminLayout';
+// import PurchasesLayout from './Layout/PurcheseLayout';
+// import FormsLayout from './Layout/FormsLayout';
+
+// const App = () => {
+//   const [role, setRole] = useState(null);
+//   const [username, setUsername] = useState(null);
+
+//   const handleLogin = (role, username) => {
+//     console.log('Login:', { role, username });
+//     setRole(role);
+//     setUsername(username);
+//   };
+
+//   const handleLogout = () => {
+//     setRole(null);
+//     setUsername(null);
+//   };
+
+//   return (
+//     <Router>
+//       <Routes>
+//         <Route
+//           path="/"
+//           element={role ? <Navigate to={`/${role}`} replace /> : <Login onLogin={handleLogin} />}
+//         />
+//         <Route
+//           path="/crm/*"
+//           element={role === 'crm' ? <CRMLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+//         />
+//         <Route
+//           path="/inventory/*"
+//           element={role === 'inventory' ? <InventoryLayout /> : <Navigate to="/" replace />}
+//         />
+//         <Route
+//           path="/hrm/*"
+//           element={role === 'hrm' ? <HrmLayout /> : <Navigate to="/" replace />}
+//         />
+//         <Route
+//           path="/reports/*"
+//           element={role === 'reports' ? <ReportsLayout /> : <Navigate to="/" replace />}
+//         />
+//         <Route
+//           path="/admin/*"
+//           element={role === 'admin' ? <AdminLayout /> : <Navigate to="/" replace />}
+//         />
+//         <Route
+//           path="/purchase/*"
+//           element={role === 'purchase' ? <PurchasesLayout /> : <Navigate to="/" replace />}
+//         />
+//         <Route
+//           path="/forms/*"
+//           element={role === 'forms' ? <FormsLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+//         />
+//         <Route
+//           path="*"
+//           element={
+//             <div className="flex items-center justify-center h-screen bg-gray-100">
+//               <div className="text-center text-2xl font-semibold text-red-500 bg-white p-6 rounded-lg shadow-md">
+//                 404 - Page Not Found
+//               </div>
+//             </div>
+//           }
+//         />
+//       </Routes>
+//     </Router>
+//   );
+// };
+
+// export default App;
 
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Login from '../src/Login/Login';
-import CRMLayout from '../src/Layout/CRMLayout';
-import InventoryLayout from '../src/Layout/InventoryLayout';
-import HrmLayout from '../src/Layout/HrmLayout';
-import ReportsLayout from '../src/Layout/ReportsLayout';
-import AdminLayout from '../src/Layout/AdminLayout';
-import PurchasesLayout from '../src/Layout/PurcheseLayout';
-// import FromsLayout from '../src/Layout/FromsLayout';
+import Login from './Login/Login';
+import AccountLayout from './Layout//AccountLayout';
+import CRMLayout from './Layout/CRMLayout';
+import InventoryLayout from './Layout/InventoryLayout';
+import HrmLayout from './Layout/HrmLayout';
+import ReportsLayout from './Layout/ReportsLayout';
+import AdminLayout from './Layout/AdminLayout';
+import PurchaseLayout from './Layout/PurcheseLayout';
+import FormsLayout from './Layout/FormsLayout';
 
 const App = () => {
   const [role, setRole] = useState(null);
   const [username, setUsername] = useState(null);
 
   const handleLogin = (role, username) => {
+    console.log('Login:', { role, username });
     setRole(role);
     setUsername(username);
   };
@@ -237,6 +316,10 @@ const App = () => {
         <Route
           path="/"
           element={role ? <Navigate to={`/${role}`} replace /> : <Login onLogin={handleLogin} />}
+        />
+        <Route
+          path="/account/*"
+          element={role === 'account' ? <AccountLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
         />
         <Route
           path="/crm/*"
@@ -260,12 +343,12 @@ const App = () => {
         />
         <Route
           path="/purchase/*"
-          element={role === 'purchase' ? <PurchasesLayout /> : <Navigate to="/" replace />}
+          element={role === 'purchase' ? <PurchaseLayout /> : <Navigate to="/" replace />}
         />
-        {/* <Route
-          path="/froms/*"
-          element={role === 'froms' ? <FromsLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
-        /> */}
+        <Route
+          path="/forms/*"
+          element={role === 'forms' ? <FormsLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+        />
         <Route
           path="*"
           element={
