@@ -286,7 +286,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './Login/Login';
-import AccountLayout from './Layout//AccountLayout';
+import AccountLayout from './Layout/AccountLayout';
 import CRMLayout from './Layout/CRMLayout';
 import InventoryLayout from './Layout/InventoryLayout';
 import HrmLayout from './Layout/HrmLayout';

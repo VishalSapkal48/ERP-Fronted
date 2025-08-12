@@ -1,5 +1,5 @@
 import { useRoutes, useLocation, Navigate } from 'react-router-dom';
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import ERPDashboard from '../Components/Froms/pages/ERPDashboard.jsx';
 import CustomCalendar from '../Components/Froms/pages/CustomCalendar.jsx';
 import Navbar from '../Components/Froms/pages/Navbar.jsx';
@@ -57,6 +57,7 @@ class ErrorBoundary extends Component {
   state = { error: null };
 
   static getDerivedStateFromError(error) {
+    console.error('ErrorBoundary caught an error:', error);
     return { error };
   }
 
@@ -66,6 +67,7 @@ class ErrorBoundary extends Component {
         <div className="p-4 text-red-600">
           <h2>Component Error</h2>
           <p>{this.state.error.message}</p>
+          <p>Stack trace: {this.state.error.stack}</p>
           <p>Check the component implementation for {this.props.path}.</p>
         </div>
       );
@@ -89,95 +91,107 @@ const FallbackComponent = ({ path }) => (
 
 const FormsRoutes = () => {
   const location = useLocation();
+  console.log('FormsRoutes: Current path:', location.pathname);
+
   const routes = useRoutes([
-    { path: '/forms', element: <Navigate to="/forms/dashboard" replace /> },
+    { path: '/', element: <Navigate to="/dashboard" replace /> },
     {
-      path: '/forms/dashboard',
+      path: '/dashboard',
       element: (
-        <ErrorBoundary path="/forms/dashboard">
+        <ErrorBoundary path="/dashboard">
           <ERPDashboard />
         </ErrorBoundary>
       ),
     },
-    { path: '/forms/calendar', element: <CustomCalendar /> },
-    { path: '/forms/navbar', element: <Navbar /> },
-    { path: '/forms/projects', element: <ProjectsPage /> },
-    { path: '/forms/yewalecomponents/call1folder1', element: <YewaleCALL1 /> },
-    { path: '/forms/yewalecomponents/call2folder2', element: <YewaleCALL2 /> },
-    { path: '/forms/yewalecomponents/call3folder3', element: <YewaleCALL3 /> },
-    { path: '/forms/yewalecomponents/call4folder4', element: <YewaleCALL4 /> },
-    { path: '/forms/yewalecomponents/call5folder5', element: <YewaleCALL5 /> },
-    { path: '/forms/yewalecomponents/call6folder6', element: <YewaleCALL6 /> },
-    { path: '/forms/yewalecomponents/call7folder7', element: <YewaleCALL7 /> },
-    { path: '/forms/yewalecomponents/call8folder8', element: <YewaleCALL8 /> },
-    { path: '/forms/yewalecomponents/call9folder9', element: <YewaleCALL9 /> },
-    { path: '/forms/nadbrahmacomponents/call1folder1', element: <NadCALL1 /> },
-    { path: '/forms/nadbrahmacomponents/call2folder2', element: <NadCALL2 /> },
-    { path: '/forms/nadbrahmacomponents/call3folder3', element: <NadCALL3 /> },
-    { path: '/forms/nadbrahmacomponents/call4folder4', element: <NadCALL4 /> },
-    { path: '/forms/nadbrahmacomponents/call5folder5', element: <NadCALL5 /> },
-    { path: '/forms/nadbrahmacomponents/call6folder6', element: <NadCALL6 /> },
-    { path: '/forms/LetterOfUndertaking/BoardWorksForm', element: <BoardWorksForm /> },
-    { path: '/forms/LetterOfUndertaking/CameraSetForm', element: <CameraSetForm /> },
-    { path: '/forms/LetterOfUndertaking/ElectricalWorksForm', element: <ElectricalWorksForm /> },
-    { path: '/forms/LetterOfUndertaking/LetterOfUndertakingForm', element: <LetterOfUndertakingForm /> },
-    { path: '/forms/LetterOfUndertaking/SteelEquipmentForm', element: <SteelEquipmentForm /> },
-    { path: '/forms/projects/yewale/terms-and-condition', element: <TermsandCondition /> },
-    { path: '/forms/projects/yewale/pre-survey-script', element: <ProjectWorkFollowup /> },
-    { path: '/forms/projects/yewale/civil-work-checklist-form', element: <CivilWorkChecklistForm /> },
-    { path: '/forms/projects/yewale/internal-department-working', element: <InternalDepartmentWorking /> },
-    { path: '/forms/projects/yewale/inspection-checklist', element: <InspectionChecklist /> },
-    { path: '/forms/projects/yewale/material-checklist', element: <MaterialChecklist /> },
-    { path: '/forms/projects/yewale/shop-setup-checklist', element: <ShopSetupChecklistForm /> },
-    { path: '/forms/projects/yewale/project-work-followup', element: <OnlineSurveyForm /> },
-    { path: '/forms/projects/yewale/survey-inputs', element: <StepPage name="Yewale - Survey Inputs for Owner" /> },
-    { path: '/forms/projects/yewale/survey', element: <StepPage name="Yewale - Survey" /> },
-    { path: '/forms/projects/yewale/rough-layout', element: <StepPage name="Yewale - Rough Layout" /> },
-    { path: '/forms/projects/nadbrahma/terms-and-condition', element: <TermsandCondition /> },
-    { path: '/forms/projects/nadbrahma/pre-survey-script', element: <ProjectWorkFollowup /> },
-    { path: '/forms/projects/nadbrahma/civil-work-checklist-form', element: <CivilWorkChecklistForm /> },
-    { path: '/forms/projects/nadbrahma/internal-department-working', element: <InternalDepartmentWorking /> },
-    { path: '/forms/projects/nadbrahma/inspection-checklist', element: <InspectionChecklist /> },
-    { path: '/forms/projects/nadbrahma/material-checklist', element: <MaterialChecklist /> },
-    { path: '/forms/projects/nadbrahma/shop-setup-checklist', element: <ShopSetupChecklistForm /> },
-    { path: '/forms/projects/nadbrahma/project-work-followup', element: <OnlineSurveyForm /> },
-    { path: '/forms/projects/nadbrahma/survey-inputs', element: <StepPage name="Nadbrahma - Survey Inputs for Owner" /> },
-    { path: '/forms/projects/nadbrahma/survey', element: <StepPage name="Nadbrahma - Survey" /> },
-    { path: '/forms/projects/nadbrahma/rough-layout', element: <StepPage name="Nadbrahma - Rough Layout" /> },
-    { path: '/forms/vendors/electrician', element: <StepPage name="Vendor - Electrician" /> },
-    { path: '/forms/vendors/plumber', element: <StepPage name="Vendor - Plumber" /> },
-    { path: '/forms/vendors/tiles', element: <StepPage name="Vendor - Tiles vendor" /> },
-    { path: '/forms/vendors/pop', element: <StepPage name="Vendor - POP vendor" /> },
-    { path: '/forms/vendors/cctv', element: <StepPage name="Vendor - CCTV Installer" /> },
-    { path: '/forms/vendors/internet', element: <StepPage name="Vendor - Internet Service Provider" /> },
-    { path: '/forms/vendors/painter', element: <StepPage name="Vendor - Painter" /> },
-    { path: '/forms/vendors/gas', element: <StepPage name="Vendor - Gas pipeline vendor" /> },
-    { path: '/forms/vendors/ducting', element: <StepPage name="Vendor - Ducting vendor" /> },
-    { path: '/forms/vendors/awing', element: <StepPage name="Vendor - Awing shed vendor" /> },
-    { path: '/forms/vendors/mason', element: <StepPage name="Vendor - Mason" /> },
-    { path: '/forms/vendors/board', element: <StepPage name="Vendor - Board vendor" /> },
-    { path: '/forms/vendors/fabricator', element: <StepPage name="Vendor - Fabricator" /> },
-    { path: '/forms/planexplanation/yewale/civil-work-working', element: <CivilWorkWorking /> },
-    { path: '/forms/planexplanation/yewale/construction-form', element: <ConstructionForm /> },
-    { path: '/forms/planexplanation/yewale/material-checklist', element: <MaterialChecklistForm /> },
-    { path: '/forms/planexplanation/yewale/warranty-form', element: <WarrantyForm /> },
-    { path: '/forms/planexplanation/yewale/revised-work-followup', element: <StepPage name="Yewale - Revised Work Followup" /> },
-    { path: '/forms/planexplanation/nadbrahma/owner-material', element: <OwnerMaterialCheckForm /> },
-    { path: '/forms/planexplanation/nadbrahma/warranty-period', element: <WarrantyPeriodForm /> },
-    { path: '/forms/planexplanation/nadbrahma/work-steps-for', element: <WorkStepsForm /> },
-    { path: '/forms/test2', element: <StepPage name="Test2" /> },
-    { path: '/forms/test3', element: <StepPage name="Test3" /> },
+    { path: '/calendar', element: <CustomCalendar /> },
+    { path: '/navbar', element: <Navbar /> },
+    { path: '/projects', element: <ProjectsPage /> },
+    { path: '/yewalecomponents/call1folder1', element: <YewaleCALL1 /> },
+    { path: '/yewalecomponents/call2folder2', element: <YewaleCALL2 /> },
+    { path: '/yewalecomponents/call3folder3', element: <YewaleCALL3 /> },
+    { path: '/yewalecomponents/call4folder4', element: <YewaleCALL4 /> },
+    { path: '/yewalecomponents/call5folder5', element: <YewaleCALL5 /> },
+    { path: '/yewalecomponents/call6folder6', element: <YewaleCALL6 /> },
+    { path: '/yewalecomponents/call7folder7', element: <YewaleCALL7 /> },
+    { path: '/yewalecomponents/call8folder8', element: <YewaleCALL8 /> },
+    { path: '/yewalecomponents/call9folder9', element: <YewaleCALL9 /> },
+    { path: '/nadbrahmacomponents/call1folder1', element: <NadCALL1 /> },
+    { path: '/nadbrahmacomponents/call2folder2', element: <NadCALL2 /> },
+    { path: '/nadbrahmacomponents/call3folder3', element: <NadCALL3 /> },
+    { path: '/nadbrahmacomponents/call4folder4', element: <NadCALL4 /> },
+    { path: '/nadbrahmacomponents/call5folder5', element: <NadCALL5 /> },
+    { path: '/nadbrahmacomponents/call6folder6', element: <NadCALL6 /> },
+    { path: '/LetterOfUndertaking/BoardWorksForm', element: <BoardWorksForm /> },
+    { path: '/LetterOfUndertaking/CameraSetForm', element: <CameraSetForm /> },
+    { path: '/LetterOfUndertaking/ElectricalWorksForm', element: <ElectricalWorksForm /> },
+    { path: '/LetterOfUndertaking/LetterOfUndertakingForm', element: <LetterOfUndertakingForm /> },
+    { path: '/LetterOfUndertaking/SteelEquipmentForm', element: <SteelEquipmentForm /> },
+    {
+      path: '/projects/yewale/terms-and-condition',
+      element: (
+        <ErrorBoundary path="/projects/yewale/terms-and-condition">
+          <TermsandCondition />
+        </ErrorBoundary>
+      ),
+    },
+    { path: '/projects/yewale/pre-survey-script', element: <ProjectWorkFollowup /> },
+    { path: '/projects/yewale/civil-work-checklist-form', element: <CivilWorkChecklistForm /> },
+    { path: '/projects/yewale/internal-department-working', element: <InternalDepartmentWorking /> },
+    { path: '/projects/yewale/inspection-checklist', element: <InspectionChecklist /> },
+    { path: '/projects/yewale/material-checklist', element: <MaterialChecklist /> },
+    { path: '/projects/yewale/shop-setup-checklist', element: <ShopSetupChecklistForm /> },
+    { path: '/projects/yewale/project-work-followup', element: <OnlineSurveyForm /> },
+    { path: '/projects/yewale/survey-inputs', element: <StepPage name="Yewale - Survey Inputs for Owner" /> },
+    { path: '/projects/yewale/survey', element: <StepPage name="Yewale - Survey" /> },
+    { path: '/projects/yewale/rough-layout', element: <StepPage name="Yewale - Rough Layout" /> },
+    { path: '/projects/nadbrahma/terms-and-condition', element: <TermsandCondition /> },
+    { path: '/projects/nadbrahma/pre-survey-script', element: <ProjectWorkFollowup /> },
+    { path: '/projects/nadbrahma/civil-work-checklist-form', element: <CivilWorkChecklistForm /> },
+    { path: '/projects/nadbrahma/internal-department-working', element: <InternalDepartmentWorking /> },
+    { path: '/projects/nadbrahma/inspection-checklist', element: <InspectionChecklist /> },
+    { path: '/projects/nadbrahma/material-checklist', element: <MaterialChecklist /> },
+    { path: '/projects/nadbrahma/shop-setup-checklist', element: <ShopSetupChecklistForm /> },
+    { path: '/projects/nadbrahma/project-work-followup', element: <OnlineSurveyForm /> },
+    { path: '/projects/nadbrahma/survey-inputs', element: <StepPage name="Nadbrahma - Survey Inputs for Owner" /> },
+    { path: '/projects/nadbrahma/survey', element: <StepPage name="Nadbrahma - Survey" /> },
+    { path: '/projects/nadbrahma/rough-layout', element: <StepPage name="Nadbrahma - Rough Layout" /> },
+    { path: '/vendors/electrician', element: <StepPage name="Vendor - Electrician" /> },
+    { path: '/vendors/plumber', element: <StepPage name="Vendor - Plumber" /> },
+    { path: '/vendors/tiles', element: <StepPage name="Vendor - Tiles vendor" /> },
+    { path: '/vendors/pop', element: <StepPage name="Vendor - POP vendor" /> },
+    { path: '/vendors/cctv', element: <StepPage name="Vendor - CCTV Installer" /> },
+    { path: '/vendors/internet', element: <StepPage name="Vendor - Internet Service Provider" /> },
+    { path: '/vendors/painter', element: <StepPage name="Vendor - Painter" /> },
+    { path: '/vendors/gas', element: <StepPage name="Vendor - Gas pipeline vendor" /> },
+    { path: '/vendors/ducting', element: <StepPage name="Vendor - Ducting vendor" /> },
+    { path: '/vendors/awing', element: <StepPage name="Vendor - Awing shed vendor" /> },
+    { path: '/vendors/mason', element: <StepPage name="Vendor - Mason" /> },
+    { path: '/vendors/board', element: <StepPage name="Vendor - Board vendor" /> },
+    { path: '/vendors/fabricator', element: <StepPage name="Vendor - Fabricator" /> },
+    { path: '/planexplanation/yewale/civil-work-working', element: <CivilWorkWorking /> },
+    { path: '/planexplanation/yewale/construction-form', element: <ConstructionForm /> },
+    { path: '/planexplanation/yewale/material-checklist', element: <MaterialChecklistForm /> },
+    { path: '/planexplanation/yewale/warranty-form', element: <WarrantyForm /> },
+    { path: '/planexplanation/yewale/revised-work-followup', element: <StepPage name="Yewale - Revised Work Followup" /> },
+    { path: '/planexplanation/nadbrahma/owner-material', element: <OwnerMaterialCheckForm /> },
+    { path: '/planexplanation/nadbrahma/warranty-period', element: <WarrantyPeriodForm /> },
+    { path: '/planexplanation/nadbrahma/work-steps-for', element: <WorkStepsForm /> },
+    { path: '/test2', element: <StepPage name="Test2" /> },
+    { path: '/test3', element: <StepPage name="Test3" /> },
   ]);
 
-  console.log('FormsRoutes: Current path:', location.pathname);
   console.log('FormsRoutes: Matched route element:', routes);
 
   if (!routes) {
-    console.log('FormsRoutes: No route matched for', location.pathname);
+    console.error('FormsRoutes: No route matched for', location.pathname, 'Possible causes: Missing Router context, invalid path, or import failure');
     return <FallbackComponent path={location.pathname} />;
   }
 
-  return routes;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      {routes}
+    </Suspense>
+  );
 };
 
 export default FormsRoutes;

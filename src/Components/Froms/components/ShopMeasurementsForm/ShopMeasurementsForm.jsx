@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import formConfig from "./ShopMeasurementsFormQuestion";
 import logo from "../../../../../public/Images/BoardWorksListForm/logo.png";
 import { ToastContainer, toast } from "react-toastify";
@@ -33,7 +32,6 @@ const validationMessages = {
 };
 
 export default function ShopMeasurementsForm() {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({});
   const [language, setLanguage] = useState("mr");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -262,7 +260,7 @@ export default function ShopMeasurementsForm() {
               validationMessages[language].submitSuccess}
           </p>
           <button
-            onClick={() => navigate("/project-work-followup")}
+        
             className="text-sm sm:text-base text-white px-4 sm:px-6 py-1.5 sm:py-2 rounded bg-blue-600 hover:bg-blue-700 transition-colors"
           >
             {language === "mr" ? "पुढे जा" : "Continue"}

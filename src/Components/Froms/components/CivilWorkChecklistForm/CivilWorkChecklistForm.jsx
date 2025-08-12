@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import CivilWorkChecklistFormQuestion from "./CivilWorkChecklistFormQuestion";
 import logo from "../../../../../public/Images/BoardWorksListForm/logo.png";
 import { ToastContainer, toast } from "react-toastify";
@@ -22,7 +21,7 @@ const {
 } = CivilWorkChecklistFormQuestion;
 
 export default function CivilWorkChecklistForm() {
-  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     cctv_understood: null,
     internet_understood: null,
@@ -167,7 +166,7 @@ export default function CivilWorkChecklistForm() {
         },
       }
     );
-    navigate("/material-checklist");
+
     setIsSubmitting(false);
   };
 

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import OnlineSurveyQuestion from "./OnlineSurveyQuestion.jsx";
 import logo from "../../../../../public/Images/BoardWorksListForm/logo.png";
 import { ToastContainer, toast } from "react-toastify";
@@ -535,7 +534,7 @@ const QuestionRenderer = ({
 // --- Main Form Component ---
 
 const OnlineSurveyForm = () => {
-  const navigate = useNavigate();
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lang, setLang] = useState("mr");
   const [answers, setAnswers] = useState({});
@@ -777,7 +776,7 @@ const OnlineSurveyForm = () => {
       setUploadedFiles({});
       setCurrentIndex(0);
       setIsLoading(false);
-      navigate("/shop-measurements");
+
     }, 1200);
   };
 

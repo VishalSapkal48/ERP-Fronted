@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import InternalDeprmentWorkingQuestion from "./InternalDeprmentWorkingQuestion";
 import logo from "../../../../../public/Images/BoardWorksListForm/logo.png";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 const { formConfig, validationMessages } = InternalDeprmentWorkingQuestion;
 
 export default function InternalDepartmentWorking() {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({});
   const [language, setLanguage] = useState("mr");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -97,7 +95,7 @@ export default function InternalDepartmentWorking() {
         position: "top-right",
         autoClose: 3000,
       });
-      navigate("/inspection-checklist");
+    
     }
   };
 

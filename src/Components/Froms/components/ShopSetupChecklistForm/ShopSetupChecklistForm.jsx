@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import ShopSetupChecklistFormQuestion from "./ShopSetupChecklistFormQuestion";
 import logo from "../../../../../public/Images/BoardWorksListForm/logo.png";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 const { formConfig, validationMessages } = ShopSetupChecklistFormQuestion;
 
 export default function ShopSetupChecklistForm() {
-  const navigate = useNavigate();
   const [language, setLanguage] = useState("en");
   const [formData, setFormData] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -402,7 +400,7 @@ export default function ShopSetupChecklistForm() {
               "फॉर्म यशस्वीरित्या सबमिट झाला!"}
           </p>
           <button
-            onClick={() => navigate("/dashboard")}
+          
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium"
           >
             {language === "mr" ? "पुढे जा" : "Continue"}

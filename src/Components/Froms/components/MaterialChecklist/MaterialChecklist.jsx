@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import MaterialCheckListQuestion from "./MaterialCheckListQuestion";
 import logo from "../../../../../public/Images/BoardWorksListForm/logo.png";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 const { categories, checklistData, config } = MaterialCheckListQuestion;
 
 export default function MaterialChecklist() {
-  const navigate = useNavigate();
+
   const [language, setLanguage] = useState("mr");
   const [agreement, setAgreement] = useState(null);
   const [materialAvailability, setMaterialAvailability] = useState({});
@@ -150,7 +149,7 @@ export default function MaterialChecklist() {
                 : `Submitted: ${formatDateTime(language).replace("Date:", "")}`}
             </p>
             <button
-              onClick={() => navigate("/inspection-checklist")}
+            
               className="text-sm sm:text-base bg-blue-600 text-white px-4 sm:px-6 py-1.5 sm:py-2 rounded hover:bg-blue-700"
             >
               {language === "en"

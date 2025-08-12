@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   TermsandConditionQuestion as config,
   terms,
@@ -9,7 +8,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function TermsandCondition() {
-  const navigate = useNavigate();
   const [language, setLanguage] = useState("en");
   const [checkedTerms, setCheckedTerms] = useState({});
   const [agreement, setAgreement] = useState(null);
@@ -89,7 +87,7 @@ function TermsandCondition() {
               : "अटी आणि शर्तींना सहमती दिल्याबद्दल धन्यवाद."}
           </p>
           <button
-            onClick={() => navigate("/dashboard")}
+          
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium"
           >
             {language === "en" ? "Continue" : "पुढे जा"}
