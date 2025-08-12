@@ -15,10 +15,12 @@ import InvoiceList from '../Components/Purchase_Module/Invoices/InvoiceList';
 import QuotationManager from '../Components/Purchase_Module/features/QuotationManagement/QuotationManager';
 import MultiCurrencyPOGenerator from '../Components/Purchase_Module/features/MultiCurrencyPO/MultiCurrencyPOGenerator';
 import AmendmentHistory from '../Components/Purchase_Module/features/POAmendmentHistory/AmendmentHistory';
+import Dashboard from '../Components/Purchase_Module/Dashboard';
 
 function PurchaseRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<Dashboard />} />
       <Route path="/suppliers" element={<SupplierList />} />
 
     

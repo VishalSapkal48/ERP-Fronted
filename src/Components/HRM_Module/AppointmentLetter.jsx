@@ -254,7 +254,7 @@ const AppointmentLetter = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <img
-            src="/Images/logo.png" // Corrected path for public directory
+            src="../../../public/Images/BoardWorksListForm/logo.png" // Corrected path for public directory
             alt="YNK Enterprises Logo"
             className="mx-auto mb-4 w-24 h-24 object-contain"
           />

@@ -1,42 +1,75 @@
-import React, { useState } from 'react';
-import AdminNavBar from '../Components/Admin_Panel/AdminNavBar';
-import AdminSideBar from '../Components/Admin_Panel/AdminSideBar';
-import AdminRoutes from '../Routes/AdminRoutes';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AdminSideBar from "../Components/Admin_Panel/AdminSideBar";
+import AdminNavBar from "../Components/Admin_Panel/AdminNavBar";
+import AdminRoutes from "../Routes/AdminRoutes";
 
-function AdminLayout() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+const AdminLayout = ({ onLogout }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const navigate = useNavigate();
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
+  const handleLogout = () => {
+    try {
+      console.log("AdminLayout: Initiating logout");
+      // Clear all authentication-related storage
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("openSubMenus");
+      sessionStorage.clear();
+      
+      // Call onLogout to reset role and username in App.js
+      if (onLogout) {
+        console.log("AdminLayout: Calling onLogout from App.js");
+        onLogout();
+      }
+
+      // Navigate to login page
+      console.log("AdminLayout: Navigating to /");
+      navigate("/", { replace: true });
+
+      // Close sidebar on mobile
+      if (isSidebarOpen) {
+        console.log("AdminLayout: Closing sidebar");
+        toggleSidebar();
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="h-screen w-full flex overflow-hidden bg-gray-100">
+      {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-gradient-to-b from-gray-900 to-gray-800 text-white transform ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0 lg:static lg:inset-0 transition-transform duration-300 ease-in-out z-30 shadow-2xl`}
+        className={`fixed inset-y-0 left-0 w-64 bg-gray-800 text-white transform z-40 transition-transform duration-300
+        ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:static`}
       >
-        <AdminSideBar closeSidebar={closeSidebar} />
+        <AdminSideBar closeSidebar={toggleSidebar} onLogout={handleLogout} />
       </div>
+
+      {/* Overlay for mobile */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 lg:hidden z-20"
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
           onClick={toggleSidebar}
-        ></div>
+        />
       )}
-      <div className="flex-1 flex flex-col">
-        <AdminNavBar toggleSidebar={toggleSidebar} />
-        <div className="p-6 bg-gray-100 flex-1">
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col h-full">
+        {/* Navbar */}
+        <header className="sticky top-0 z-20 bg-blue-600 text-white shadow p-4 flex justify-between items-center">
+          <AdminNavBar toggleSidebar={toggleSidebar} onLogout={handleLogout} />
+        </header>
+
+        {/* Scrollable Content */}
+        <main className="flex-1 overflow-y-auto p-6">
           <AdminRoutes />
-        </div>
+        </main>
       </div>
     </div>
   );
-}
+};
 
 export default AdminLayout;

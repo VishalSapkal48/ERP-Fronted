@@ -264,8 +264,9 @@
 // export default AdminSideBar;
 
 // src/Components/Admin_Panel/AdminSideBar.jsx
-import React, { useState, useEffect, useCallback } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+
+import React, { useState, useEffect, useCallback } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
@@ -283,282 +284,276 @@ import {
   LogOut,
   ChevronUp,
   ChevronDown,
-} from 'lucide-react';
+} from "lucide-react";
 
-function AdminSideBar({ closeSidebar }) {
+function AdminSideBar({ closeSidebar, onLogout }) {
   const [activeModule, setActiveModule] = useState(null);
   const [openSubMenus, setOpenSubMenus] = useState({});
   const location = useLocation();
 
   useEffect(() => {
-    const savedSubMenus = localStorage.getItem('openSubMenus');
+    const savedSubMenus = localStorage.getItem("openSubMenus");
     if (savedSubMenus) {
       setOpenSubMenus(JSON.parse(savedSubMenus));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('openSubMenus', JSON.stringify(openSubMenus));
+    localStorage.setItem("openSubMenus", JSON.stringify(openSubMenus));
   }, [openSubMenus]);
 
-  const toggleModule = useCallback((module) => {
-    setActiveModule((prev) => (prev === module ? null : module));
-    closeSidebar?.();
-  }, [closeSidebar]);
+  const toggleModule = useCallback(
+    (module) => {
+      setActiveModule((prev) => (prev === module ? null : module));
+      closeSidebar?.();
+    },
+    [closeSidebar]
+  );
 
-  const toggleSubMenu = useCallback((label) => {
-    setOpenSubMenus((prev) => ({ ...prev, [label]: !prev[label] }));
-    closeSidebar?.();
-  }, [closeSidebar]);
+  const toggleSubMenu = useCallback(
+    (label) => {
+      setOpenSubMenus((prev) => ({ ...prev, [label]: !prev[label] }));
+      closeSidebar?.();
+    },
+    [closeSidebar]
+  );
 
   const isActivePath = useCallback(
-    (path) => location.pathname === path || location.pathname.startsWith(path + '/'),
+    (path) => location.pathname === path || location.pathname.startsWith(path + "/"),
     [location.pathname]
   );
 
   const modules = {
     crm: [
-      { path: '/admin/crm/leads', label: 'Leads', icon: Users },
-      { path: '/admin/crm/customers', label: 'Customers', icon: Users },
-      { path: '/admin/crm/follow-ups', label: 'Follow-Ups', icon: Clock },
-      { path: '/admin/crm/reminders', label: 'Reminders', icon: Clock },
-      { path: '/admin/crm/proposals', label: 'Proposals', icon: FileText },
-      { path: '/admin/crm/sales', label: 'Sales Reports', icon: BarChart },
-      { path: '/admin/crm/contracts', label: 'Contracts', icon: FileText },
-      { path: '/admin/crm/projects', label: 'Projects', icon: Briefcase },
-      { path: '/admin/crm/tasks', label: 'Task Management', icon: FileText },
-      { path: '/admin/crm/utilities', label: 'Utilities', icon: FileText },
-      { path: '/admin/crm/settings', label: 'Settings', icon: FileText },
-      { path: '/admin/crm/expenses', label: 'Expenses', icon: DollarSign },
+      { path: "/admin/crm/leads", label: "Leads", icon: Users },
+      { path: "/admin/crm/customers", label: "Customers", icon: Users },
+      { path: "/admin/crm/follow-ups", label: "Follow-Ups", icon: Clock },
+      { path: "/admin/crm/reminders", label: "Reminders", icon: Clock },
+      { path: "/admin/crm/proposals", label: "Proposals", icon: FileText },
+      { path: "/admin/crm/sales", label: "Sales Reports", icon: BarChart },
+      { path: "/admin/crm/contracts", label: "Contracts", icon: FileText },
+      { path: "/admin/crm/projects", label: "Projects", icon: Briefcase },
+      { path: "/admin/crm/tasks", label: "Task Management", icon: FileText },
+      { path: "/admin/crm/utilities", label: "Utilities", icon: FileText },
+      { path: "/admin/crm/settings", label: "Settings", icon: FileText },
+      { path: "/admin/crm/expenses", label: "Expenses", icon: DollarSign },
     ],
     hrm: [
-      { path: '/admin/hrm', label: 'HRM Dashboard', icon: LayoutDashboard },
+      { path: "/admin/hrm", label: "HRM Dashboard", icon: LayoutDashboard },
       {
-        label: 'Employees',
+        label: "Employees",
         icon: Users,
         subItems: [
-          { path: '/admin/hrm/employees/add', label: 'Add Employee', icon: UserPlus },
-          { path: '/admin/hrm/employees', label: 'Show All Employees', icon: List },
-          { path: '/admin/hrm/offerletter', label: 'Documentation', icon: FileText },
+          { path: "/admin/hrm/employees/add", label: "Add Employee", icon: UserPlus },
+          { path: "/admin/hrm/employees", label: "Show All Employees", icon: List },
+          { path: "/admin/hrm/offerletter", label: "Documentation", icon: FileText },
         ],
       },
       {
-        label: 'Attendance',
+        label: "Attendance",
         icon: Calendar,
         subItems: [
-          { path: '/admin/hrm/attendance/add', label: 'Add Attendance', icon: PlusCircle },
-          { path: '/admin/hrm/attendance', label: 'View All Attendance', icon: List },
+          { path: "/admin/hrm/attendance/add", label: "Add Attendance", icon: PlusCircle },
+          { path: "/admin/hrm/attendance", label: "View All Attendance", icon: List },
         ],
       },
-      { path: '/admin/hrm/leaves', label: 'Leaves', icon: FileText },
-      { path: '/admin/hrm/payroll', label: 'Payroll', icon: DollarSign },
-      { path: '/admin/hrm/holiday', label: 'Holiday', icon: Calendar },
+      { path: "/admin/hrm/leaves", label: "Leaves", icon: FileText },
+      { path: "/admin/hrm/payroll", label: "Payroll", icon: DollarSign },
+      { path: "/admin/hrm/holiday", label: "Holiday", icon: Calendar },
     ],
     purchase: [
       {
-        label: 'Suppliers',
+        label: "Suppliers",
         icon: Users,
         subItems: [
-          { path: '/admin/purchase/suppliers', label: 'Suppliers List', icon: Users },
-          { path: '/admin/purchase/supplier-form', label: 'Add Supplier', icon: UserPlus },
+          { path: "/admin/purchase/suppliers", label: "Suppliers List", icon: Users },
+          { path: "/admin/purchase/supplier-form", label: "Add Supplier", icon: UserPlus },
         ],
       },
       {
-        label: 'Purchase',
+        label: "Purchase",
         icon: FileText,
         subItems: [
-          { path: '/admin/purchase/purchase-orders', label: 'Purchase Orders List', icon: FileText },
-          { path: '/admin/purchase/purchase-order-form', label: 'Add Purchase Order', icon: FileText },
+          { path: "/admin/purchase/purchase-orders", label: "Purchase Orders List", icon: FileText },
+          { path: "/admin/purchase/purchase-order-form", label: "Add Purchase Order", icon: FileText },
         ],
       },
       {
-        label: 'Quotations',
+        label: "Quotations",
         icon: FileText,
         subItems: [
-          { path: '/admin/purchase/quotations', label: 'Quotations List', icon: FileText },
-          { path: '/admin/purchase/quotation-form', label: 'Add Quotation', icon: FileText },
+          { path: "/admin/purchase/quotations", label: "Quotations List", icon: FileText },
+          { path: "/admin/purchase/quotation-form", label: "Add Quotation", icon: FileText },
         ],
       },
       {
-        label: 'Invoices',
+        label: "Invoices",
         icon: FileText,
         subItems: [
-          { path: '/admin/purchase/invoices', label: 'Invoices List', icon: FileText },
-          { path: '/admin/purchase/invoice-form', label: 'Add Invoice', icon: FileText },
+          { path: "/admin/purchase/invoices", label: "Invoices List", icon: FileText },
+          { path: "/admin/purchase/invoice-form", label: "Add Invoice", icon: FileText },
         ],
       },
-      { path: '/admin/purchase/quotation-manager', label: 'Quotation Management', icon: FileText },
-      { path: '/admin/purchase/multi-currency-po', label: 'Multi-Currency PO', icon: DollarSign },
-      { path: '/admin/purchase/amendment-history', label: 'Amendment History', icon: Clock },
+      { path: "/admin/purchase/quotation-manager", label: "Quotation Management", icon: FileText },
+      { path: "/admin/purchase/multi-currency-po", label: "Multi-Currency PO", icon: DollarSign },
+      { path: "/admin/purchase/amendment-history", label: "Amendment History", icon: Clock },
     ],
     inventory: [
-      { path: '/admin/inventory/inventory', label: 'Inventory', icon: Package },
-      { path: '/admin/inventory/stock-management', label: 'Stock Management', icon: FileText },
-      { path: '/admin/inventory/price-tax', label: 'Price & Tax Management', icon: DollarSign },
-      { path: '/admin/inventory/products', label: 'Products', icon: FileText },
-      { path: '/admin/inventory/categories', label: 'Categories', icon: FileText },
-      { path: '/admin/inventory/customers', label: 'Customers', icon: Users },
-      { path: '/admin/inventory/suppliers', label: 'Suppliers', icon: Users },
-      { path: '/admin/inventory/purchases', label: 'Purchases', icon: FileText },
-      { path: '/admin/inventory/invoices', label: 'Invoices', icon: FileText },
-      { path: '/admin/inventory/pos', label: 'POS', icon: DollarSign },
-      { path: '/admin/inventory/accounts', label: 'Accounts', icon: DollarSign },
-      { path: '/admin/inventory/reports', label: 'Reports', icon: BarChart },
-      { path: '/admin/inventory/settings', label: 'Settings', icon: FileText },
+      { path: "/admin/inventory/inventory", label: "Inventory", icon: Package },
+      { path: "/admin/inventory/stock-management", label: "Stock Management", icon: FileText },
+      { path: "/admin/inventory/price-tax", label: "Price & Tax Management", icon: DollarSign },
+      { path: "/admin/inventory/products", label: "Products", icon: FileText },
+      { path: "/admin/inventory/categories", label: "Categories", icon: FileText },
+      { path: "/admin/inventory/customers", label: "Customers", icon: Users },
+      { path: "/admin/inventory/suppliers", label: "Suppliers", icon: Users },
+      { path: "/admin/inventory/purchases", label: "Purchases", icon: FileText },
+      { path: "/admin/inventory/invoices", label: "Invoices", icon: FileText },
+      { path: "/admin/inventory/pos", label: "POS", icon: DollarSign },
+      { path: "/admin/inventory/accounts", label: "Accounts", icon: DollarSign },
+      { path: "/admin/inventory/reports", label: "Reports", icon: BarChart },
+      { path: "/admin/inventory/settings", label: "Settings", icon: FileText },
     ],
     reports: [
-      { path: '/admin/reports', label: 'Report Dashboard', icon: BarChart },
-      { path: '/admin/reports/sales', label: 'Sales Report', icon: BarChart },
-      { path: '/admin/reports/inventory', label: 'Inventory Report', icon: Package },
-      { path: '/admin/reports/hr', label: 'HR Report', icon: Users },
-      { path: '/admin/reports/projects', label: 'Projects Report', icon: Briefcase },
-      { path: '/admin/reports/vendors', label: 'Vendors Report', icon: Truck },
+      { path: "/admin/reports", label: "Report Dashboard", icon: BarChart },
+      { path: "/admin/reports/sales", label: "Sales Report", icon: BarChart },
+      { path: "/admin/reports/inventory", label: "Inventory Report", icon: Package },
+      { path: "/admin/reports/hr", label: "HR Report", icon: Users },
+      { path: "/admin/reports/projects", label: "Projects Report", icon: Briefcase },
+      { path: "/admin/reports/vendors", label: "Vendors Report", icon: Truck },
     ],
     feedback: [
       {
-        label: 'Nadbrahma',
+        label: "Nadbrahma",
         icon: FileText,
         subItems: [
-          { path: '/admin/feedback/nadbramhacomponents/call1folder1', label: 'Call 1', icon: FileText },
-          { path: '/admin/feedback/nadbramhacomponents/call2folder2', label: 'Call 2', icon: FileText },
-          { path: '/admin/feedback/nadbramhacomponents/call3folder3', label: 'Call 3', icon: FileText },
-          { path: '/admin/feedback/nadbramhacomponents/call4folder4', label: 'Call 4', icon: FileText },
-          { path: '/admin/feedback/nadbramhacomponents/call5folder5', label: 'Call 5', icon: FileText },
-          { path: '/admin/feedback/nadbramhacomponents/call6folder6', label: 'Call 6', icon: FileText },
+          { path: "/admin/feedback/nadbramhacomponents/call1folder1", label: "Call 1", icon: FileText },
+          { path: "/admin/feedback/nadbramhacomponents/call2folder2", label: "Call 2", icon: FileText },
+          { path: "/admin/feedback/nadbramhacomponents/call3folder3", label: "Call 3", icon: FileText },
+          { path: "/admin/feedback/nadbramhacomponents/call4folder4", label: "Call 4", icon: FileText },
+          { path: "/admin/feedback/nadbramhacomponents/call5folder5", label: "Call 5", icon: FileText },
+          { path: "/admin/feedback/nadbramhacomponents/call6folder6", label: "Call 6", icon: FileText },
         ],
       },
       {
-        label: 'Yewale',
+        label: "Yewale",
         icon: FileText,
         subItems: [
-          { path: '/admin/feedback/yewalecomponents/call1folder1', label: 'Call 1', icon: FileText },
-          { path: '/admin/feedback/yewalecomponents/call2folder2', label: 'Call 2', icon: FileText },
-          { path: '/admin/feedback/yewalecomponents/call3folder3', label: 'Call 3', icon: FileText },
-          { path: '/admin/feedback/yewalecomponents/call4folder4', label: 'Call 4', icon: FileText },
-          { path: '/admin/feedback/yewalecomponents/call5folder5', label: 'Call 5', icon: FileText },
-          { path: '/admin/feedback/yewalecomponents/call6folder6', label: 'Call 6', icon: FileText },
-          { path: '/admin/feedback/yewalecomponents/call7folder7', label: 'Call 7', icon: FileText },
-          { path: '/admin/feedback/yewalecomponents/call8folder8', label: 'Call 8', icon: FileText },
-          { path: '/admin/feedback/yewalecomponents/call9folder9', label: 'Call 9', icon: FileText },
+          { path: "/admin/feedback/yewalecomponents/call1folder1", label: "Call 1", icon: FileText },
+          { path: "/admin/feedback/yewalecomponents/call2folder2", label: "Call 2", icon: FileText },
+          { path: "/admin/feedback/yewalecomponents/call3folder3", label: "Call 3", icon: FileText },
+          { path: "/admin/feedback/yewalecomponents/call4folder4", label: "Call 4", icon: FileText },
+          { path: "/admin/feedback/yewalecomponents/call5folder5", label: "Call 5", icon: FileText },
+          { path: "/admin/feedback/yewalecomponents/call6folder6", label: "Call 6", icon: FileText },
+          { path: "/admin/feedback/yewalecomponents/call7folder7", label: "Call 7", icon: FileText },
+          { path: "/admin/feedback/yewalecomponents/call8folder8", label: "Call 8", icon: FileText },
+          { path: "/admin/feedback/yewalecomponents/call9folder9", label: "Call 9", icon: FileText },
         ],
       },
     ],
   };
 
   return (
-    <aside
-      className="w-64 h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white p-6 fixed overflow-y-auto shadow-2xl z-40 transform transition-transform lg:translate-x-0"
-    >
-      <div className="border-b border-gray-700 rounded-t-lg bg-gradient-to-r from-blue-900 to-gray-800 shadow-lg p-4 mb-4">
-        <img
-          src="/Images/logo.png"
-          alt="Logo"
-          className="w-10 h-10 mb-2 transition-transform duration-300 hover:scale-110"
-          onError={(e) => {
-            e.target.src = "https://via.placeholder.com/40";
-          }}
-        />
-        <h2 className="text-xl font-bold text-blue-300">YNK Admin</h2>
+    <aside className="h-full bg-gray-800 text-white">
+      <div className="p-4 border-b border-gray-700">
+        <div className="border-b border-gray-700 rounded-t-lg bg-gradient-to-r from-gray-900 to-gray-700 shadow-lg p-4">
+          <img
+            src="/Images/BoardWorksListForm/logo.png"
+            alt="Logo"
+            className="w-10 h-10 mb-2 transition-transform duration-300 hover:scale-110"
+            onError={(e) => {
+              e.target.src = "https://via.placeholder.com/40";
+            }}
+          />
+          <h2 className="text-xl font-bold text-blue-300">YNK Admin</h2>
+        </div>
       </div>
-      {Object.entries(modules).map(([moduleKey, items]) => (
-        <div key={moduleKey} className="mb-4">
-          <button
-            onClick={() => toggleModule(moduleKey)}
-            className="flex items-center justify-between w-full p-3 font-semibold text-lg rounded-lg hover:bg-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
-            aria-expanded={activeModule === moduleKey}
-            aria-controls={`module-${moduleKey}`}
-          >
-            <span className="uppercase">{moduleKey}</span>
-            {activeModule === moduleKey ? (
-              <ChevronUp className="w-5 h-5" />
-            ) : (
-              <ChevronDown className="w-5 h-5" />
-            )}
-          </button>
-          {activeModule === moduleKey && (
-            <ul id={`module-${moduleKey}`} className="mt-2 space-y-1">
-              {items.map((item) => {
-                const isSubOpen = openSubMenus[item.label];
-                return item.subItems ? (
-                  <li key={item.label}>
-                    <div
-                      onClick={() => toggleSubMenu(item.label)}
-                      className={`flex items-center justify-between p-3 rounded-lg cursor-pointer hover:bg-gray-600 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                        isSubOpen ? 'bg-blue-600' : ''
-                      }`}
-                      tabIndex={0}
-                      onKeyDown={(e) => e.key === 'Enter' && toggleSubMenu(item.label)}
-                      aria-expanded={isSubOpen}
-                      aria-controls={`submenu-${item.label}`}
-                    >
-                      <div className="flex items-center">
+      <div className="p-4 overflow-y-auto h-[calc(100%-80px)] scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
+        {Object.entries(modules).map(([moduleKey, items]) => (
+          <div key={moduleKey} className="mb-4">
+            <button
+              onClick={() => toggleModule(moduleKey)}
+              className={`flex items-center justify-between w-full p-3 font-semibold text-lg rounded-lg transition-all
+                ${activeModule === moduleKey ? "bg-blue-600 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"}`}
+              aria-expanded={activeModule === moduleKey}
+              aria-controls={`module-${moduleKey}`}
+            >
+              <span className="uppercase">{moduleKey}</span>
+              {activeModule === moduleKey ? (
+                <ChevronUp className="w-5 h-5" />
+              ) : (
+                <ChevronDown className="w-5 h-5" />
+              )}
+            </button>
+            {activeModule === moduleKey && (
+              <ul id={`module-${moduleKey}`} className="mt-2 space-y-1">
+                {items.map((item) => {
+                  const isSubOpen = openSubMenus[item.label];
+                  return item.subItems ? (
+                    <li key={item.label}>
+                      <div
+                        onClick={() => toggleSubMenu(item.label)}
+                        className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition-all
+                          ${isSubOpen || item.subItems.some((sub) => isActivePath(sub.path))
+                            ? "bg-blue-600 text-white"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white"}`}
+                        tabIndex={0}
+                        onKeyDown={(e) => e.key === "Enter" && toggleSubMenu(item.label)}
+                        aria-expanded={isSubOpen}
+                        aria-controls={`submenu-${item.label}`}
+                      >
+                        <div className="flex items-center">
+                          <item.icon className="w-5 h-5 mr-3 text-gray-300" />
+                          {item.label}
+                        </div>
+                        {isSubOpen ? (
+                          <ChevronUp className="w-4 h-4" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4" />
+                        )}
+                      </div>
+                      {isSubOpen && (
+                        <ul id={`submenu-${item.label}`} className="ml-6 mt-1 space-y-1">
+                          {item.subItems.map((subItem) => (
+                            <li key={subItem.path}>
+                              <NavLink
+                                to={subItem.path}
+                                className={({ isActive }) =>
+                                  `flex items-center p-2 rounded-lg transition-all ${
+                                    isActive ? "bg-blue-600 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                                  }`
+                                }
+                                onClick={() => closeSidebar?.()}
+                              >
+                                <subItem.icon className="w-4 h-4 mr-3 text-gray-300" />
+                                {subItem.label}
+                              </NavLink>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ) : (
+                    <li key={item.path}>
+                      <NavLink
+                        to={item.path}
+                        className={({ isActive }) =>
+                          `flex items-center p-3 rounded-lg transition-all ${
+                            isActive ? "bg-blue-600 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                          }`
+                        }
+                        onClick={() => closeSidebar?.()}
+                      >
                         <item.icon className="w-5 h-5 mr-3 text-gray-300" />
                         {item.label}
-                      </div>
-                      {isSubOpen ? (
-                        <ChevronUp className="w-4 h-4" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4" />
-                      )}
-                    </div>
-                    {isSubOpen && (
-                      <ul id={`submenu-${item.label}`} className="ml-6 mt-1 space-y-1">
-                        {item.subItems.map((subItem) => (
-                          <li key={subItem.path}>
-                            <NavLink
-                              to={subItem.path}
-                              className={({ isActive }) =>
-                                `flex items-center p-2 rounded-lg transition-all ${
-                                  isActive ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-600 hover:text-white'
-                                }`
-                              }
-                              onClick={() => closeSidebar?.()}
-                            >
-                              <subItem.icon className="w-4 h-4 mr-3 text-gray-300" />
-                              {subItem.label}
-                            </NavLink>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ) : (
-                  <li key={item.path}>
-                    <NavLink
-                      to={item.path}
-                      className={({ isActive }) =>
-                        `flex items-center p-3 rounded-lg transition-all ${
-                          isActive ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-600 hover:text-white'
-                        }`
-                      }
-                      onClick={() => closeSidebar?.()}
-                    >
-                      <item.icon className="w-5 h-5 mr-3 text-gray-300" />
-                      {item.label}
-                    </NavLink>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </div>
-      ))}
-      <div className="pt-4 border-t border-gray-700">
-        <NavLink
-          to="/admin/logout"
-          className={({ isActive }) =>
-            `flex items-center p-3 rounded-lg transition-all ${
-              isActive ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-red-600 hover:text-white'
-            }`
-          }
-          onClick={() => {
-            closeSidebar?.();
-            localStorage.removeItem('openSubMenus');
-          }}
-        >
-          <LogOut className="w-5 h-5 mr-3 text-gray-300" />
-          Logout
-        </NavLink>
+                      </NavLink>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        ))}
+       
       </div>
     </aside>
   );

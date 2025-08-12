@@ -1,24 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Menu } from "lucide-react";
 
-function RepoNavBar({ toggleSidebar }) {
+const RepoNavBar = ({ toggleSidebar, onLogout }) => {
+
+
+
+
   return (
-    <nav className="bg-blue-600 text-white p-4 flex items-center justify-between shadow-md">
-      <div className="text-xl font-bold">Reports Management</div>
-      <button
-        className="lg:hidden p-2 rounded hover:bg-blue-700 focus:outline-none"
-        onClick={toggleSidebar}
-      >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-      </button>
+    <nav className="w-full flex items-center justify-between">
+      <div className="flex items-center space-x-4">
+        <button
+          onClick={toggleSidebar}
+          className="md:hidden p-2 rounded-md text-white hover:bg-blue-700"
+        >
+          <Menu size={20} />
+        </button>
+        <Link to="/reports" className="text-xl font-bold text-white">
+          Reports Management
+        </Link>
+      </div>
+      <div className="flex items-center space-x-4">
+        
+        <button
+          onClick={onLogout}
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors duration-300"
+        >
+          Logout
+        </button>
+      </div>
     </nav>
   );
-}
+};
 
 export default RepoNavBar;

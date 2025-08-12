@@ -127,7 +127,7 @@ const Attendance = () => {
   };
 
   return (
-    <div className="ml-64 p-6 bg-gray-100 min-h-screen">
+    <div className=" p-6 bg-gray-100 min-h-screen">
       <div className="max-w-7xl w-full">
         <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-800 text-center">
           Staff Attendance Management

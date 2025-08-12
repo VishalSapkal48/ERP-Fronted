@@ -241,7 +241,7 @@ const ExperienceLetter = () => {
       <div ref={letterRef} className="bg-white p-8 max-w-3xl w-full shadow-lg rounded-lg mx-4 border border-gray-200">
         <div className="text-center mb-8">
           <img
-            src="../../../public/Images/logo.png"
+            src="../../../public/Images/BoardWorksListForm/logo.png"
             alt="YNK Enterprises Logo"
             className="mx-auto mb-4 w-24 h-24 object-contain"
           />

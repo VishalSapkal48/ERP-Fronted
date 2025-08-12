@@ -203,7 +203,7 @@ const Holiday = ({ currentDate = new Date() }) => {
   };
 
   return (
-    <div className="ml-64 p-10 bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen">
+    <div className=" p-10 bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-10 gap-4">
           <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight">Holiday Management</h2>
