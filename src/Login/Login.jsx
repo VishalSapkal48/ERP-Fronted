@@ -97,7 +97,7 @@ const Login = ({ onLogin = () => {} }) => {
     { username: 'CRM USER', role: 'crm', label: 'CRM User', color: 'bg-blue-600' },
     { username: 'INVENTORY USER ', role: 'inventory', label: 'Inventory User', color: 'bg-green-600' },
     { username: 'HRM USER ', role: 'hrm', label: 'HRM User', color: 'bg-purple-600' },
-    { username: 'REPORT USR', role: 'reports', label: 'Reports User', color: 'bg-orange-600' },
+    { username: 'REPORT USER', role: 'reports', label: 'Reports User', color: 'bg-orange-600' },
     { username: 'ADMIN  USER', role: 'admin', label: 'Admin User', color: 'bg-red-600' },
     { username: 'PURCHASE USER', role: 'purchase', label: 'Purchase User', color: 'bg-indigo-600' },
     { username: 'FORM USER', role: 'forms', label: 'Forms User', color: 'bg-teal-600' },
