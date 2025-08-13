@@ -180,7 +180,7 @@ const AddAttendance = () => {
   };
 
   return (
-    <div className="ml-64 p-6 bg-gray-screen100 min-h-">
+    <div className=" p-6 bg-gray-screen100 min-h-">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-800">Add Attendance</h1>
         <div className="bg-white p-6 rounded-lg shadow">

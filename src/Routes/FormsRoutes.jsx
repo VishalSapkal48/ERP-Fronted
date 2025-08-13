@@ -52,6 +52,8 @@ import OwnerMaterialCheckForm from '../Components/Froms/components/planexplanati
 import WarrantyPeriodForm from '../Components/Froms/components/planexplanation/nadbramhacomponents/WarrantyPeriodForm.jsx';
 import WorkStepsForm from '../Components/Froms/components/planexplanation/nadbramhacomponents/WorkStepsForm.jsx';
 
+
+
 // Error Boundary Component
 class ErrorBoundary extends Component {
   state = { error: null };
@@ -82,10 +84,10 @@ const StepPage = ({ name }) => {
 };
 
 const FallbackComponent = ({ path }) => (
-  <div className="p-4 text-gray-600">
-    <h2>No Data Available</h2>
-    <p>Route: {path}</p>
-    <p>Check the component implementation or data source.</p>
+  <div className="flex flex-col items-center justify-center h-screen text-gray-600">
+    <h2 className="text-2xl font-semibold">404 - Page Not Found</h2>
+    <p className="mt-2">Route: {path}</p>
+    <p className="mt-1">No component is defined for this route. Please check the route configuration in FormsRoutes.jsx.</p>
   </div>
 );
 
@@ -94,11 +96,19 @@ const FormsRoutes = () => {
   console.log('FormsRoutes: Current path:', location.pathname);
 
   const routes = useRoutes([
-    { path: '/', element: <Navigate to="/dashboard" replace /> },
+    { path: '/', element: <Navigate to="/forms/dashboard" replace /> },
     {
       path: '/dashboard',
       element: (
         <ErrorBoundary path="/dashboard">
+          <ERPDashboard />
+        </ErrorBoundary>
+      ),
+    },
+    {
+      path: '/forms',
+      element: (
+        <ErrorBoundary path="/forms">
           <ERPDashboard />
         </ErrorBoundary>
       ),
@@ -188,7 +198,7 @@ const FormsRoutes = () => {
   }
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div className="flex items-center justify-center h-screen text-gray-600">Loading...</div>}>
       {routes}
     </Suspense>
   );

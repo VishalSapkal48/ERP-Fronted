@@ -2,34 +2,29 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Menu } from "lucide-react";
 
-const Navbar = ({ toggleSidebar }) => {
-  const currentDateTime = new Date().toLocaleString("en-IN", {
-    timeZone: "Asia/Kolkata",
-    hour12: true,
-  });
-
+const Navbar = ({ toggleSidebar, onLogout }) => {
+ 
   return (
-    <nav className="bg-white shadow-md border-b border-gray-200 px-4 py-3 fixed w-full z-10">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <button
-            onClick={toggleSidebar}
-            className="lg:hidden p-2 rounded-md hover:bg-gray-100"
-          >
-            <Menu size={20} />
-          </button>
-          <Link to="/" className="text-xl font-bold text-gray-800">
-            Ynk-ERP
-          </Link>
-        </div>
-        <div className="flex items-center space-x-4">
-          <span className="text-sm text-gray-500 hidden sm:block">
-            {currentDateTime}
-          </span>
-          <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
-            U
-          </div>
-        </div>
+    <nav className="w-full flex items-center justify-between">
+      <div className="flex items-center space-x-4">
+        <button
+          onClick={toggleSidebar}
+          className="md:hidden p-2 rounded-md text-white hover:bg-blue-700"
+        >
+          <Menu size={20} />
+        </button>
+        <Link to="/inventory" className="text-xl font-bold text-white">
+          Inventory Management
+        </Link>
+      </div>
+      <div className="flex items-center space-x-4">
+        
+        <button
+          onClick={onLogout}
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors duration-300"
+        >
+          Logout
+        </button>
       </div>
     </nav>
   );

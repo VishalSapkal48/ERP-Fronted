@@ -369,7 +369,7 @@ const EditEmployee = () => {
   if (error) return <div className="p-6 ml-64 text-red-500">{error}</div>;
 
   return (
-    <div className="ml-64 p-6 bg-gray-100 min-h-screen">
+    <div className=" p-6 bg-gray-100 min-h-screen">
       <div className="bg-gray-800 text-white p-4 flex justify-between items-center rounded-t-lg mb-4">
         <div className="flex space-x-6">
           {['Employee Info', 'Contact', 'Payroll', 'PfAccount', 'Security'].map((tab) => (

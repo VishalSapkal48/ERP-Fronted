@@ -205,7 +205,7 @@ const OfficeRules = () => {
         <div className="mb-8 text-sm text-gray-600 leading-relaxed font-marathi">
           <div className="text-center mb-4">
             <img
-              src="/Images/logo.png"
+              src="../../../public/Images/BoardWorksListForm/logo.png"
               alt="YNK Enterprises Logo"
               className="mx-auto mb-4 w-24 h-24 object-contain"
               onError={(e) => {

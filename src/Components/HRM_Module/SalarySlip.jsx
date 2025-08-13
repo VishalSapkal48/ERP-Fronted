@@ -279,7 +279,7 @@ const SalarySlip = () => {
           <div className="flex items-center">
             <div className="w-16 h-16 flex items-center justify-center rounded">
               <img
-                src="/Images/logo.png"
+                src="../../../public/Images/BoardWorksListForm/logo.png"
                 alt="YNK Enterprises Logo"
                 className="w-full h-full object-contain"
                 onError={(e) => {

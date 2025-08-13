@@ -55,8 +55,8 @@ import VendorLinkage from "../Components/Inventory_Module/pages/VendorLinkage";
 const InventoryRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="inventory" element={<Inventory />} />
+      {/* <Route path="/" element={<Home />} /> */}
+      <Route path="/" element={<Inventory />} />
       <Route path="stock-management" element={<StockManagement />} />
       <Route path="products" element={<Products />} />
       <Route path="categories" element={<Categories />} />

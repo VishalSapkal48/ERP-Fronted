@@ -2,19 +2,37 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import CrmRoutes from "../Routes/CrmRoutes";
 
-const CRMLayout = ({ onLogin }) => {
+const CRMLayout = ({ onLogout }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   const handleLogout = () => {
-    onLogin(null);
-    navigate("/");
+    try {
+      // Clear all authentication-related storage
+      localStorage.removeItem("authToken");
+      sessionStorage.clear();
+      
+      // Call onLogout to reset role and username in App.js
+      if (onLogout) {
+        onLogout();
+      }
+
+      // Navigate to login page
+      navigate("/", { replace: true });
+
+      // Close sidebar on mobile
+      if (isSidebarOpen) {
+        toggleSidebar();
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   const menuItems = [
-    { path: "/crm/leads", label: "Lead Management" },
+    { path: "/crm/leads", label: "Dashboard" },
     { path: "/crm/customers", label: "Customer Management" },
     { path: "/crm/follow-ups", label: "Follow-ups" },
     { path: "/crm/reminders", label: "Reminders" },
@@ -32,11 +50,21 @@ const CRMLayout = ({ onLogin }) => {
     <div className="h-screen w-full flex overflow-hidden bg-gray-100">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-blue-800 text-white transform z-40 transition-transform duration-300
+        className={`fixed inset-y-0 left-0 w-64 bg-gray-800 text-white transform z-40 transition-transform duration-300
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:static`}
       >
-        <div className="p-4 border-b border-blue-700">
-          <h1 className="text-2xl font-bold">CRM Dashboard</h1>
+        <div className="p-4 border-b border-gray-700">
+          <div className="border-b border-gray-700 rounded-t-lg bg-gradient-to-r from-gray-900 to-gray-700 shadow-lg p-4">
+            <img
+              src="/Images/BoardWorksListForm/logo.png"
+              alt="Logo"
+              className="w-10 h-10 mb-2 transition-transform duration-300 hover:scale-110"
+              onError={(e) => {
+                e.target.src = "https://via.placeholder.com/40";
+              }}
+            />
+            <h2 className="text-xl font-bold text-blue-300">CRM Dashboard</h2>
+          </div>
         </div>
         <nav className="h-[calc(100%-4rem)] overflow-y-auto mt-4">
           <ul>
@@ -45,8 +73,8 @@ const CRMLayout = ({ onLogin }) => {
                 <NavLink
                   to={item.path}
                   className={({ isActive }) =>
-                    `block p-4 hover:bg-blue-700 ${
-                      isActive ? "bg-blue-700" : ""
+                    `block p-4 hover:bg-gray-700 ${
+                      isActive ? "bg-gray-700 border-l-4 border-blue-300" : ""
                     }`
                   }
                 >
@@ -54,6 +82,14 @@ const CRMLayout = ({ onLogin }) => {
                 </NavLink>
               </li>
             ))}
+            <li className="mt-4 border-t border-gray-700">
+              <button
+                onClick={handleLogout}
+                className="block w-full text-left p-4 bg-red-600 text-white hover:bg-red-700 transition-all duration-300"
+              >
+                Logout
+              </button>
+            </li>
           </ul>
         </nav>
       </div>
@@ -69,8 +105,8 @@ const CRMLayout = ({ onLogin }) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col h-full">
         {/* Navbar */}
-        <header className="sticky top-0 z-20 bg-white shadow p-4 flex justify-between items-center">
-          <button onClick={toggleSidebar} className="md:hidden text-gray-500">
+        <header className="sticky top-0 z-20 bg-blue-600 text-white shadow p-4 flex justify-between items-center">
+          <button onClick={toggleSidebar} className="md:hidden text-white">
             <svg
               className="w-6 h-6"
               fill="none"
@@ -88,7 +124,7 @@ const CRMLayout = ({ onLogin }) => {
           <h2 className="text-xl font-semibold">CRM System</h2>
           <button
             onClick={handleLogout}
-            className="text-blue-500 hover:underline"
+            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors duration-300"
           >
             Logout
           </button>

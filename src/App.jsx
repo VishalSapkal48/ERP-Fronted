@@ -303,11 +303,19 @@ const App = () => {
     console.log('Login:', { role, username });
     setRole(role);
     setUsername(username);
+    // Store in localStorage for persistence
+    localStorage.setItem('role', role);
+    localStorage.setItem('username', username);
   };
 
   const handleLogout = () => {
     setRole(null);
     setUsername(null);
+    // Clear all authentication-related storage
+    localStorage.removeItem('role');
+    localStorage.removeItem('username');
+    localStorage.removeItem('authToken');
+    sessionStorage.clear();
   };
 
   return (
@@ -327,23 +335,23 @@ const App = () => {
         />
         <Route
           path="/inventory/*"
-          element={role === 'inventory' ? <InventoryLayout /> : <Navigate to="/" replace />}
+          element={role === 'inventory' ? <InventoryLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
         />
         <Route
           path="/hrm/*"
-          element={role === 'hrm' ? <HrmLayout /> : <Navigate to="/" replace />}
+          element={role === 'hrm' ? <HrmLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
         />
         <Route
           path="/reports/*"
-          element={role === 'reports' ? <ReportsLayout /> : <Navigate to="/" replace />}
+          element={role === 'reports' ? <ReportsLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
         />
         <Route
           path="/admin/*"
-          element={role === 'admin' ? <AdminLayout /> : <Navigate to="/" replace />}
+          element={role === 'admin' ? <AdminLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
         />
         <Route
           path="/purchase/*"
-          element={role === 'purchase' ? <PurchaseLayout /> : <Navigate to="/" replace />}
+          element={role === 'purchase' ? <PurchaseLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
         />
         <Route
           path="/forms/*"

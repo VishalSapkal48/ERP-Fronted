@@ -84,7 +84,7 @@ const Payroll = () => {
   if (error) return <div className="p-6 ml-64 text-red-500">{error}</div>;
 
   return (
-    <div className="p-6 ml-64">
+    <div className="p-6 ">
       <div className="mb-4">
         <h2 className="text-2xl font-bold mb-4">Payroll Settings</h2>
         <input
