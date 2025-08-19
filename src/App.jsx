@@ -294,7 +294,7 @@ import ReportsLayout from './Layout/ReportsLayout';
 import AdminLayout from './Layout/AdminLayout';
 import PurchaseLayout from './Layout/PurcheseLayout';
 import FormsLayout from './Layout/FormsLayout';
-
+import DevelopmentLayout from './Layout/DevelopmentLayout';
 const App = () => {
   const [role, setRole] = useState(null);
   const [username, setUsername] = useState(null);
@@ -357,6 +357,12 @@ const App = () => {
           path="/forms/*"
           element={role === 'forms' ? <FormsLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
         />
+<Route
+          path="/development/*"
+          element={role === 'development' ? <DevelopmentLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+        />
+
+
         <Route
           path="*"
           element={

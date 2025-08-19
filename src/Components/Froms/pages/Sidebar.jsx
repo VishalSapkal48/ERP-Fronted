@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+// Translation object (same as provided)
 const translations = {
   mr: {
     yewaleTitle: 'येवले प्रोजेक्ट',
@@ -136,6 +137,7 @@ const translations = {
   },
 };
 
+// Menu data (same as provided)
 const yewaleSteps = (t) => [
   { name: t.terms, path: '/forms/projects/yewale/terms-and-condition' },
   { name: t.preSurvey, path: '/forms/projects/yewale/pre-survey-script' },
@@ -229,6 +231,7 @@ const Sidebar = ({ onLogout }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Sidebar menu structure
   const sidebarMenu = [
     { name: 'Home', icon: '🏠', path: '/forms/dashboard' },
     {
@@ -260,6 +263,7 @@ const Sidebar = ({ onLogout }) => {
     { name: 'Test3', icon: '🔬', path: '/forms/test3' },
   ];
 
+  // Check if any sub-item is active
   const isAnySubItemActive = (subItems) => {
     if (!subItems) return false;
     return subItems.some((sub) => {
@@ -269,6 +273,7 @@ const Sidebar = ({ onLogout }) => {
     });
   };
 
+  // Initialize open menus based on active paths
   const getInitialOpenMenus = () => {
     const open = {};
     sidebarMenu.forEach((item) => {
@@ -295,31 +300,15 @@ const Sidebar = ({ onLogout }) => {
 
   const handleNavigation = (path) => {
     if (path) {
-      console.log('Navigating to:', path);
       navigate(path);
     }
   };
 
   const handleToggle = (menuName) => {
-    setOpenMenus((prev) => {
-      const newOpenMenus = { ...prev };
-      sidebarMenu.forEach((item) => {
-        if (item.subItems && item.name !== menuName) {
-          if (!isAnySubItemActive(item.subItems)) {
-            newOpenMenus[item.name] = false;
-          }
-          item.subItems.forEach((sub) => {
-            if (sub.subItems && sub.name !== menuName) {
-              if (!isAnySubItemActive(sub.subItems)) {
-                newOpenMenus[sub.name] = false;
-              }
-            }
-          });
-        }
-      });
-      newOpenMenus[menuName] = !prev[menuName];
-      return newOpenMenus;
-    });
+    setOpenMenus((prev) => ({
+      ...prev,
+      [menuName]: !prev[menuName],
+    }));
   };
 
   const handleLogoutClick = () => {
@@ -330,84 +319,106 @@ const Sidebar = ({ onLogout }) => {
   const renderMenu = (items, level = 0) => {
     return items.map((item, idx) => {
       const isActive = item.path && location.pathname === item.path;
+      const isOpen = openMenus[item.name];
+      const isAnySubActive = item.subItems && isAnySubItemActive(item.subItems);
 
       if (item.subItems) {
-        const isOpen = openMenus[item.name];
-        const isAnySubActive = isAnySubItemActive(item.subItems);
-
         return (
-          <div key={`${item.name}-${idx}`} className={level > 0 ? 'ml-6 mt-2' : 'mb-1'}>
-            <div
+          <div key={`${item.name}-${idx}`} className={`mt-1 ${level > 0 ? 'ml-4' : ''}`}>
+            <button
               onClick={() => handleToggle(item.name)}
-              className={`w-full flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 cursor-pointer ${
+              className={`w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
                 isOpen || isAnySubActive
-                  ? 'bg-blue-50 text-blue-700 border-l-3 border-blue-500'
-                  : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-blue-100 text-blue-800 border-l-4 border-blue-500'
+                  : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
               }`}
+              aria-expanded={isOpen}
               title={item.desc || item.name}
             >
-              <div className="flex items-center">
-                {item.icon && <span className="mr-3 text-base">{item.icon}</span>}
-                <span>{item.name}</span>
+              <div className="flex items-center gap-3">
+                {item.icon && <span className="text-lg">{item.icon}</span>}
+                <span className="truncate">{item.name}</span>
               </div>
-              <span className="text-xs">{isOpen ? '▼' : '▶'}</span>
-            </div>
-            {isOpen && <div className="mt-1">{renderMenu(item.subItems, level + 1)}</div>}
-          </div>
-        );
-      } else {
-        return (
-          <div key={`${item.name}-${idx}`} className={level > 0 ? 'ml-6 mt-1' : 'mb-1'}>
-            <div
-              onClick={() => handleNavigation(item.path)}
-              className={`w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 cursor-pointer ${
-                isActive ? 'bg-blue-600 text-white shadow-sm' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-              }`}
-              title={item.desc || item.name}
-            >
-              {item.icon && <span className="mr-3 text-base">{item.icon}</span>}
-              <span>{item.name}</span>
-            </div>
+              <span className="text-xs transition-transform duration-200">
+                {isOpen ? '▲' : '▼'}
+              </span>
+            </button>
+            {isOpen && (
+              <div className="mt-1 pl-2">
+                {renderMenu(item.subItems, level + 1)}
+              </div>
+            )}
           </div>
         );
       }
+
+      return (
+        <div key={`${item.name}-${idx}`} className={`mt-1 ${level > 0 ? 'ml-4' : ''}`}>
+          <button
+            onClick={() => handleNavigation(item.path)}
+            className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+              isActive
+                ? 'bg-blue-600 text-white shadow-md'
+                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+            }`}
+            title={item.desc || item.name}
+          >
+            {item.icon && <span className="text-lg">{item.icon}</span>}
+            <span className="truncate">{item.name}</span>
+            {item.desc && (
+              <span className="ml-auto text-xs text-gray-500 italic hidden sm:block">
+                {item.desc}
+              </span>
+            )}
+          </button>
+        </div>
+      );
     });
   };
 
   return (
-    <div className="w-64 bg-white border-r border-gray-200 h-screen flex flex-col">
-      <div className="px-6 py-5 border-b border-gray-200 flex items-center justify-between">
-        <div className="flex items-center">
-          <div className="flex-shrink-0">
-            <img src="/Images/BoardWorksListForm/logo.png" alt="YNK ERP Logo" className="w-8 h-8 object-contain" />
-          </div>
-          <div className="ml-3">
-            <h1 className="text-xl font-bold text-gray-900">YNK ERP</h1>
-          </div>
+    <div className="w-72 bg-white shadow-lg border-r border-gray-200 h-screen flex flex-col transition-all duration-300">
+      {/* Header */}
+      <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <img
+            src="/Images/BoardWorksListForm/logo.png"
+            alt="YNK ERP Logo"
+            className="w-10 h-10 object-contain"
+          />
+          <h1 className="text-xl font-bold text-gray-900">YNK ERP</h1>
         </div>
         <button
           onClick={() => setLang((prev) => (prev === 'mr' ? 'en' : 'mr'))}
-          className="px-2 py-1 bg-blue-100 text-blue-700 font-medium rounded hover:bg-blue-200"
+          className="px-3 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors duration-200"
           aria-label={t.switchAria}
           title={t.switchAria}
         >
           {t.switchLang}
         </button>
       </div>
+
+      {/* Navigation */}
       <div className="flex-1 px-4 py-6 overflow-y-auto">
         <nav>
-          <div className="mb-6">
-            <h2 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Navigation</h2>
+          <div className="mb-4">
+            <h2 className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Navigation
+            </h2>
           </div>
           <div className="space-y-1">{renderMenu(sidebarMenu)}</div>
-        
         </nav>
       </div>
+
+      {/* Footer */}
       <div className="px-4 py-4 border-t border-gray-200">
-        <div className="flex items-center">
-          
-          
-        </div>
+        <button
+          onClick={handleLogoutClick}
+          className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 rounded-lg transition-colors duration-200"
+        >
+          <span className="text-lg">🚪</span>
+          <span>Logout</span>
+        </button>
       </div>
     </div>
   );

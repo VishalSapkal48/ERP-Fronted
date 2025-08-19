@@ -73,23 +73,25 @@ function QuotationForm({ onSave, onCancel, initialData = null }) {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">{initialData ? 'Edit Quotation' : 'Create Quotation'}</h1>
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="p-4 sm:p-6 bg-gray-50 min-h-screen">
+      <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">
+        {initialData ? 'Edit Quotation' : 'Create Quotation'}
+      </h1>
+      <form onSubmit={handleSubmit} className="bg-white p-4 sm:p-6 rounded-lg shadow max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           {/* Quotation Details */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Quotation Number</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">Quotation Number</label>
             <input
               type="text"
               name="quotationNumber"
               value={formData.quotationNumber}
               onChange={handleInputChange}
-              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Customer</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">Customer</label>
             <select
               name="customerName"
               value={formData.customerName}
@@ -101,7 +103,7 @@ function QuotationForm({ onSave, onCancel, initialData = null }) {
                   customerAddress: selectedCustomer?.address || ''
                 }));
               }}
-              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
             >
               <option value="">Select Customer</option>
               {mockCustomers.map(customer => (
@@ -109,63 +111,63 @@ function QuotationForm({ onSave, onCancel, initialData = null }) {
               ))}
             </select>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Customer Address</label>
+          <div className="sm:col-span-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">Customer Address</label>
             <input
               type="text"
               name="customerAddress"
               value={formData.customerAddress}
               onChange={handleInputChange}
-              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Date</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">Date</label>
             <input
               type="date"
               name="date"
               value={formData.date}
               onChange={handleInputChange}
-              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Expiry Date</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">Expiry Date</label>
             <input
               type="date"
               name="expiryDate"
               value={formData.expiryDate}
               onChange={handleInputChange}
-              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Payment Terms</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">Payment Terms</label>
             <input
               type="text"
               name="paymentTerms"
               value={formData.paymentTerms}
               onChange={handleInputChange}
-              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Authorized By</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">Authorized By</label>
             <input
               type="text"
               name="authorizedBy"
               value={formData.authorizedBy}
               onChange={handleInputChange}
-              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Status</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">Status</label>
             <select
               name="status"
               value={formData.status}
               onChange={handleInputChange}
-              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
             >
               <option value="draft">Draft</option>
               <option value="sent">Sent</option>
@@ -176,88 +178,90 @@ function QuotationForm({ onSave, onCancel, initialData = null }) {
         </div>
 
         {/* Items */}
-        <div className="mt-6">
-          <h2 className="text-lg font-semibold text-gray-900">Items</h2>
-          {formData.items.map((item, index) => (
-            <div key={item.id} className="flex gap-4 items-center mt-2">
-              <select
-                value={item.name}
-                onChange={(e) => {
-                  const selectedProduct = mockProducts.find(p => p.name === e.target.value);
-                  handleItemChange(index, 'name', e.target.value);
-                  if (selectedProduct) {
-                    handleItemChange(index, 'price', selectedProduct.price);
-                  }
-                }}
-                className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Select Product</option>
-                {mockProducts.map(product => (
-                  <option key={product.id} value={product.name}>{product.name}</option>
-                ))}
-              </select>
-              <input
-                type="number"
-                placeholder="Quantity"
-                value={item.quantity}
-                onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value) || 0)}
-                className="border border-gray-300 rounded px-3 py-2 w-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                type="number"
-                placeholder="Price"
-                value={item.price}
-                onChange={(e) => handleItemChange(index, 'price', parseFloat(e.target.value) || 0)}
-                className="border border-gray-300 rounded px-3 py-2 w-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <span className="text-sm font-medium text-gray-700">₹{item.total.toLocaleString()}</span>
-              <button
-                type="button"
-                onClick={() => removeItem(index)}
-                className="text-red-600 hover:text-red-900"
-              >
-                <Trash2 size={16} />
-              </button>
-            </div>
-          ))}
+        <div className="mt-4 sm:mt-6">
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900">Items</h2>
+          <div className="overflow-x-auto">
+            {formData.items.map((item, index) => (
+              <div key={item.id} className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mt-2">
+                <select
+                  value={item.name}
+                  onChange={(e) => {
+                    const selectedProduct = mockProducts.find(p => p.name === e.target.value);
+                    handleItemChange(index, 'name', e.target.value);
+                    if (selectedProduct) {
+                      handleItemChange(index, 'price', selectedProduct.price);
+                    }
+                  }}
+                  className="w-full sm:w-1/3 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                >
+                  <option value="">Select Product</option>
+                  {mockProducts.map(product => (
+                    <option key={product.id} value={product.name}>{product.name}</option>
+                  ))}
+                </select>
+                <input
+                  type="number"
+                  placeholder="Quantity"
+                  value={item.quantity}
+                  onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value) || 0)}
+                  className="w-full sm:w-24 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                />
+                <input
+                  type="number"
+                  placeholder="Price"
+                  value={item.price}
+                  onChange={(e) => handleItemChange(index, 'price', parseFloat(e.target.value) || 0)}
+                  className="w-full sm:w-24 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                />
+                <span className="text-xs sm:text-sm font-medium text-gray-700">₹{item.total.toLocaleString()}</span>
+                <button
+                  type="button"
+                  onClick={() => removeItem(index)}
+                  className="text-red-600 hover:text-red-900"
+                >
+                  <Trash2 size={16} className="sm:w-5 sm:h-5" />
+                </button>
+              </div>
+            ))}
+          </div>
           <button
             type="button"
             onClick={addItem}
-            className="mt-2 text-blue-600 hover:text-blue-900 flex items-center gap-2"
+            className="mt-2 text-blue-600 hover:text-blue-900 flex items-center gap-2 text-sm sm:text-base"
           >
-            <Plus size={16} />
+            <Plus size={16} className="sm:w-5 sm:h-5" />
             Add Item
           </button>
         </div>
 
         {/* Totals */}
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="mt-4 sm:mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <p className="text-sm text-gray-600">Subtotal</p>
-            <p className="text-lg font-semibold">₹{formData.subtotal.toLocaleString()}</p>
+            <p className="text-xs sm:text-sm text-gray-600">Subtotal</p>
+            <p className="text-sm sm:text-lg font-semibold">₹{formData.subtotal.toLocaleString()}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Tax (20%)</p>
-            <p className="text-lg font-semibold">₹{formData.tax.toLocaleString()}</p>
+            <p className="text-xs sm:text-sm text-gray-600">Tax (20%)</p>
+            <p className="text-sm sm:text-lg font-semibold">₹{formData.tax.toLocaleString()}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Total</p>
-            <p className="text-lg font-semibold">₹{formData.total.toLocaleString()}</p>
+            <p className="text-xs sm:text-sm text-gray-600">Total</p>
+            <p className="text-sm sm:text-lg font-semibold">₹{formData.total.toLocaleString()}</p>
           </div>
         </div>
 
         {/* Form Actions */}
-        <div className="mt-6 flex gap-4">
+        <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row gap-3 sm:gap-4">
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 transition-colors text-sm sm:text-base"
           >
             Save Quotation
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+            className="bg-gray-600 hover:bg-gray-700 text-white px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 transition-colors text-sm sm:text-base"
           >
             Cancel
           </button>

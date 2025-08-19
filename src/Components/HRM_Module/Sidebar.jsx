@@ -128,9 +128,26 @@ const Sidebar = ({ closeSidebar, onLogout }) => {
                     <span className="ml-3">Show All Employees</span>
                   </NavLink>
                 </li>
+
+
+                  <li>
+                  <NavLink
+                    to="/hrm/offerletter"
+                    className={subMenuItemClass}
+                    onClick={closeSidebar}
+                  >
+                    <FileText className="w-4 h-4 transition-transform duration-300 hover:scale-110" />
+                    <span className="ml-3">Documents</span>
+                  </NavLink>
+                </li>
               </ul>
             )}
           </li>
+
+
+
+
+
           <li>
             <div
               className={toggleClass(isAttendanceOpen, isAttendanceActive)}
@@ -173,88 +190,7 @@ const Sidebar = ({ closeSidebar, onLogout }) => {
               </ul>
             )}
           </li>
-          <li>
-            <div
-              className={toggleClass(isDocumentsOpen, isDocumentsActive)}
-              onClick={() => setIsDocumentsOpen(!isDocumentsOpen)}
-              title="Documents"
-              aria-expanded={isDocumentsOpen}
-            >
-              <FileText className="w-5 h-5 transition-transform duration-300 hover:scale-110" />
-              <span className="ml-3 flex-1">Documents</span>
-              <span className="ml-auto transform transition-transform duration-300">
-                {isDocumentsOpen ? (
-                  <ChevronUp className="w-4 h-4" />
-                ) : (
-                  <ChevronDown className="w-4 h-4" />
-                )}
-              </span>
-            </div>
-            {(isDocumentsOpen || isDocumentsActive) && (
-              <ul className="ml-8 mt-1 space-y-1">
-                {/* <li>
-                  <NavLink
-                    to="/hrm/offerletter"
-                    className={subMenuItemClass}
-                    onClick={closeSidebar}
-                  >
-                    <FileText className="w-4 h-4 transition-transform duration-300 hover:scale-110" />
-                    <span className="ml-3">Offer Letter</span>
-                  </NavLink>
-                </li> */}
-                <li>
-                  <NavLink
-                    to="/hrm/appointmentletter"
-                    className={subMenuItemClass}
-                    onClick={closeSidebar}
-                  >
-                    <FileText className="w-4 h-4 transition-transform duration-300 hover:scale-110" />
-                    <span className="ml-3">Appointment Letter</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/hrm/experienceletter"
-                    className={subMenuItemClass}
-                    onClick={closeSidebar}
-                  >
-                    <FileText className="w-4 h-4 transition-transform duration-300 hover:scale-110" />
-                    <span className="ml-3">Experience Letter</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/hrm/travelpolicy"
-                    className={subMenuItemClass}
-                    onClick={closeSidebar}
-                  >
-                    <FileText className="w-4 h-4 transition-transform duration-300 hover:scale-110" />
-                    <span className="ml-3">Travel Policy</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/hrm/officerules"
-                    className={subMenuItemClass}
-                    onClick={closeSidebar}
-                  >
-                    <FileText className="w-4 h-4 transition-transform duration-300 hover:scale-110" />
-                    <span className="ml-3">Office Rules</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/hrm/salaryslip"
-                    className={subMenuItemClass}
-                    onClick={closeSidebar}
-                  >
-                    <FileText className="w-4 h-4 transition-transform duration-300 hover:scale-110" />
-                    <span className="ml-3">Salary Slip</span>
-                  </NavLink>
-                </li>
-              </ul>
-            )}
-          </li>
+         
           <li>
             <NavLink
               to="/hrm/leaves"
@@ -321,16 +257,7 @@ const Sidebar = ({ closeSidebar, onLogout }) => {
               <span className="ml-3">Settings</span>
             </NavLink> */}
           </li>
-          <li className="pt-4 border-t border-gray-700">
-            <button
-              onClick={onLogout}
-              className="flex items-center w-full text-left p-3 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-all duration-300 ease-in-out"
-              title="Logout"
-            >
-              <LogOut className="w-5 h-5 transition-transform duration-300 hover:scale-110" />
-              <span className="ml-3">Logout</span>
-            </button>
-          </li>
+        
         </ul>
       </div>
     </div>

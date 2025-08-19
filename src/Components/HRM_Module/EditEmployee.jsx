@@ -25,7 +25,6 @@ const EditEmployee = () => {
     hireDate: '',
     joiningDate: '',
     netSalary: '',
-
     hra: '',
     specialBonus: '',
     conveyance: '',
@@ -99,7 +98,6 @@ const EditEmployee = () => {
           hireDate: data.hireDate ? new Date(data.hireDate).toISOString().split('T')[0] : '',
           joiningDate: data.joiningDate ? new Date(data.joiningDate).toISOString().split('T')[0] : '',
           netSalary: data.netSalary || '',
-  
           hra: data.hra || '',
           specialBonus: data.specialBonus || '',
           conveyance: data.conveyance || '',
@@ -249,7 +247,6 @@ const EditEmployee = () => {
     const { name, value } = e.target;
     const numericFields = [
       'netSalary',
-     
       'hra',
       'specialBonus',
       'conveyance',
@@ -313,7 +310,6 @@ const EditEmployee = () => {
     const employeeData = { ...formData, profileImage };
     const numericFields = [
       'netSalary',
-      
       'hra',
       'specialBonus',
       'conveyance',
@@ -362,123 +358,126 @@ const EditEmployee = () => {
 
   const closeModal = () => {
     setShowModal(false);
-    navigate('/employees');
+    navigate('/hrm/employees');
   };
 
-  if (loading) return <div className="p-6 ml-64">Loading...</div>;
-  if (error) return <div className="p-6 ml-64 text-red-500">{error}</div>;
+  if (loading) return <div className="p-4 sm:p-6 text-center text-gray-600">Loading...</div>;
+  if (error) return <div className="p-4 sm:p-6 text-center text-red-500">{error}</div>;
 
   return (
-    <div className=" p-6 bg-gray-100 min-h-screen">
-      <div className="bg-gray-800 text-white p-4 flex justify-between items-center rounded-t-lg mb-4">
-        <div className="flex space-x-6">
+    <div className="p-4 sm:p-6 bg-gray-100 min-h-screen">
+      <div className="bg-gray-800 text-white p-4 rounded-t-lg mb-4 overflow-x-auto">
+        <div className="flex space-x-2 sm:space-x-4 whitespace-nowrap">
           {['Employee Info', 'Contact', 'Payroll', 'PfAccount', 'Security'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded ${activeTab === tab ? 'bg-purple-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+              className={`px-3 py-2 text-sm sm:text-base rounded ${
+                activeTab === tab ? 'bg-purple-600' : 'bg-gray-700 hover:bg-gray-600'
+              } transition-colors duration-200`}
             >
               {tab}
             </button>
           ))}
         </div>
       </div>
-      <div className="bg-white p-6 rounded-b-lg shadow-md">
-        <div className="flex items-center space-x-6 mb-6">
-          <div className="flex-1">
+      <div className="bg-white p-4 sm:p-6 rounded-b-lg shadow-md">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-6 mb-6">
+          <div className="w-full">
             {activeTab === 'Employee Info' && (
-              <div className="max-w-screen-lg mx-auto grid grid-cols-2 gap-6">
-                <div className="col-span-2 sm:col-span-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Employee Photo</label>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.profileImage && <p className="text-red-500 text-sm mt-1">{errors.profileImage}</p>}
+                  {errors.profileImage && <p className="text-red-500 text-xs mt-1">{errors.profileImage}</p>}
+                  <img src={profileImage} alt="Profile" className="mt-2 w-24 h-24 object-cover rounded-full" />
                 </div>
-                <div className="col-span-2 sm:col-span-1">
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Employee ID</label>
                   <input
                     type="text"
                     name="employeeId"
                     value={formData.employeeId}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.employeeId && <p className="text-red-500 text-sm mt-1">{errors.employeeId}</p>}
+                  {errors.employeeId && <p className="text-red-500 text-xs mt-1">{errors.employeeId}</p>}
                 </div>
-                <div className="col-span-2 sm:col-span-1">
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Name</label>
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                  {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                 </div>
-                <div className="col-span-2 sm:col-span-1">
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Department</label>
                   <input
                     type="text"
                     name="department"
                     value={formData.department}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.department && <p className="text-red-500 text-sm mt-1">{errors.department}</p>}
+                  {errors.department && <p className="text-red-500 text-xs mt-1">{errors.department}</p>}
                 </div>
-                <div className="col-span-2 sm:col-span-1">
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Job Title</label>
                   <input
                     type="text"
                     name="jobTitle"
                     value={formData.jobTitle}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.jobTitle && <p className="text-red-500 text-sm mt-1">{errors.jobTitle}</p>}
+                  {errors.jobTitle && <p className="text-red-500 text-xs mt-1">{errors.jobTitle}</p>}
                 </div>
-                <div className="col-span-2 sm:col-span-1">
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Manager</label>
                   <input
                     type="text"
                     name="manager"
                     value={formData.manager}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
                 </div>
-                <div className="col-span-2 sm:col-span-1">
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Hire Date</label>
                   <input
                     type="date"
                     name="hireDate"
                     value={formData.hireDate}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
                 </div>
-                <div className="col-span-2 sm:col-span-1">
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Joining Date</label>
                   <input
                     type="date"
                     name="joiningDate"
                     value={formData.joiningDate}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
                 </div>
-                <div className="col-span-2 sm:col-span-1">
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Gender</label>
                   <select
                     name="gender"
                     value={formData.gender}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   >
                     <option value="">Select</option>
                     <option value="Male">Male</option>
@@ -486,44 +485,44 @@ const EditEmployee = () => {
                     <option value="Other">Other</option>
                   </select>
                 </div>
-                <div className="col-span-2 sm:col-span-1">
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
                   <input
                     type="date"
                     name="dob"
                     value={formData.dob}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
                 </div>
-                <div className="col-span-2 sm:col-span-1">
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Status</label>
                   <select
                     name="status"
                     value={formData.status}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   >
                     <option value="">Select</option>
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
                   </select>
-                  {errors.status && <p className="text-red-500 text-sm mt-1">{errors.status}</p>}
+                  {errors.status && <p className="text-red-500 text-xs mt-1">{errors.status}</p>}
                 </div>
-                <div className="col-span-2 sm:col-span-1">
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Separation Date</label>
                   <input
                     type="date"
                     name="separationDate"
                     value={formData.separationDate}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
                 </div>
               </div>
             )}
             {activeTab === 'Contact' && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Email</label>
                   <input
@@ -531,9 +530,9 @@ const EditEmployee = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Work Phone</label>
@@ -542,9 +541,9 @@ const EditEmployee = () => {
                     name="workPhone"
                     value={formData.workPhone}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.workPhone && <p className="text-red-500 text-sm mt-1">{errors.workPhone}</p>}
+                  {errors.workPhone && <p className="text-red-500 text-xs mt-1">{errors.workPhone}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Home Phone</label>
@@ -553,9 +552,9 @@ const EditEmployee = () => {
                     name="homePhone"
                     value={formData.homePhone}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.homePhone && <p className="text-red-500 text-sm mt-1">{errors.homePhone}</p>}
+                  {errors.homePhone && <p className="text-red-500 text-xs mt-1">{errors.homePhone}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Emergency Phone</label>
@@ -564,9 +563,9 @@ const EditEmployee = () => {
                     name="emergencyPhone"
                     value={formData.emergencyPhone}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.emergencyPhone && <p className="text-red-500 text-sm mt-1">{errors.emergencyPhone}</p>}
+                  {errors.emergencyPhone && <p className="text-red-500 text-xs mt-1">{errors.emergencyPhone}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Work Location</label>
@@ -575,9 +574,9 @@ const EditEmployee = () => {
                     name="workLocation"
                     value={formData.workLocation}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.workLocation && <p className="text-red-500 text-sm mt-1">{errors.workLocation}</p>}
+                  {errors.workLocation && <p className="text-red-500 text-xs mt-1">{errors.workLocation}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Address</label>
@@ -586,7 +585,7 @@ const EditEmployee = () => {
                     name="address"
                     value={formData.address}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
                 </div>
                 <div>
@@ -596,7 +595,7 @@ const EditEmployee = () => {
                     name="city"
                     value={formData.city}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
                 </div>
                 <div>
@@ -606,13 +605,13 @@ const EditEmployee = () => {
                     name="country"
                     value={formData.country}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
                 </div>
               </div>
             )}
             {activeTab === 'Payroll' && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Net Salary</label>
                   <input
@@ -620,11 +619,10 @@ const EditEmployee = () => {
                     name="netSalary"
                     value={formData.netSalary}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.netSalary && <p className="text-red-500 text-sm mt-1">{errors.netSalary}</p>}
+                  {errors.netSalary && <p className="text-red-500 text-xs mt-1">{errors.netSalary}</p>}
                 </div>
-              
                 <div>
                   <label className="block text-sm font-medium text-gray-700">HRA</label>
                   <input
@@ -632,9 +630,9 @@ const EditEmployee = () => {
                     name="hra"
                     value={formData.hra}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.hra && <p className="text-red-500 text-sm mt-1">{errors.hra}</p>}
+                  {errors.hra && <p className="text-red-500 text-xs mt-1">{errors.hra}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Special Bonus</label>
@@ -643,9 +641,9 @@ const EditEmployee = () => {
                     name="specialBonus"
                     value={formData.specialBonus}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.specialBonus && <p className="text-red-500 text-sm mt-1">{errors.specialBonus}</p>}
+                  {errors.specialBonus && <p className="text-red-500 text-xs mt-1">{errors.specialBonus}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Conveyance</label>
@@ -654,9 +652,9 @@ const EditEmployee = () => {
                     name="conveyance"
                     value={formData.conveyance}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.conveyance && <p className="text-red-500 text-sm mt-1">{errors.conveyance}</p>}
+                  {errors.conveyance && <p className="text-red-500 text-xs mt-1">{errors.conveyance}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Travel Allowances</label>
@@ -665,9 +663,9 @@ const EditEmployee = () => {
                     name="travelAllowances"
                     value={formData.travelAllowances}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.travelAllowances && <p className="text-red-500 text-sm mt-1">{errors.travelAllowances}</p>}
+                  {errors.travelAllowances && <p className="text-red-500 text-xs mt-1">{errors.travelAllowances}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Shift Allowances</label>
@@ -676,9 +674,9 @@ const EditEmployee = () => {
                     name="shiftAllowances"
                     value={formData.shiftAllowances}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.shiftAllowances && <p className="text-red-500 text-sm mt-1">{errors.shiftAllowances}</p>}
+                  {errors.shiftAllowances && <p className="text-red-500 text-xs mt-1">{errors.shiftAllowances}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Overtime</label>
@@ -687,9 +685,9 @@ const EditEmployee = () => {
                     name="overtime"
                     value={formData.overtime}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.overtime && <p className="text-red-500 text-sm mt-1">{errors.overtime}</p>}
+                  {errors.overtime && <p className="text-red-500 text-xs mt-1">{errors.overtime}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Tax Rate (%)</label>
@@ -698,9 +696,9 @@ const EditEmployee = () => {
                     name="taxRate"
                     value={formData.taxRate}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.taxRate && <p className="text-red-500 text-sm mt-1">{errors.taxRate}</p>}
+                  {errors.taxRate && <p className="text-red-500 text-xs mt-1">{errors.taxRate}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Payment Method</label>
@@ -708,7 +706,7 @@ const EditEmployee = () => {
                     name="paymentMethod"
                     value={formData.paymentMethod}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   >
                     <option value="">Select</option>
                     <option value="Bank Transfer">Bank Transfer</option>
@@ -716,7 +714,7 @@ const EditEmployee = () => {
                     <option value="RTGS">RTGS</option>
                     <option value="Cash">Cash</option>
                   </select>
-                  {errors.paymentMethod && <p className="text-red-500 text-sm mt-1">{errors.paymentMethod}</p>}
+                  {errors.paymentMethod && <p className="text-red-500 text-xs mt-1">{errors.paymentMethod}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Employee Type</label>
@@ -724,13 +722,13 @@ const EditEmployee = () => {
                     name="employeeType"
                     value={formData.employeeType}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   >
                     <option value="">Select</option>
                     <option value="Permanent">Permanent</option>
                     <option value="Contract">Contract</option>
                   </select>
-                  {errors.employeeType && <p className="text-red-500 text-sm mt-1">{errors.employeeType}</p>}
+                  {errors.employeeType && <p className="text-red-500 text-xs mt-1">{errors.employeeType}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Bank Name</label>
@@ -739,9 +737,9 @@ const EditEmployee = () => {
                     name="bankName"
                     value={formData.bankName}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.bankName && <p className="text-red-500 text-sm mt-1">{errors.bankName}</p>}
+                  {errors.bankName && <p className="text-red-500 text-xs mt-1">{errors.bankName}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Account Title</label>
@@ -750,9 +748,9 @@ const EditEmployee = () => {
                     name="accountTitle"
                     value={formData.accountTitle}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.accountTitle && <p className="text-red-500 text-sm mt-1">{errors.accountTitle}</p>}
+                  {errors.accountTitle && <p className="text-red-500 text-xs mt-1">{errors.accountTitle}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Account No</label>
@@ -761,9 +759,9 @@ const EditEmployee = () => {
                     name="accountNo"
                     value={formData.accountNo}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.accountNo && <p className="text-red-500 text-sm mt-1">{errors.accountNo}</p>}
+                  {errors.accountNo && <p className="text-red-500 text-xs mt-1">{errors.accountNo}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">IFSC Code</label>
@@ -772,9 +770,9 @@ const EditEmployee = () => {
                     name="IFSCCode"
                     value={formData.IFSCCode}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.IFSCCode && <p className="text-red-500 text-sm mt-1">{errors.IFSCCode}</p>}
+                  {errors.IFSCCode && <p className="text-red-500 text-xs mt-1">{errors.IFSCCode}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Location</label>
@@ -783,7 +781,7 @@ const EditEmployee = () => {
                     name="location"
                     value={formData.location}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
                 </div>
                 <div>
@@ -793,7 +791,7 @@ const EditEmployee = () => {
                     name="designation"
                     value={formData.designation}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
                 </div>
                 <div>
@@ -803,13 +801,13 @@ const EditEmployee = () => {
                     name="CNIC"
                     value={formData.CNIC}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
                 </div>
               </div>
             )}
             {activeTab === 'PfAccount' && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">PF Account Number</label>
                   <input
@@ -817,7 +815,7 @@ const EditEmployee = () => {
                     name="pfAccountNumber"
                     value={formData.pfAccountNumber}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
                 </div>
                 <div>
@@ -826,7 +824,7 @@ const EditEmployee = () => {
                     name="pfType"
                     value={formData.pfType}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   >
                     <option value="">Select</option>
                     <option value="PF">PF</option>
@@ -839,9 +837,9 @@ const EditEmployee = () => {
                     name="employerContributionPf"
                     value={formData.employerContributionPf}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.employerContributionPf && <p className="text-red-500 text-sm mt-1">{errors.employerContributionPf}</p>}
+                  {errors.employerContributionPf && <p className="text-red-500 text-xs mt-1">{errors.employerContributionPf}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Employee Contribution PF</label>
@@ -850,9 +848,9 @@ const EditEmployee = () => {
                     name="employeeContributionPf"
                     value={formData.employeeContributionPf}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.employeeContributionPf && <p className="text-red-500 text-sm mt-1">{errors.employeeContributionPf}</p>}
+                  {errors.employeeContributionPf && <p className="text-red-500 text-xs mt-1">{errors.employeeContributionPf}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">SSES Type</label>
@@ -860,7 +858,7 @@ const EditEmployee = () => {
                     name="ssesType"
                     value={formData.ssesType}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   >
                     <option value="">Select</option>
                     <option value="SSES">SSES</option>
@@ -873,9 +871,9 @@ const EditEmployee = () => {
                     name="employerContributionSses"
                     value={formData.employerContributionSses}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.employerContributionSses && <p className="text-red-500 text-sm mt-1">{errors.employerContributionSses}</p>}
+                  {errors.employerContributionSses && <p className="text-red-500 text-xs mt-1">{errors.employerContributionSses}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Employee Contribution SSES</label>
@@ -884,9 +882,9 @@ const EditEmployee = () => {
                     name="employeeContributionSses"
                     value={formData.employeeContributionSses}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.employeeContributionSses && <p className="text-red-500 text-sm mt-1">{errors.employeeContributionSses}</p>}
+                  {errors.employeeContributionSses && <p className="text-red-500 text-xs mt-1">{errors.employeeContributionSses}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">EOBI Type</label>
@@ -894,7 +892,7 @@ const EditEmployee = () => {
                     name="eobiType"
                     value={formData.eobiType}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   >
                     <option value="">Select</option>
                     <option value="EOBI">EOBI</option>
@@ -907,9 +905,9 @@ const EditEmployee = () => {
                     name="employerContributionEobi"
                     value={formData.employerContributionEobi}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.employerContributionEobi && <p className="text-red-500 text-sm mt-1">{errors.employerContributionEobi}</p>}
+                  {errors.employerContributionEobi && <p className="text-red-500 text-xs mt-1">{errors.employerContributionEobi}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Employee Contribution EOBI</label>
@@ -918,9 +916,9 @@ const EditEmployee = () => {
                     name="employeeContributionEobi"
                     value={formData.employeeContributionEobi}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.employeeContributionEobi && <p className="text-red-500 text-sm mt-1">{errors.employeeContributionEobi}</p>}
+                  {errors.employeeContributionEobi && <p className="text-red-500 text-xs mt-1">{errors.employeeContributionEobi}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">ESIC Type</label>
@@ -928,7 +926,7 @@ const EditEmployee = () => {
                     name="esicType"
                     value={formData.esicType}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   >
                     <option value="">Select</option>
                     <option value="ESIC">ESIC</option>
@@ -941,9 +939,9 @@ const EditEmployee = () => {
                     name="employerContributionEsic"
                     value={formData.employerContributionEsic}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.employerContributionEsic && <p className="text-red-500 text-sm mt-1">{errors.employerContributionEsic}</p>}
+                  {errors.employerContributionEsic && <p className="text-red-500 text-xs mt-1">{errors.employerContributionEsic}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Employee Contribution ESIC</label>
@@ -952,14 +950,14 @@ const EditEmployee = () => {
                     name="employeeContributionEsic"
                     value={formData.employeeContributionEsic}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.employeeContributionEsic && <p className="text-red-500 text-sm mt-1">{errors.employeeContributionEsic}</p>}
+                  {errors.employeeContributionEsic && <p className="text-red-500 text-xs mt-1">{errors.employeeContributionEsic}</p>}
                 </div>
               </div>
             )}
             {activeTab === 'Security' && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Username</label>
                   <input
@@ -967,9 +965,9 @@ const EditEmployee = () => {
                     name="username"
                     value={formData.username}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
+                  {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Password</label>
@@ -978,9 +976,9 @@ const EditEmployee = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+                  {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Re-enter Password</label>
@@ -989,22 +987,22 @@ const EditEmployee = () => {
                     name="reenterPassword"
                     value={formData.reenterPassword}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border border-gray-300 rounded"
+                    className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-600"
                   />
-                  {errors.reenterPassword && <p className="text-red-500 text-sm mt-1">{errors.reenterPassword}</p>}
+                  {errors.reenterPassword && <p className="text-red-500 text-xs mt-1">{errors.reenterPassword}</p>}
                 </div>
               </div>
             )}
           </div>
         </div>
         {errors.submit && (
-          <div className="mt-4 text-red-500 text-sm">{errors.submit}</div>
+          <div className="mt-4 text-red-500 text-sm text-center">{errors.submit}</div>
         )}
         <div className="mt-6 flex justify-end">
           <button
             type="button"
             onClick={handleSubmit}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors duration-200"
           >
             Update
           </button>
@@ -1013,13 +1011,13 @@ const EditEmployee = () => {
 
       {showModal && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-xs sm:max-w-sm">
             <h2 className="text-lg font-semibold text-gray-800">Success</h2>
             <p className="mt-2 text-gray-600">Employee updated successfully!</p>
             <div className="mt-4 flex justify-end">
               <button
                 onClick={closeModal}
-                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors duration-200"
               >
                 OK
               </button>

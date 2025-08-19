@@ -63,7 +63,7 @@ const TravelPolicy = () => {
   };
 
   return (
-    <div className="ml-64 p-6 bg-gray-100 min-h-screen">
+    <div className=" p-6 bg-gray-100 min-h-screen">
       <button
         onClick={downloadPDF}
         className="mb-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"

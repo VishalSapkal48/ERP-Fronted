@@ -79,6 +79,7 @@
 
 // export default Login;
 
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, User, Lock, AlertCircle, CheckCircle, LogIn } from 'lucide-react';
@@ -93,14 +94,14 @@ const Login = ({ onLogin = () => {} }) => {
   const navigate = useNavigate();
 
   const demoUsers = [
-    // { username: 'accuser', role: 'account', label: 'Account User', color: 'bg-gray-600' },
     { username: 'CRM USER', role: 'crm', label: 'CRM User', color: 'bg-blue-600' },
-    { username: 'INVENTORY USER ', role: 'inventory', label: 'Inventory User', color: 'bg-green-600' },
-    { username: 'HRM USER ', role: 'hrm', label: 'HRM User', color: 'bg-purple-600' },
+    { username: 'INVENTORY USER', role: 'inventory', label: 'Inventory User', color: 'bg-green-600' },
+    { username: 'HRM USER', role: 'hrm', label: 'HRM User', color: 'bg-purple-600' },
     { username: 'REPORT USER', role: 'reports', label: 'Reports User', color: 'bg-orange-600' },
-    { username: 'ADMIN  USER', role: 'admin', label: 'Admin User', color: 'bg-red-600' },
+    { username: 'ADMIN USER', role: 'admin', label: 'Admin User', color: 'bg-red-600' },
     { username: 'PURCHASE USER', role: 'purchase', label: 'Purchase User', color: 'bg-indigo-600' },
     { username: 'FORM USER', role: 'forms', label: 'Forms User', color: 'bg-teal-600' },
+    { username: 'DEVELOPMENT USER', role: 'development', label: 'Development User', color: 'bg-rose-600' },
   ];
 
   const handleLogin = (e) => {
@@ -131,7 +132,6 @@ const Login = ({ onLogin = () => {} }) => {
     setError('');
   };
 
-  // Current date and time (IST)
   const currentDate = new Date().toLocaleString('en-IN', {
     timeZone: 'Asia/Kolkata',
     hour12: true,
@@ -248,7 +248,7 @@ const Login = ({ onLogin = () => {} }) => {
         <div className="mt-6 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl p-6 ring-1 ring-purple-500/20">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
             <CheckCircle className="w-5 h-5 mr-2 text-green-400 animate-bounce" />
-           ERP Login
+            ERP Login
           </h3>
           <div className="grid grid-cols-2 gap-4">
             {demoUsers.map((user, index) => (

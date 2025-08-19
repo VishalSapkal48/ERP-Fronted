@@ -367,7 +367,7 @@ function AdminSideBar({ closeSidebar, onLogout }) {
         icon: Users,
         subItems: [
           { path: "/admin/purchase/suppliers", label: "Suppliers List", icon: Users },
-          { path: "/admin/purchase/supplier-form", label: "Add Supplier", icon: UserPlus },
+          // { path: "/admin/purchase/supplier-form", label: "Add Supplier", icon: UserPlus },
         ],
       },
       {
@@ -375,7 +375,7 @@ function AdminSideBar({ closeSidebar, onLogout }) {
         icon: FileText,
         subItems: [
           { path: "/admin/purchase/purchase-orders", label: "Purchase Orders List", icon: FileText },
-          { path: "/admin/purchase/purchase-order-form", label: "Add Purchase Order", icon: FileText },
+          // { path: "/admin/purchase/purchase-order-form", label: "Add Purchase Order", icon: FileText },
         ],
       },
       {
@@ -383,7 +383,7 @@ function AdminSideBar({ closeSidebar, onLogout }) {
         icon: FileText,
         subItems: [
           { path: "/admin/purchase/quotations", label: "Quotations List", icon: FileText },
-          { path: "/admin/purchase/quotation-form", label: "Add Quotation", icon: FileText },
+          // { path: "/admin/purchase/quotation-form", label: "Add Quotation", icon: FileText },
         ],
       },
       {
@@ -391,12 +391,12 @@ function AdminSideBar({ closeSidebar, onLogout }) {
         icon: FileText,
         subItems: [
           { path: "/admin/purchase/invoices", label: "Invoices List", icon: FileText },
-          { path: "/admin/purchase/invoice-form", label: "Add Invoice", icon: FileText },
+          // { path: "/admin/purchase/invoice-form", label: "Add Invoice", icon: FileText },
         ],
       },
-      { path: "/admin/purchase/quotation-manager", label: "Quotation Management", icon: FileText },
-      { path: "/admin/purchase/multi-currency-po", label: "Multi-Currency PO", icon: DollarSign },
-      { path: "/admin/purchase/amendment-history", label: "Amendment History", icon: Clock },
+      // { path: "/admin/purchase/quotation-manager", label: "Quotation Management", icon: FileText },
+      // { path: "/admin/purchase/multi-currency-po", label: "Multi-Currency PO", icon: DollarSign },
+      // { path: "/admin/purchase/amendment-history", label: "Amendment History", icon: Clock },
     ],
     inventory: [
       { path: "/admin/inventory/inventory", label: "Inventory", icon: Package },
@@ -421,35 +421,35 @@ function AdminSideBar({ closeSidebar, onLogout }) {
       { path: "/admin/reports/projects", label: "Projects Report", icon: Briefcase },
       { path: "/admin/reports/vendors", label: "Vendors Report", icon: Truck },
     ],
-    feedback: [
-      {
-        label: "Nadbrahma",
-        icon: FileText,
-        subItems: [
-          { path: "/admin/feedback/nadbramhacomponents/call1folder1", label: "Call 1", icon: FileText },
-          { path: "/admin/feedback/nadbramhacomponents/call2folder2", label: "Call 2", icon: FileText },
-          { path: "/admin/feedback/nadbramhacomponents/call3folder3", label: "Call 3", icon: FileText },
-          { path: "/admin/feedback/nadbramhacomponents/call4folder4", label: "Call 4", icon: FileText },
-          { path: "/admin/feedback/nadbramhacomponents/call5folder5", label: "Call 5", icon: FileText },
-          { path: "/admin/feedback/nadbramhacomponents/call6folder6", label: "Call 6", icon: FileText },
-        ],
-      },
-      {
-        label: "Yewale",
-        icon: FileText,
-        subItems: [
-          { path: "/admin/feedback/yewalecomponents/call1folder1", label: "Call 1", icon: FileText },
-          { path: "/admin/feedback/yewalecomponents/call2folder2", label: "Call 2", icon: FileText },
-          { path: "/admin/feedback/yewalecomponents/call3folder3", label: "Call 3", icon: FileText },
-          { path: "/admin/feedback/yewalecomponents/call4folder4", label: "Call 4", icon: FileText },
-          { path: "/admin/feedback/yewalecomponents/call5folder5", label: "Call 5", icon: FileText },
-          { path: "/admin/feedback/yewalecomponents/call6folder6", label: "Call 6", icon: FileText },
-          { path: "/admin/feedback/yewalecomponents/call7folder7", label: "Call 7", icon: FileText },
-          { path: "/admin/feedback/yewalecomponents/call8folder8", label: "Call 8", icon: FileText },
-          { path: "/admin/feedback/yewalecomponents/call9folder9", label: "Call 9", icon: FileText },
-        ],
-      },
-    ],
+    // feedback: [
+    //   {
+    //     label: "Nadbrahma",
+    //     icon: FileText,
+    //     subItems: [
+    //       { path: "/admin/feedback/nadbramhacomponents/call1folder1", label: "Call 1", icon: FileText },
+    //       { path: "/admin/feedback/nadbramhacomponents/call2folder2", label: "Call 2", icon: FileText },
+    //       { path: "/admin/feedback/nadbramhacomponents/call3folder3", label: "Call 3", icon: FileText },
+    //       { path: "/admin/feedback/nadbramhacomponents/call4folder4", label: "Call 4", icon: FileText },
+    //       { path: "/admin/feedback/nadbramhacomponents/call5folder5", label: "Call 5", icon: FileText },
+    //       { path: "/admin/feedback/nadbramhacomponents/call6folder6", label: "Call 6", icon: FileText },
+    //     ],
+    //   },
+    //   {
+    //     label: "Yewale",
+    //     icon: FileText,
+    //     subItems: [
+    //       { path: "/admin/feedback/yewalecomponents/call1folder1", label: "Call 1", icon: FileText },
+    //       { path: "/admin/feedback/yewalecomponents/call2folder2", label: "Call 2", icon: FileText },
+    //       { path: "/admin/feedback/yewalecomponents/call3folder3", label: "Call 3", icon: FileText },
+    //       { path: "/admin/feedback/yewalecomponents/call4folder4", label: "Call 4", icon: FileText },
+    //       { path: "/admin/feedback/yewalecomponents/call5folder5", label: "Call 5", icon: FileText },
+    //       { path: "/admin/feedback/yewalecomponents/call6folder6", label: "Call 6", icon: FileText },
+    //       { path: "/admin/feedback/yewalecomponents/call7folder7", label: "Call 7", icon: FileText },
+    //       { path: "/admin/feedback/yewalecomponents/call8folder8", label: "Call 8", icon: FileText },
+    //       { path: "/admin/feedback/yewalecomponents/call9folder9", label: "Call 9", icon: FileText },
+    //     ],
+    //   },
+    // ],
   };
 
   return (
