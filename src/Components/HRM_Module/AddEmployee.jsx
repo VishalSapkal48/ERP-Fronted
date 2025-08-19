@@ -67,7 +67,6 @@ const AddEmployee = () => {
   const [showModal, setShowModal] = useState(false);
   const [dailySerial, setDailySerial] = useState(1);
 
-  // Fetch existing employees to determine the next serial number
   useEffect(() => {
     const fetchNextSerial = async () => {
       try {
@@ -82,24 +81,27 @@ const AddEmployee = () => {
         setDailySerial(maxSerial);
       } catch (error) {
         console.error("Failed to fetch employees for serial number:", error);
-        setDailySerial(1); // Fallback to 1 if fetch fails
+        setDailySerial(1);
       }
     };
     fetchNextSerial();
   }, []);
 
-  // Generate Employee ID when dailySerial changes
   useEffect(() => {
     const today = new Date();
     const year = today.getFullYear().toString().slice(-2);
     const month = (today.getMonth() + 1).toString().padStart(2, "0");
     const day = today.getDate().toString().padStart(2, "0");
     const serial = dailySerial.toString().padStart(2, "0");
-    const employeeId = `${year}${month}${day}${serial}`;
+    let employeeId = `${year}${month}${day}${serial}`;
+    if (formData.employeeType === "Employee") employeeId += "E";
+    else if (formData.employeeType === "Vendor") employeeId += "V";
+    else if (formData.employeeType === "Guest") employeeId += "G";
+    else if (formData.employeeType === "Franchise Owner") employeeId += "F";
+    else employeeId += "O";
     setFormData((prev) => ({ ...prev, employeeId }));
-  }, [dailySerial]);
+  }, [dailySerial, formData.employeeType]);
 
-  // Handle image upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -134,7 +136,6 @@ const AddEmployee = () => {
 
     let newValue = value;
     if (numericFields.includes(name)) {
-      // Allow "0" as a valid numeric input
       newValue = value === "" ? "" : value === "0" ? 0 : Number(value) || "";
     } else if (dateFields.includes(name)) {
       newValue = value ? new Date(value).toISOString().split("T")[0] : "";
@@ -309,12 +310,12 @@ const AddEmployee = () => {
   };
 
   const handleCancel = () => {
-   navigate("/hrm/employees");
+    navigate("/hrm/employees");
   };
 
   const closeModal = () => {
     setShowModal(false);
-  navigate("/hrm/employees");
+    navigate("/hrm/employees");
   };
 
   return (
@@ -355,6 +356,25 @@ const AddEmployee = () => {
                   <p className="text-red-500 text-sm mt-1">{errors.profileImage}</p>
                 )}
               </div>
+
+        <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Employee Type</label>
+                <select
+                  name="employeeType"
+                  value={formData.employeeType}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select</option>
+                  <option value="Employee">Employee</option>
+                  <option value="Vendor">Vendor</option>
+                  <option value="Guest">Guest</option>
+                  <option value="Franchise Owner">Franchise Owner</option>
+                </select>
+                {errors.employeeType && <p className="text-red-500 text-sm mt-1">{errors.employeeType}</p>}
+              </div>
+
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Employee ID</label>
                 <input
@@ -487,6 +507,7 @@ const AddEmployee = () => {
                   className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
+              
             </div>
           )}
           {activeTab === "Contact" && (
@@ -693,8 +714,10 @@ const AddEmployee = () => {
                   className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select</option>
-                  <option value="Permanent">Permanent</option>
-                  <option value="Contract">Contract</option>
+                  <option value="Employee">Employee</option>
+                  <option value="Vendor">Vendor</option>
+                  <option value="Guest">Guest</option>
+                  <option value="Franchise Owner">Franchise Owner</option>
                 </select>
                 {errors.employeeType && <p className="text-red-500 text-sm mt-1">{errors.employeeType}</p>}
               </div>
