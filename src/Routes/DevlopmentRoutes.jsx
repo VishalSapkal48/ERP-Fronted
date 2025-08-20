@@ -15,11 +15,7 @@ const DevelopmentRoutes = () => {
     <Routes>
       <Route index element={<DevelopmentDashboard />} /> {/* Default route for /development */}
       <Route path="dashboard" element={<DevelopmentDashboard />} />
-      <Route path="projects" element={<DevelopmentDashboard />} />
-      <Route path="engineers" element={<DevelopmentDashboard />} />
-      <Route path="challenges" element={<DevelopmentDashboard />} />
-      <Route path="reports" element={<DevelopmentDashboard />} />
-      <Route path="settings" element={<DevelopmentDashboard />} />
+   
       <Route path="owner-material-checklist" element={<OwnerMaterialChecklistForm />} />
       <Route path="warranty-period" element={<WarrantyPeriodForm />} />
       <Route path="work-steps" element={<WorkStepsForm />} />

@@ -284,7 +284,9 @@
 // export default App;
 
 
-import React, { useState, useEffect } from 'react';
+
+
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './Login/Login';
 import AccountLayout from './Layout/AccountLayout';
@@ -293,32 +295,18 @@ import InventoryLayout from './Layout/InventoryLayout';
 import HrmLayout from './Layout/HrmLayout';
 import ReportsLayout from './Layout/ReportsLayout';
 import AdminLayout from './Layout/AdminLayout';
-import PurchaseLayout from './Layout/PurcheseLayout'; // Fixed typo
+import PurchaseLayout from './Layout/PurcheseLayout';
 import FormsLayout from './Layout/FormsLayout';
 import DevelopmentLayout from './Layout/DevelopmentLayout';
-
 const App = () => {
   const [role, setRole] = useState(null);
   const [username, setUsername] = useState(null);
-
-  // Load role and username from localStorage on mount
-  useEffect(() => {
-    try {
-      const savedRole = localStorage.getItem('role');
-      const savedUsername = localStorage.getItem('username');
-      if (savedRole && savedUsername) {
-        setRole(savedRole);
-        setUsername(savedUsername);
-      }
-    } catch (error) {
-      console.error('Error reading from localStorage:', error);
-    }
-  }, []);
 
   const handleLogin = (role, username) => {
     console.log('Login:', { role, username });
     setRole(role);
     setUsername(username);
+    // Store in localStorage for persistence
     localStorage.setItem('role', role);
     localStorage.setItem('username', username);
   };
@@ -326,6 +314,7 @@ const App = () => {
   const handleLogout = () => {
     setRole(null);
     setUsername(null);
+    // Clear all authentication-related storage
     localStorage.removeItem('role');
     localStorage.removeItem('username');
     localStorage.removeItem('authToken');
@@ -371,10 +360,12 @@ const App = () => {
           path="/forms/*"
           element={role === 'forms' ? <FormsLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
         />
-        <Route
+<Route
           path="/development/*"
           element={role === 'development' ? <DevelopmentLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
         />
+
+
         <Route
           path="*"
           element={

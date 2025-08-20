@@ -1,7 +1,28 @@
+// DevelopmentDashboard.jsx
 import React, { useState, useEffect } from 'react';
 import {
-  CheckCircle, Clock, AlertCircle, User, FileText, Calendar, MapPin, Search, Package, Eye, Wrench,
-  Building, Phone, DoorOpen, BarChart3, Menu, X, Settings, Users, AlertTriangle, Plus, ArrowRight
+  CheckCircle,
+  Clock,
+  AlertCircle,
+  User,
+  FileText,
+  Calendar,
+  MapPin,
+  Search,
+  Package,
+  Eye,
+  Wrench,
+  Building,
+  Phone,
+  DoorOpen,
+  BarChart3,
+  Menu,
+  X,
+  Settings,
+  Users,
+  AlertTriangle,
+  Plus,
+  ArrowRight,
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -39,6 +60,7 @@ class ErrorBoundary extends React.Component {
 const DevelopmentDashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeView, setActiveView] = useState('dashboard');
   const [showProjectForm, setShowProjectForm] = useState(false);
@@ -48,51 +70,58 @@ const DevelopmentDashboard = () => {
   const [selectedStep, setSelectedStep] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Initialize with data from localStorage or empty arrays
   const [projects, setProjects] = useState(() => {
-    const saved = localStorage.getItem('projects');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [engineers, setEngineers] = useState(() => {
-    const saved = localStorage.getItem('engineers');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('projects');
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.error('Error parsing projects from localStorage:', error);
+      return [];
+    }
   });
 
-  // Sync activeView with URL
+  const [engineers, setEngineers] = useState(() => {
+    try {
+      const saved = localStorage.getItem('engineers');
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.error('Error parsing engineers from localStorage:', error);
+      return [];
+    }
+  });
+
   useEffect(() => {
-    const path = location.pathname.replace('/', '') || 'dashboard';
+    const path = location.pathname.replace('/development/', '') || 'dashboard';
     if (['dashboard', 'projects', 'engineers', 'challenges', 'reports', 'settings'].includes(path)) {
       setActiveView(path);
     }
     setLoading(false);
   }, [location.pathname]);
 
-  // Save to localStorage whenever projects or engineers change
   useEffect(() => {
     localStorage.setItem('projects', JSON.stringify(projects));
     localStorage.setItem('engineers', JSON.stringify(engineers));
   }, [projects, engineers]);
 
-  // Workflow Steps
   const workflowSteps = [
-    { id: 1, title: "Lead Generation", description: "Generate and capture potential customer leads", icon: <User className="w-5 h-5" />, color: "blue" },
-    { id: 2, title: "Assign Engineer", description: "Assign qualified engineer to the project", icon: <Users className="w-5 h-5" />, color: "green" },
-    { id: 3, title: "Survey Quotation", description: "Prepare and send survey quotation to client", icon: <FileText className="w-5 h-5" />, color: "yellow" },
-    { id: 4, title: "Ongoing Challenges After Survey", description: "Address any issues that arise post-survey", icon: <AlertCircle className="w-5 h-5" />, color: "red" },
-    { id: 5, title: "Quotation (Only Show)", description: "Present final quotation to client", icon: <Eye className="w-5 h-5" />, color: "purple" },
-    { id: 6, title: "Layout Preparation", description: "Prepare detailed layout plans", icon: <MapPin className="w-5 h-5" />, color: "indigo" },
-    { id: 7, title: "Plan Explanation", description: "Explain plans and specifications to client", icon: <FileText className="w-5 h-5" />, color: "pink" },
-    { id: 8, title: "Challenges After Plan Explanation", description: "Handle client feedback and plan modifications", icon: <AlertCircle className="w-5 h-5" />, color: "red" },
-    { id: 9, title: "15 Days Verification", description: "Conduct 15-day verification process", icon: <Clock className="w-5 h-5" />, color: "orange" },
-    { id: 10, title: "Inspection", description: "Conduct thorough site inspection", icon: <Search className="w-5 h-5" />, color: "teal" },
-    { id: 11, title: "Civil NOC", description: "Obtain Civil No Objection Certificate", icon: <Building className="w-5 h-5" />, color: "gray" },
-    { id: 12, title: "Material Order For Dispatch", description: "Order and prepare materials for dispatch", icon: <Package className="w-5 h-5" />, color: "emerald" },
-    { id: 13, title: "Material Checking Visit/Inspection", description: "Inspect materials before dispatch", icon: <Wrench className="w-5 h-5" />, color: "amber" },
-    { id: 14, title: "Pending Follow-up", description: "Follow up on pending items", icon: <Phone className="w-5 h-5" />, color: "cyan" },
-    { id: 15, title: "NOC Verification", description: "Verify NOC documentation", icon: <CheckCircle className="w-5 h-5" />, color: "lime" },
-    { id: 16, title: "Opening Date", description: "Set project opening date", icon: <Calendar className="w-5 h-5" />, color: "violet" },
-    { id: 17, title: "Opening Visit Verification", description: "Verify opening visit completion", icon: <DoorOpen className="w-5 h-5" />, color: "rose" },
-    { id: 18, title: "Monthly Sites Opening Report", description: "Generate monthly opening reports", icon: <BarChart3 className="w-5 h-5" />, color: "slate" }
+    { id: 1, title: 'Lead Generation', description: 'Generate and capture potential customer leads', icon: <User className="w-5 h-5" />, color: 'blue' },
+    { id: 2, title: 'Assign Engineer', description: 'Assign qualified engineer to the project', icon: <Users className="w-5 h-5" />, color: 'green' },
+    { id: 3, title: 'Survey Quotation', description: 'Prepare and send survey quotation to client', icon: <FileText className="w-5 h-5" />, color: 'yellow' },
+    { id: 4, title: 'Ongoing Challenges After Survey', description: 'Address any issues that arise post-survey', icon: <AlertCircle className="w-5 h-5" />, color: 'red' },
+    { id: 5, title: 'Quotation (Only Show)', description: 'Present final quotation to client', icon: <Eye className="w-5 h-5" />, color: 'purple' },
+    { id: 6, title: 'Layout Preparation', description: 'Prepare detailed layout plans', icon: <MapPin className="w-5 h-5" />, color: 'indigo' },
+    { id: 7, title: 'Plan Explanation', description: 'Explain plans and specifications to client', icon: <FileText className="w-5 h-5" />, color: 'pink' },
+    { id: 8, title: 'Challenges After Plan Explanation', description: 'Handle client feedback and plan modifications', icon: <AlertCircle className="w-5 h-5" />, color: 'red' },
+    { id: 9, title: '15 Days Verification', description: 'Conduct 15-day verification process', icon: <Clock className="w-5 h-5" />, color: 'orange' },
+    { id: 10, title: 'Inspection', description: 'Conduct thorough site inspection', icon: <Search className="w-5 h-5" />, color: 'teal' },
+    { id: 11, title: 'Civil NOC', description: 'Obtain Civil No Objection Certificate', icon: <Building className="w-5 h-5" />, color: 'gray' },
+    { id: 12, title: 'Material Order For Dispatch', description: 'Order and prepare materials for dispatch', icon: <Package className="w-5 h-5" />, color: 'emerald' },
+    { id: 13, title: 'Material Checking Visit/Inspection', description: 'Inspect materials before dispatch', icon: <Wrench className="w-5 h-5" />, color: 'amber' },
+    { id: 14, title: 'Pending Follow-up', description: 'Follow up on pending items', icon: <Phone className="w-5 h-5" />, color: 'cyan' },
+    { id: 15, title: 'NOC Verification', description: 'Verify NOC documentation', icon: <CheckCircle className="w-5 h-5" />, color: 'lime' },
+    { id: 16, title: 'Opening Date', description: 'Set project opening date', icon: <Calendar className="w-5 h-5" />, color: 'violet' },
+    { id: 17, title: 'Opening Visit Verification', description: 'Verify opening visit completion', icon: <DoorOpen className="w-5 h-5" />, color: 'rose' },
+    { id: 18, title: 'Monthly Sites Opening Report', description: 'Generate monthly opening reports', icon: <BarChart3 className="w-5 h-5" />, color: 'slate' },
   ];
 
   const navigationItems = [
@@ -112,14 +141,14 @@ const DevelopmentDashboard = () => {
           const updatedCompletedSteps = [...project.completedSteps, project.currentStep];
           const updatedStepData = {
             ...project.stepData,
-            [project.currentStep]: { ...project.stepData[project.currentStep], completed: true, ...additionalData }
+            [project.currentStep]: { ...project.stepData[project.currentStep], completed: true, ...additionalData },
           };
           return {
             ...project,
             currentStep: nextStep <= workflowSteps.length ? nextStep : project.currentStep,
             completedSteps: updatedCompletedSteps,
             stepData: updatedStepData,
-            lastUpdated: new Date().toISOString().split('T')[0]
+            lastUpdated: new Date().toISOString().split('T')[0],
           };
         }
         return project;
@@ -135,9 +164,9 @@ const DevelopmentDashboard = () => {
               ...project,
               stepData: {
                 ...project.stepData,
-                [stepId]: { ...project.stepData[stepId], ...data }
+                [stepId]: { ...project.stepData[stepId], ...data },
               },
-              lastUpdated: new Date().toISOString().split('T')[0]
+              lastUpdated: new Date().toISOString().split('T')[0],
             }
           : project
       )
@@ -170,13 +199,16 @@ const DevelopmentDashboard = () => {
         project.id === projectId
           ? {
               ...project,
-              challenges: [...(project.challenges || []), {
-                id: Date.now(),
-                description: challengeText,
-                step: project.currentStep,
-                createdDate: new Date().toISOString().split('T')[0],
-                resolved: false
-              }]
+              challenges: [
+                ...(project.challenges || []),
+                {
+                  id: Date.now(),
+                  description: challengeText,
+                  step: project.currentStep,
+                  createdDate: new Date().toISOString().split('T')[0],
+                  resolved: false,
+                },
+              ],
             }
           : project
       )
@@ -193,7 +225,7 @@ const DevelopmentDashboard = () => {
                 challenge.id === challengeId
                   ? { ...challenge, resolved: true, resolvedDate: new Date().toISOString().split('T')[0] }
                   : challenge
-              )
+              ),
             }
           : project
       )
@@ -214,7 +246,7 @@ const DevelopmentDashboard = () => {
       challenges: [],
       stepData: {},
       createdDate: new Date().toISOString().split('T')[0],
-      lastUpdated: new Date().toISOString().split('T')[0]
+      lastUpdated: new Date().toISOString().split('T')[0],
     };
     setProjects([...projects, newProject]);
   };
@@ -227,7 +259,7 @@ const DevelopmentDashboard = () => {
       phone: engineerData.phone,
       specialization: engineerData.specialization,
       activeProjects: 0,
-      available: true
+      available: true,
     };
     setEngineers([...engineers, newEngineer]);
   };
@@ -248,18 +280,17 @@ const DevelopmentDashboard = () => {
     const stepData = project.stepData[step.id] || {};
 
     const formRoutes = {
-      'owner-material': '/owner-material-checklist',
-      'warranty-period': '/warranty-period',
-      'work-steps': '/work-steps',
-      'civil-work': '/civil-work-checklist',
-      'material-checklist': '/material-checklist',
-      'warranty': '/warranty',
-      'construction': '/construction-form',
-      'fifteenday': '/fifteen-day-form' // Fixed typo
+      'owner-material': '/development/owner-material-checklist',
+      'warranty-period': '/development/warranty-period',
+      'work-steps': '/development/work-steps',
+      'civil-work': '/development/civil-work-checklist',
+      'material-checklist': '/development/material-checklist',
+      'warranty': '/development/warranty',
+      'construction': '/development/construction-form',
+      'fifteenday': '/development/fifteen-day-form',
     };
 
     const handleFormSelect = (formId) => {
-      console.log(`Navigating to form: ${formId} for project: ${project.name}`);
       if (formRoutes[formId]) {
         navigate(formRoutes[formId], { state: { project } });
       } else {
@@ -288,7 +319,6 @@ const DevelopmentDashboard = () => {
               )}
             </div>
           );
-
         case 2:
           return (
             <div className="space-y-3">
@@ -296,19 +326,21 @@ const DevelopmentDashboard = () => {
                 <div>
                   <p className="text-sm mb-3">Select an engineer:</p>
                   <div className="space-y-2">
-                    {engineers.filter(eng => eng.available).map(engineer => (
-                      <button
-                        key={engineer.id}
-                        onClick={() => {
-                          assignEngineer(project.id, engineer.id);
-                          moveToNextStep(project.id, { engineerAssigned: engineer.name });
-                        }}
-                        className="w-full text-left bg-white border border-gray-300 rounded-lg p-3 hover:bg-green-50 transition-colors"
-                      >
-                        <div className="font-medium">{engineer.name}</div>
-                        <div className="text-sm text-gray-600">{engineer.specialization}</div>
-                      </button>
-                    ))}
+                    {engineers
+                      .filter(eng => eng.available)
+                      .map(engineer => (
+                        <button
+                          key={engineer.id}
+                          onClick={() => {
+                            assignEngineer(project.id, engineer.id);
+                            moveToNextStep(project.id, { engineerAssigned: engineer.name });
+                          }}
+                          className="w-full text-left bg-white border border-gray-300 rounded-lg p-3 hover:bg-green-50 transition-colors"
+                        >
+                          <div className="font-medium">{engineer.name}</div>
+                          <div className="text-sm text-gray-600">{engineer.specialization}</div>
+                        </button>
+                      ))}
                     {engineers.filter(eng => eng.available).length === 0 && (
                       <p className="text-sm text-red-600">No available engineers</p>
                     )}
@@ -324,7 +356,6 @@ const DevelopmentDashboard = () => {
               )}
             </div>
           );
-
         case 3:
           return (
             <div className="space-y-3">
@@ -334,7 +365,7 @@ const DevelopmentDashboard = () => {
                     type="text"
                     placeholder="Enter quotation amount (e.g., ₹50,00,000)"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg mb-3"
-                    onBlur={(e) => {
+                    onBlur={e => {
                       if (e.target.value) {
                         updateProjectStep(project.id, 3, { quotationAmount: e.target.value });
                         setProjects(projects =>
@@ -363,30 +394,36 @@ const DevelopmentDashboard = () => {
               )}
             </div>
           );
-
         case 4:
         case 8:
           return (
             <div className="space-y-3">
               <div className="space-y-2">
-                {(project.challenges || []).filter(c => c.step === step.id).map(challenge => (
-                  <div key={challenge.id} className={`border rounded-lg p-3 ${challenge.resolved ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <p className="text-sm">{challenge.description}</p>
-                        <p className="text-xs text-gray-500">Created: {challenge.createdDate}</p>
+                {(project.challenges || [])
+                  .filter(c => c.step === step.id)
+                  .map(challenge => (
+                    <div
+                      key={challenge.id}
+                      className={`border rounded-lg p-3 ${
+                        challenge.resolved ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <p className="text-sm">{challenge.description}</p>
+                          <p className="text-xs text-gray-500">Created: {challenge.createdDate}</p>
+                        </div>
+                        {!challenge.resolved && (
+                          <button
+                            onClick={() => resolveChallenge(project.id, challenge.id)}
+                            className="ml-2 bg-green-500 text-white px-2 py-1 rounded text-xs"
+                          >
+                            Resolve
+                          </button>
+                        )}
                       </div>
-                      {!challenge.resolved && (
-                        <button
-                          onClick={() => resolveChallenge(project.id, challenge.id)}
-                          className="ml-2 bg-green-500 text-white px-2 py-1 rounded text-xs"
-                        >
-                          Resolve
-                        </button>
-                      )}
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
               <div className="flex space-x-2">
                 <button
@@ -408,7 +445,6 @@ const DevelopmentDashboard = () => {
               </div>
             </div>
           );
-
         case 5:
           return (
             <div className="space-y-3">
@@ -436,7 +472,6 @@ const DevelopmentDashboard = () => {
               )}
             </div>
           );
-
         case 7:
           return (
             <div className="space-y-4">
@@ -465,7 +500,7 @@ const DevelopmentDashboard = () => {
                     { id: 'material-checklist', label: 'Material Checklist' },
                     { id: 'warranty', label: 'Warranty Form' },
                     { id: 'construction', label: 'Construction Form' },
-                    { id: 'fifteenday', label: '15 Days Verification' }
+                    { id: 'fifteenday', label: '15 Days Verification' },
                   ].map(form => (
                     <button
                       key={form.id}
@@ -477,7 +512,6 @@ const DevelopmentDashboard = () => {
                   ))}
                 </div>
               </div>
-
               {status === 'current' && (
                 <button
                   onClick={() => moveToNextStep(project.id)}
@@ -507,32 +541,45 @@ const DevelopmentDashboard = () => {
     };
 
     return (
-      <div className={`border rounded-xl p-4 ${
-        status === 'completed' ? 'bg-green-50 border-green-200' :
-        status === 'current' ? `bg-${step.color}-50 border-${step.color}-200` :
-        'bg-gray-50 border-gray-200'
-      }`}>
+      <div
+        className={`border rounded-xl p-4 ${
+          status === 'completed'
+            ? 'bg-green-50 border-green-200'
+            : status === 'current'
+            ? `bg-${step.color}-50 border-${step.color}-200`
+            : 'bg-gray-50 border-gray-200'
+        }`}
+      >
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-3">
-            <div className={`p-2 rounded-full ${
-              status === 'completed' ? 'bg-green-500 text-white' :
-              status === 'current' ? `bg-${step.color}-500 text-white` :
-              'bg-gray-300 text-gray-600'
-            }`}>
+            <div
+              className={`p-2 rounded-full ${
+                status === 'completed'
+                  ? 'bg-green-500 text-white'
+                  : status === 'current'
+                  ? `bg-${step.color}-500 text-white`
+                  : 'bg-gray-300 text-gray-600'
+              }`}
+            >
               {status === 'completed' ? <CheckCircle className="w-4 h-4" /> : step.icon}
             </div>
             <div>
-              <h4 className="font-semibold">{step.id}) {step.title}</h4>
+              <h4 className="font-semibold">
+                {step.id}) {step.title}
+              </h4>
               <p className="text-sm text-gray-600">{step.description}</p>
             </div>
           </div>
-          <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-            status === 'completed' ? 'bg-green-100 text-green-800' :
-            status === 'current' ? `bg-${step.color}-100 text-${step.color}-800` :
-            'bg-gray-100 text-gray-600'
-          }`}>
-            {status === 'completed' ? 'Completed' :
-             status === 'current' ? 'Current' : 'Pending'}
+          <div
+            className={`px-2 py-1 rounded-full text-xs font-medium ${
+              status === 'completed'
+                ? 'bg-green-100 text-green-800'
+                : status === 'current'
+                ? `bg-${step.color}-100 text-${step.color}-800`
+                : 'bg-gray-100 text-gray-600'
+            }`}
+          >
+            {status === 'completed' ? 'Completed' : status === 'current' ? 'Current' : 'Pending'}
           </div>
         </div>
         {renderStepContent()}
@@ -540,7 +587,6 @@ const DevelopmentDashboard = () => {
     );
   };
 
-  // Challenge Modal
   const ChallengeModal = ({ onClose }) => {
     const [challengeText, setChallengeText] = useState('');
 
@@ -551,7 +597,6 @@ const DevelopmentDashboard = () => {
         onClose();
       }
     };
-
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
@@ -560,7 +605,7 @@ const DevelopmentDashboard = () => {
           </h3>
           <textarea
             value={challengeText}
-            onChange={(e) => setChallengeText(e.target.value)}
+            onChange={e => setChallengeText(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 mb-4"
             rows="4"
             placeholder="Describe the challenge..."
@@ -584,13 +629,12 @@ const DevelopmentDashboard = () => {
     );
   };
 
-  // Project Form
   const ProjectForm = ({ onSave, onCancel }) => {
     const [formData, setFormData] = useState({
       name: '',
       client: '',
       contact: '',
-      phone: ''
+      phone: '',
     });
 
     const handleSubmit = () => {
@@ -612,7 +656,7 @@ const DevelopmentDashboard = () => {
               <input
                 type="text"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={e => setFormData({ ...formData, name: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
                 placeholder="Enter project name"
               />
@@ -622,7 +666,7 @@ const DevelopmentDashboard = () => {
               <input
                 type="text"
                 value={formData.client}
-                onChange={(e) => setFormData({ ...formData, client: e.target.value })}
+                onChange={e => setFormData({ ...formData, client: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
                 placeholder="Enter client name"
               />
@@ -632,7 +676,7 @@ const DevelopmentDashboard = () => {
               <input
                 type="text"
                 value={formData.contact}
-                onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                onChange={e => setFormData({ ...formData, contact: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
                 placeholder="Enter contact person"
               />
@@ -642,7 +686,7 @@ const DevelopmentDashboard = () => {
               <input
                 type="tel"
                 value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                onChange={e => setFormData({ ...formData, phone: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
                 placeholder="Enter phone number"
               />
@@ -667,13 +711,12 @@ const DevelopmentDashboard = () => {
     );
   };
 
-  // Engineer Form
   const EngineerForm = ({ onSave, onCancel }) => {
     const [formData, setFormData] = useState({
       name: '',
       email: '',
       phone: '',
-      specialization: ''
+      specialization: '',
     });
 
     const handleSubmit = () => {
@@ -695,7 +738,7 @@ const DevelopmentDashboard = () => {
               <input
                 type="text"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={e => setFormData({ ...formData, name: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
                 placeholder="Enter name"
               />
@@ -705,7 +748,7 @@ const DevelopmentDashboard = () => {
               <input
                 type="email"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={e => setFormData({ ...formData, email: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
                 placeholder="Enter email"
               />
@@ -715,7 +758,7 @@ const DevelopmentDashboard = () => {
               <input
                 type="tel"
                 value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                onChange={e => setFormData({ ...formData, phone: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
                 placeholder="Enter phone number"
               />
@@ -725,7 +768,7 @@ const DevelopmentDashboard = () => {
               <input
                 type="text"
                 value={formData.specialization}
-                onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
+                onChange={e => setFormData({ ...formData, specialization: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
                 placeholder="Enter specialization"
               />
@@ -750,10 +793,13 @@ const DevelopmentDashboard = () => {
     );
   };
 
+  // Main dashboard rendering
   return (
     <ErrorBoundary>
       <div className="min-h-screen bg-gray-50 flex">
-        <aside className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-300 z-50`}>
+        <aside className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } lg:translate-x-0 transition-transform duration-300 z-50`}>
           <div className="p-4 flex items-center justify-between border-b">
             <h1 className="text-xl font-bold text-red-600">Workflow</h1>
             <button onClick={() => setSidebarOpen(false)} className="lg:hidden">
@@ -766,7 +812,7 @@ const DevelopmentDashboard = () => {
                 key={item.id}
                 onClick={() => {
                   setActiveView(item.id);
-                  navigate(`/${item.id === 'dashboard' ? '' : item.id}`);
+                  navigate(`/development/${item.id === 'dashboard' ? '' : item.id}`);
                 }}
                 className={`w-full flex items-center space-x-2 px-4 py-2 rounded-lg ${
                   activeView === item.id ? 'bg-red-500 text-white' : 'text-gray-600 hover:bg-gray-100'
@@ -786,7 +832,7 @@ const DevelopmentDashboard = () => {
           </nav>
         </aside>
 
-        <main className="flex-1 p-6 overflow-auto lg:ml-64">
+        <main className="flex-1 p-6 lg:ml-64">
           {loading ? (
             <div className="text-center py-12">
               <p className="text-gray-600">Loading...</p>
@@ -839,7 +885,7 @@ const DevelopmentDashboard = () => {
                         <p className="text-gray-600">No projects yet. Add a new project to get started.</p>
                       </div>
                     )}
-                    {projects.map((project) => {
+                    {projects.map(project => {
                       const progress = getProjectProgress(project);
                       const currentStep = workflowSteps.find(step => step.id === project.currentStep);
 
@@ -863,11 +909,10 @@ const DevelopmentDashboard = () => {
                                 <div
                                   className="bg-white h-2 rounded-full transition-all duration-500"
                                   style={{ width: `${progress}%` }}
-                                ></div>
+                                />
                               </div>
                             </div>
                           </div>
-
                           <div className="bg-gray-50 border-b border-gray-200 p-4">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center space-x-3">
@@ -888,7 +933,7 @@ const DevelopmentDashboard = () => {
 
                           <div className="p-6">
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                              {workflowSteps.map((step) => (
+                              {workflowSteps.map(step => (
                                 <StepActionCard key={step.id} project={project} step={step} />
                               ))}
                             </div>
@@ -912,24 +957,30 @@ const DevelopmentDashboard = () => {
 
                             {(project.challenges || []).filter(c => !c.resolved).length > 0 && (
                               <div className="mt-6 bg-red-50 border border-red-200 rounded-lg p-4">
-                                <h5 className="font-semibold text-red-900 mb-3">⚠️ Active Challenges ({project.challenges.filter(c => !c.resolved).length})</h5>
+                                <h5 className="font-semibold text-red-900 mb-3">
+                                  ⚠️ Active Challenges ({project.challenges.filter(c => !c.resolved).length})
+                                </h5>
                                 <div className="space-y-2">
-                                  {project.challenges.filter(c => !c.resolved).map(challenge => (
-                                    <div key={challenge.id} className="bg-white border border-red-200 rounded-lg p-3">
-                                      <div className="flex justify-between items-start">
-                                        <div className="flex-1">
-                                          <p className="text-sm font-medium">Step {challenge.step}: {challenge.description}</p>
-                                          <p className="text-xs text-gray-500">Created: {challenge.createdDate}</p>
+                                  {project.challenges
+                                    .filter(c => !c.resolved)
+                                    .map(challenge => (
+                                      <div key={challenge.id} className="bg-white border border-red-200 rounded-lg p-3">
+                                        <div className="flex justify-between items-start">
+                                          <div className="flex-1">
+                                            <p className="text-sm font-medium">
+                                              Step {challenge.step}: {challenge.description}
+                                            </p>
+                                            <p className="text-xs text-gray-500">Created: {challenge.createdDate}</p>
+                                          </div>
+                                          <button
+                                            onClick={() => resolveChallenge(project.id, challenge.id)}
+                                            className="ml-3 bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
+                                          >
+                                            Resolve
+                                          </button>
                                         </div>
-                                        <button
-                                          onClick={() => resolveChallenge(project.id, challenge.id)}
-                                          className="ml-3 bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
-                                        >
-                                          Resolve
-                                        </button>
                                       </div>
-                                    </div>
-                                  ))}
+                                    ))}
                                 </div>
                               </div>
                             )}
@@ -961,7 +1012,7 @@ const DevelopmentDashboard = () => {
                   )}
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {projects.map((project) => {
+                    {projects.map(project => {
                       const progress = getProjectProgress(project);
                       const currentStep = workflowSteps.find(step => step.id === project.currentStep);
 
@@ -970,23 +1021,25 @@ const DevelopmentDashboard = () => {
                           <div className="p-6">
                             <h3 className="font-semibold text-lg text-gray-900 mb-2">{project.name}</h3>
                             <p className="text-gray-600 mb-4">{project.client}</p>
-
                             <div className="space-y-3">
                               <div className="flex items-center justify-between">
                                 <span className="text-sm text-gray-600">Current Step:</span>
-                                <span className="text-sm font-medium">{project.currentStep}. {currentStep?.title}</span>
+                                <span className="text-sm font-medium">
+                                  {project.currentStep}. {currentStep?.title}
+                                </span>
                               </div>
-
                               <div className="flex items-center justify-between">
                                 <span className="text-sm text-gray-600">Engineer:</span>
-                                <span className="text-sm font-medium">{project.engineer || 'Not assigned'}</span>
+                                <span className="text-sm font-medium">
+                                  {project.engineer || 'Not assigned'}
+                                </span>
                               </div>
-
                               <div className="flex items-center justify-between">
                                 <span className="text-sm text-gray-600">Active Challenges:</span>
-                                <span className="text-sm font-medium">{(project.challenges || []).filter(c => !c.resolved).length}</span>
+                                <span className="text-sm font-medium">
+                                  {(project.challenges || []).filter(c => !c.resolved).length}
+                                </span>
                               </div>
-
                               <div>
                                 <div className="flex justify-between text-sm text-gray-600 mb-1">
                                   <span>Progress</span>
@@ -996,7 +1049,7 @@ const DevelopmentDashboard = () => {
                                   <div
                                     className="bg-gradient-to-r from-red-400 to-red-600 h-3 rounded-full transition-all duration-300"
                                     style={{ width: `${progress}%` }}
-                                  ></div>
+                                  />
                                 </div>
                               </div>
                             </div>
@@ -1040,7 +1093,7 @@ const DevelopmentDashboard = () => {
                           </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                          {engineers.map((engineer) => (
+                          {engineers.map(engineer => (
                             <tr key={engineer.id} className="hover:bg-gray-50">
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
@@ -1083,7 +1136,6 @@ const DevelopmentDashboard = () => {
                   <div className="flex justify-between items-center">
                     <h2 className="text-2xl font-bold text-gray-900">Active Challenges Management</h2>
                   </div>
-
                   <div className="space-y-4">
                     {projects.map(project => {
                       const activeChallenges = (project.challenges || []).filter(c => !c.resolved);
@@ -1129,7 +1181,6 @@ const DevelopmentDashboard = () => {
                         </div>
                       );
                     })}
-
                     {projects.every(project => (project.challenges || []).filter(c => !c.resolved).length === 0) && (
                       <div className="text-center py-12">
                         <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
@@ -1148,7 +1199,7 @@ const DevelopmentDashboard = () => {
                   <button
                     onClick={() => {
                       setActiveView('dashboard');
-                      navigate('/');
+                      navigate('/development');
                     }}
                     className="mt-4 bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors"
                   >
@@ -1162,7 +1213,7 @@ const DevelopmentDashboard = () => {
 
         {showProjectForm && (
           <ProjectForm
-            onSave={(data) => {
+            onSave={data => {
               addNewProject(data);
               setShowProjectForm(false);
             }}
@@ -1172,7 +1223,7 @@ const DevelopmentDashboard = () => {
 
         {showEngineerForm && (
           <EngineerForm
-            onSave={(data) => {
+            onSave={data => {
               addNewEngineer(data);
               setShowEngineerForm(false);
             }}
@@ -1194,7 +1245,7 @@ const DevelopmentDashboard = () => {
           <div
             className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
             onClick={() => setSidebarOpen(false)}
-          ></div>
+          />
         )}
       </div>
     </ErrorBoundary>
