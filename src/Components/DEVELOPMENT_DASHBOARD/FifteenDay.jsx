@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../../../../../public/Images/BoardWorksListForm/logo.png";
+import logo from "../../../public/Images/BoardWorksListForm/logo.png";
 
 
 export default function WorkStepsForm() {

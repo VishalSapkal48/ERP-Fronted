@@ -1,50 +1,72 @@
-import React, { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
-import Navbar from '../Components/DEVELOPMENT_DASHBOARD/NavBar';
-import Sidebar from '../Components/DEVELOPMENT_DASHBOARD/Sidebar';
-import DevelopmentRoutes from '../Routes/DevlopmentRoutes';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../Components/DEVELOPMENT_DASHBOARD/Navbar";
+import Sidebar from "../Components/DEVELOPMENT_DASHBOARD/Sidebar";
+import DevelopmentRoutes from "../Routes/DevlopmentRoutes";
+import {
+  BarChart3,
+  Building,
+  Users,
+  AlertTriangle,
+  FileText,
+  Settings,
+} from "lucide-react";
 
 const DevelopmentLayout = ({ onLogout }) => {
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeView, setActiveView] = useState('dashboard');
-  const [notificationCount] = useState(3); // Example static value; can be dynamic
+  const [activeView, setActiveView] = useState("dashboard");
+  const [notificationCount] = useState(3); // Example static count
 
   const handleLogoutClick = () => {
-    onLogout();
-    navigate('/');
+    try {
+      console.log("DevelopmentLayout: Initiating logout");
+      localStorage.removeItem("authToken");
+      sessionStorage.clear();
+      if (onLogout) {
+        console.log("DevelopmentLayout: Calling onLogout from App.js");
+        onLogout();
+      }
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
-  // Example navigation items for Sidebar
   const navigationItems = [
-    { id: 'dashboard', label: 'Workflow Dashboard', icon: <i className="fas fa-chart-bar"></i>, count: 2 },
-    { id: 'projects', label: 'All Projects', icon: <i className="fas fa-building"></i>, count: 2 },
-    { id: 'engineers', label: 'Engineers', icon: <i className="fas fa-users"></i>, count: 3 },
-    { id: 'challenges', label: 'Active Challenges', icon: <i className="fas fa-exclamation-triangle"></i>, count: 0 },
-    { id: 'reports', label: 'Reports', icon: <i className="fas fa-file-alt"></i> },
-    { id: 'settings', label: 'Settings', icon: <i className="fas fa-cog"></i> },
+    { id: "dashboard", label: "Workflow Dashboard", icon: <BarChart3 className="w-5 h-5" />, count: 2 },
+    { id: "projects", label: "All Projects", icon: <Building className="w-5 h-5" />, count: 2 },
+    { id: "engineers", label: "Engineers", icon: <Users className="w-5 h-5" />, count: 3 },
+    { id: "challenges", label: "Active Challenges", icon: <AlertTriangle className="w-5 h-5" />, count: 0 },
+    { id: "reports", label: "Reports", icon: <FileText className="w-5 h-5" /> },
+    { id: "settings", label: "Settings", icon: <Settings className="w-5 h-5" /> },
   ];
 
   return (
-    <div className="flex flex-1 overflow-hidden">
-      <Sidebar
-        sidebarOpen={sidebarOpen}
-        setSidebarOpen={setSidebarOpen}
-        activeView={activeView}
-        setActiveView={setActiveView}
-        navigationItems={navigationItems}
-      />
-      <div className="flex-1 flex flex-col">
-        <Navbar
-          sidebarOpen={sidebarOpen}
-          setSidebarOpen={setSidebarOpen}
-          activeView={navigationItems.find(item => item.id === activeView)}
-          notificationCount={notificationCount}
+    <div className="flex h-screen w-full bg-gray-100 overflow-hidden">
+      {/* Sidebar - always visible */}
+      <div className="w-64 flex-shrink-0 bg-white shadow-lg">
+        <Sidebar
+          activeView={activeView}
+          setActiveView={setActiveView}
+          navigationItems={navigationItems}
           onLogout={handleLogoutClick}
         />
+      </div>
+
+      {/* Main Layout */}
+      <div className="flex-1 flex flex-col">
+        {/* Navbar */}
+        <header className="sticky top-0 z-20 bg-blue-600 text-white shadow p-4">
+          <Navbar
+            activeView={navigationItems.find((item) => item.id === activeView)}
+            notificationCount={notificationCount}
+            onLogout={handleLogoutClick}
+          />
+        </header>
+
+        {/* Scrollable Content */}
         <main className="flex-1 overflow-y-auto p-6">
-          <Outlet />
-          <DevelopmentRoutes />
+          <DevelopmentRoutes activeView={activeView} />
         </main>
       </div>
     </div>

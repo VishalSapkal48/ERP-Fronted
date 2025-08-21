@@ -124,14 +124,7 @@ const DevelopmentDashboard = () => {
     { id: 18, title: 'Monthly Sites Opening Report', description: 'Generate monthly opening reports', icon: <BarChart3 className="w-5 h-5" />, color: 'slate' },
   ];
 
-  const navigationItems = [
-    { id: 'dashboard', label: 'Workflow Dashboard', icon: <BarChart3 className="w-5 h-5" />, count: projects.length },
-    { id: 'projects', label: 'All Projects', icon: <Building className="w-5 h-5" />, count: projects.length },
-    { id: 'engineers', label: 'Engineers', icon: <Users className="w-5 h-5" />, count: engineers.length },
-    { id: 'challenges', label: 'Active Challenges', icon: <AlertTriangle className="w-5 h-5" />, count: projects.reduce((acc, p) => acc + (p.challenges || []).filter(c => !c.resolved).length, 0) },
-    { id: 'reports', label: 'Reports', icon: <FileText className="w-5 h-5" /> },
-    { id: 'settings', label: 'Settings', icon: <Settings className="w-5 h-5" /> },
-  ];
+
 
   const moveToNextStep = (projectId, additionalData = {}) => {
     setProjects(projects =>
@@ -284,10 +277,13 @@ const DevelopmentDashboard = () => {
       'warranty-period': '/development/warranty-period',
       'work-steps': '/development/work-steps',
       'civil-work': '/development/civil-work-checklist',
-      'material-checklist': '/development/material-checklist',
+      'material-checklist-form': '/development/material-checklist-form',
       'warranty': '/development/warranty',
       'construction': '/development/construction-form',
       'fifteenday': '/development/fifteen-day-form',
+      'inspection': '/development/inspection-checklist',
+      'civil-noc': '/development/civil-work-checklist', // Assuming Civil NOC uses CivilWorkChecklistForm
+      'Material Order For Dispatch': '/development/material-checklist', // Assuming this uses MaterialChecklistForm
     };
 
     const handleFormSelect = (formId) => {
@@ -496,11 +492,9 @@ const DevelopmentDashboard = () => {
                     { id: 'owner-material', label: 'Owner Material Checklist' },
                     { id: 'warranty-period', label: 'Warranty Period' },
                     { id: 'work-steps', label: 'Work Steps' },
-                    { id: 'civil-work', label: 'Civil Work Checklist' },
                     { id: 'material-checklist', label: 'Material Checklist' },
                     { id: 'warranty', label: 'Warranty Form' },
                     { id: 'construction', label: 'Construction Form' },
-                    { id: 'fifteenday', label: '15 Days Verification' },
                   ].map(form => (
                     <button
                       key={form.id}
@@ -522,7 +516,48 @@ const DevelopmentDashboard = () => {
               )}
             </div>
           );
-
+        case 9:
+          return (
+            <div className="space-y-3">
+              <p className="text-sm text-gray-600">{step.description}</p>
+              {status === 'current' && (
+                <button
+                  onClick={() => handleFormSelect('fifteenday')}
+                  className={`w-full bg-${step.color}-500 text-white px-4 py-2 rounded-lg hover:bg-${step.color}-600 transition-colors`}
+                >
+                  Start 15 Days Verification
+                </button>
+              )}
+            </div>
+          );
+        case 10:
+          return (
+            <div className="space-y-3">
+              <p className="text-sm text-gray-600">{step.description}</p>
+              {status === 'current' && (
+                <button
+                  onClick={() => handleFormSelect('inspection')}
+                  className={`w-full bg-${step.color}-500 text-white px-4 py-2 rounded-lg hover:bg-${step.color}-600 transition-colors`}
+                >
+                  Start Inspection
+                </button>
+              )}
+            </div>
+          );
+        case 11:
+          return (
+            <div className="space-y-3">
+              <p className="text-sm text-gray-600">{step.description}</p>
+              {status === 'current' && (
+                <button
+                  onClick={() => handleFormSelect('civil-noc')}
+                  className={`w-full bg-${step.color}-500 text-white px-4 py-2 rounded-lg hover:bg-${step.color}-600 transition-colors`}
+                >
+                  Start Civil NOC Process
+                </button>
+              )}
+            </div>
+          );
         default:
           return (
             <div className="space-y-3">
@@ -793,46 +828,17 @@ const DevelopmentDashboard = () => {
     );
   };
 
+
+
+
+
   // Main dashboard rendering
   return (
     <ErrorBoundary>
       <div className="min-h-screen bg-gray-50 flex">
-        <aside className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0 transition-transform duration-300 z-50`}>
-          <div className="p-4 flex items-center justify-between border-b">
-            <h1 className="text-xl font-bold text-red-600">Workflow</h1>
-            <button onClick={() => setSidebarOpen(false)} className="lg:hidden">
-              <X className="w-6 h-6" />
-            </button>
-          </div>
-          <nav className="p-4 space-y-2">
-            {navigationItems.map(item => (
-              <button
-                key={item.id}
-                onClick={() => {
-                  setActiveView(item.id);
-                  navigate(`/development/${item.id === 'dashboard' ? '' : item.id}`);
-                }}
-                className={`w-full flex items-center space-x-2 px-4 py-2 rounded-lg ${
-                  activeView === item.id ? 'bg-red-500 text-white' : 'text-gray-600 hover:bg-gray-100'
-                }`}
-              >
-                {item.icon}
-                <span>{item.label}</span>
-                {item.count > 0 && (
-                  <span className={`ml-auto px-2 py-1 rounded-full text-xs ${
-                    activeView === item.id ? 'bg-white text-red-500' : 'bg-gray-200 text-gray-600'
-                  }`}>
-                    {item.count}
-                  </span>
-                )}
-              </button>
-            ))}
-          </nav>
-        </aside>
+   
 
-        <main className="flex-1 p-6 lg:ml-64">
+        <main className="flex-1 p-6 ">
           {loading ? (
             <div className="text-center py-12">
               <p className="text-gray-600">Loading...</p>
@@ -992,6 +998,13 @@ const DevelopmentDashboard = () => {
                 </div>
               )}
 
+
+
+              
+
+
+              
+
               {activeView === 'projects' && (
                 <div className="space-y-6">
                   <div className="flex justify-between items-center">
@@ -1131,6 +1144,11 @@ const DevelopmentDashboard = () => {
                 </div>
               )}
 
+
+
+
+              
+
               {activeView === 'challenges' && (
                 <div className="space-y-6">
                   <div className="flex justify-between items-center">
@@ -1192,21 +1210,6 @@ const DevelopmentDashboard = () => {
                 </div>
               )}
 
-              {!['dashboard', 'projects', 'engineers', 'challenges', 'reports', 'settings'].includes(activeView) && (
-                <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-2">Page Not Found</h2>
-                  <p className="text-gray-600">The requested view is not available.</p>
-                  <button
-                    onClick={() => {
-                      setActiveView('dashboard');
-                      navigate('/development');
-                    }}
-                    className="mt-4 bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors"
-                  >
-                    Back to Dashboard
-                  </button>
-                </div>
-              )}
             </>
           )}
         </main>

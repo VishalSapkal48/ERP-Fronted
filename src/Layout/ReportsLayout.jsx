@@ -1,74 +1,78 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import RepoSidebar from "../Components/Reports_Module/RepoSidebar";
-import RepoNavBar from "../Components/Reports_Module/RepoNavBar";
-import ReportsRoutes from "../Routes/ReportsRoutes";
+import Navbar from "../Components/DEVELOPMENT_DASHBOARD/NavBar";
+import Sidebar from "../Components/DEVELOPMENT_DASHBOARD/Sidebar";
+import DevelopmentRoutes from "../Routes/DevlopmentRoutes";
 
-const ReportsLayout = ({ onLogout }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+const DevelopmentLayout = ({ onLogout }) => {
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeView, setActiveView] = useState("dashboard");
+  const [notificationCount] = useState(3); // Example static count; can be dynamic later
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-
-  const handleLogout = () => {
+  const handleLogoutClick = () => {
     try {
-      console.log("ReportsLayout: Initiating logout");
-      // Clear all authentication-related storage
+      console.log("DevelopmentLayout: Initiating logout");
+
+      // Clear storage
       localStorage.removeItem("authToken");
       sessionStorage.clear();
-      
-      // Call onLogout to reset role and username in App.js
+
       if (onLogout) {
-        console.log("ReportsLayout: Calling onLogout from App.js");
+        console.log("DevelopmentLayout: Calling onLogout from App.js");
         onLogout();
       }
 
-      // Navigate to login page
-      console.log("ReportsLayout: Navigating to /");
+      // Navigate to login
       navigate("/", { replace: true });
-
-      // Close sidebar on mobile
-      if (isSidebarOpen) {
-        console.log("ReportsLayout: Closing sidebar");
-        toggleSidebar();
-      }
     } catch (error) {
       console.error("Logout error:", error);
     }
   };
 
+  // Sidebar navigation items
+  const navigationItems = [
+    { id: "dashboard", label: "Workflow Dashboard", icon: <i className="fas fa-chart-bar"></i>, count: 2 },
+    { id: "projects", label: "All Projects", icon: <i className="fas fa-building"></i>, count: 2 },
+    { id: "engineers", label: "Engineers", icon: <i className="fas fa-users"></i>, count: 3 },
+    { id: "challenges", label: "Active Challenges", icon: <i className="fas fa-exclamation-triangle"></i>, count: 0 },
+    { id: "reports", label: "Reports", icon: <i className="fas fa-file-alt"></i> },
+    { id: "settings", label: "Settings", icon: <i className="fas fa-cog"></i> },
+  ];
+
   return (
-    <div className="h-screen w-full flex overflow-hidden bg-gray-100">
-      {/* Sidebar */}
-      <div
-        className={`fixed inset-y-0 left-0 w-64 bg-gray-800 text-white transform z-40 transition-transform duration-300
-        ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:static`}
-      >
-        <RepoSidebar closeSidebar={toggleSidebar} onLogout={handleLogout} />
+    <div className="h-screen w-full flex bg-gray-100 overflow-hidden">
+      {/* Sidebar - fixed and full height */}
+      <div className="w-64 flex-shrink-0 bg-gray-800 text-white">
+        <Sidebar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          activeView={activeView}
+          setActiveView={setActiveView}
+          navigationItems={navigationItems}
+        />
       </div>
 
-      {/* Overlay for mobile */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
-          onClick={toggleSidebar}
-        />
-      )}
-
-      {/* Main Content */}
+      {/* Main Layout */}
       <div className="flex-1 flex flex-col h-full">
         {/* Navbar */}
         <header className="sticky top-0 z-20 bg-blue-600 text-white shadow p-4 flex justify-between items-center">
-          <RepoNavBar toggleSidebar={toggleSidebar} onLogout={handleLogout} />
+          <Navbar
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+            activeView={navigationItems.find(item => item.id === activeView)}
+            notificationCount={notificationCount}
+            onLogout={handleLogoutClick}
+          />
         </header>
 
-        {/* Scrollable Content */}
+        {/* Scrollable Content ONLY */}
         <main className="flex-1 overflow-y-auto p-6">
-          <ReportsRoutes />
+          <DevelopmentRoutes />
         </main>
       </div>
     </div>
   );
 };
 
-export default ReportsLayout;
+export default DevelopmentLayout;

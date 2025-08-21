@@ -148,7 +148,7 @@ const yewaleSteps = (t) => [
   { name: t.shopSetup, path: '/forms/projects/yewale/shop-setup-checklist' },
   { name: t.projectFollowup, path: '/forms/projects/yewale/project-work-followup' },
   { name: t.surveyInputs, path: '/forms/projects/yewale/survey-inputs' },
-  { name: t.survey, path: '/forms/projects/yewale/survey' },
+  { name: t.survey, path: '/forms/projects/nadbrahma/project-work-followup'},
   { name: t.roughLayout, path: '/forms/projects/yewale/rough-layout' },
 ];
 
@@ -162,7 +162,7 @@ const nadbrahmaSteps = (t) => [
   { name: t.shopSetup, path: '/forms/projects/nadbrahma/shop-setup-checklist' },
   { name: t.projectFollowup, path: '/forms/projects/nadbrahma/project-work-followup' },
   { name: t.surveyInputs, path: '/forms/projects/nadbrahma/survey-inputs' },
-  { name: t.survey, path: '/forms/projects/nadbrahma/survey' },
+  { name: t.survey, path: '/forms/projects/nadbrahma/project-work-followup' },
   { name: t.roughLayout, path: '/forms/projects/nadbrahma/rough-layout' },
 ];
 
