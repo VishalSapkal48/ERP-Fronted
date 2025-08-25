@@ -5,7 +5,7 @@ export default function CALL1() {
   const [lang, setLang] = useState("mr");
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [error, setError] = useState(""); // State for validation error
+  const [error, setError] = useState("");
 
   const handleLanguageToggle = () => {
     setLang((prev) => (prev === "mr" ? "en" : "mr"));
@@ -13,35 +13,32 @@ export default function CALL1() {
 
   const handleAnswerChange = (value) => {
     setAnswers({ ...answers, [step]: value });
-    setError(""); // Clear error when user provides an answer
+    setError("");
   };
 
   const handleNext = () => {
-    // Validate that an answer is provided for non-info questions
     if (questions[step].type !== "info" && !answers[step]) {
       setError(lang === "mr" ? "कृपया उत्तर निवडा" : "Please select an answer");
       return;
     }
     if (step < questions.length - 1) {
       setStep(step + 1);
-      setError(""); // Clear error on step change
+      setError("");
     }
   };
 
   const handlePrevious = () => {
     if (step > 0) {
       setStep(step - 1);
-      setError(""); // Clear error on step change
+      setError("");
     }
   };
 
   const handleSubmit = () => {
-    // Validate the last question
     if (questions[step].type !== "info" && !answers[step]) {
       setError(lang === "mr" ? "कृपया उत्तर निवडा" : "Please select an answer");
       return;
     }
-    // Implement your submit logic here (e.g., send answers to a server)
     console.log("Form submitted with answers:", answers);
     alert(
       lang === "mr"
@@ -84,6 +81,7 @@ export default function CALL1() {
             marginBottom: "30px",
             flexWrap: "wrap",
             background: "white",
+            padding: "10px",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -100,13 +98,9 @@ export default function CALL1() {
               }}
             >
               <img
-                src="../../../../../../public/Images/OnlineSurvey/logo.png"
-                alt=""
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
-                }}
+                src="/Images/OnlineSurvey/logo.png"
+                alt="YNK Logo"
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
               />
             </div>
             <h1
@@ -170,20 +164,14 @@ export default function CALL1() {
             {currentQuestion[lang]}
           </p>
 
-          {/* Validation Error Message */}
+          {/* Validation Error */}
           {error && (
-            <p
-              style={{
-                color: "red",
-                fontSize: "14px",
-                marginBottom: "20px",
-              }}
-            >
+            <p style={{ color: "red", fontSize: "14px", marginBottom: "20px" }}>
               {error}
             </p>
           )}
 
-          {/* Answer Options */}
+          {/* Yes/No Options */}
           {currentQuestion.type === "yesno" && (
             <div style={{ marginBottom: "20px" }}>
               <label
@@ -213,6 +201,7 @@ export default function CALL1() {
             </div>
           )}
 
+          {/* Text Answer */}
           {currentQuestion.type === "text" && (
             <input
               type="text"
@@ -232,6 +221,7 @@ export default function CALL1() {
             />
           )}
 
+          {/* Rating */}
           {currentQuestion.type === "rating" && (
             <select
               value={answers[step] || ""}
@@ -248,12 +238,15 @@ export default function CALL1() {
               <option value="">
                 {lang === "mr" ? "रेटिंग निवडा" : "Select Rating"}
               </option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
+              {[1, 2, 3, 4, 5].map((num) => (
+                <option key={num} value={num}>
+                  {num}
+                </option>
+              ))}
             </select>
           )}
 
+          {/* Info */}
           {currentQuestion.type === "info" && (
             <p style={{ color: "#444", fontSize: "15px" }}>
               {lang === "mr"
@@ -263,13 +256,7 @@ export default function CALL1() {
           )}
 
           {/* Navigation */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <button
               onClick={handlePrevious}
               disabled={step === 0}
@@ -304,17 +291,14 @@ export default function CALL1() {
             ) : (
               <button
                 onClick={handleNext}
-                disabled={step === questions.length - 1}
                 style={{
                   padding: "8px 20px",
                   backgroundColor: "#4285f4",
                   color: "white",
                   border: "none",
                   borderRadius: "4px",
-                  cursor:
-                    step === questions.length - 1 ? "not-allowed" : "pointer",
+                  cursor: "pointer",
                   fontSize: "14px",
-                  opacity: step === questions.length - 1 ? 0.5 : 1,
                 }}
               >
                 {lang === "mr" ? "पुढे" : "Next"}

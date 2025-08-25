@@ -7,7 +7,7 @@ const call8Questions = [
   },
   {
     id: 2,
-    mr: "तांत्रिकाचे नाव नियुक्त करा",
+    mr: "तंत्रज्ञाचे नाव असाइन करा",
     en: "Assign Technician Name",
     type: "text",
   },
@@ -50,7 +50,7 @@ const call8Questions = [
   {
     id: 9,
     mr: "गॅस बर्नर भट्टीमध्ये समस्या आहे का?",
-    en: "Is there an issue with the Gas Burner Bhatti?",
+    en: "Is there an issue with the Gas Burner Stove?",
     type: "yesno",
   },
   {
@@ -61,7 +61,7 @@ const call8Questions = [
   },
   {
     id: 11,
-    mr: "पॉस बिलिंग मशीनमध्ये समस्या आहे का?",
+    mr: "POS बिलिंग मशीनमध्ये समस्या आहे का?",
     en: "Is there an issue with the POS Billing Machine?",
     type: "yesno",
   },
@@ -79,8 +79,8 @@ const call8Questions = [
   },
   {
     id: 14,
-    mr: "लेटर बोर्ड, साइनेज बोर्डमध्ये समस्या आहे का?",
-    en: "Is there an issue with the Letter Board or Signage Board?",
+    mr: "लेटर बोर्ड आणि साइनेज बोर्डमध्ये समस्या आहे का?",
+    en: "Is there an issue with the Letter Board and Signage Board?",
     type: "yesno",
   },
   {
@@ -91,44 +91,44 @@ const call8Questions = [
   },
   {
     id: 16,
-    mr: "फ्रिजमध्ये समस्या आहे का?",
+    mr: "फ्रीजमध्ये समस्या आहे का?",
     en: "Is there an issue with the Fridge?",
     type: "yesno",
   },
   {
     id: 17,
-    mr: "जर काही समस्या असेल, तर काल तांत्रिक आला होता — समस्या सुटली आहे का?",
-    en: "If there was an issue, the technician came yesterday — has the issue been resolved?",
+    mr: "जर काही समस्या असेल आणि काल तंत्रज्ञ आले होते, तर समस्या सुटली आहे का?",
+    en: "If there was an issue and the technician visited yesterday, has the problem been resolved?",
     type: "yesno",
   },
   {
     id: 18,
     mr: "चाचणी आणि तपासणी झाली आहे का? मशीन व्यवस्थित काम करत आहे का?",
-    en: "Has the testing and checking been done? Is the machine working fine?",
+    en: "Has testing and checking been done? Is the machine working correctly?",
     type: "yesno",
   },
   {
     id: 19,
-    mr: "जर काही समस्या असेल, तर 9767893000 वर कॉल करा.",
-    en: "If there is any issue, call on 9767893000.",
+    mr: "काही समस्या असल्यास, 9767893000 या नंबरवर कॉल करा.",
+    en: "If there are any issues, please call 9767893000.",
     type: "info",
   },
   {
     id: 20,
-    mr: "आम्ही प्रदान केलेल्या ग्राहक सेवेबद्दल तुम्ही समाधानी आहात का?",
+    mr: "आम्ही प्रदान केलेल्या ग्राहक सेवेबद्दल आपण समाधानी आहात का?",
     en: "Are you satisfied with the customer service we provided?",
     type: "yesno",
   },
   {
     id: 21,
-    mr: "YNK टिमला तुम्ही किती रेटिंग देणार - 3, 4, 5, यापैकी?",
-    en: "What rating will you give to the YNK team - 3, 4, or 5?",
+    mr: "तुम्ही YNK टीमला 1 ते 5 पैकी किती रेटिंग द्याल?",
+    en: "What rating would you give to the YNK team on a scale of 1 to 5?",
     type: "rating",
   },
   {
     id: 22,
-    mr: "अतिरिक्त टिप्पण्या/सूचना",
-    en: "Additional comments/suggestions",
+    mr: "अतिरिक्त टिप्पण्या / सूचना",
+    en: "Additional Comments / Suggestions",
     type: "text",
   },
 ];

@@ -104,7 +104,7 @@ export default function YewaleCALL6() {
             <div
               style={{
                 width: "60px",
-                height: "zijpx",
+                height: "60px", // Corrected from "zijpx" to "60px"
                 borderRadius: "10px",
                 overflow: "hidden",
                 backgroundColor: "#fff",
@@ -324,10 +324,8 @@ export default function YewaleCALL6() {
                   color: "white",
                   border: "none",
                   borderRadius: "4px",
-                  cursor:
-                    step === questions.length - 1 ? "not-allowed" : "pointer",
+                  cursor: "pointer",
                   fontSize: "14px",
-                  opacity: step === questions.length - 1 ? 0.5 : 1,
                 }}
               >
                 {lang === "mr" ? "पुढे" : "Next"}

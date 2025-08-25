@@ -226,6 +226,31 @@ export default function CALL9() {
             />
           )}
 
+          {/* This form does not have a rating question, but the code block is harmless */}
+          {currentQuestion.type === "rating" && (
+            <select
+              value={answers[step] || ""}
+              onChange={(e) => handleAnswerChange(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "10px",
+                fontSize: "16px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                marginBottom: "20px",
+              }}
+            >
+              <option value="">
+                {lang === "mr" ? "रेटिंग निवडा" : "Select Rating"}
+              </option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          )}
+
           {currentQuestion.type === "info" && (
             <p style={{ color: "#444", fontSize: "15px" }}>
               {lang === "mr"

@@ -1,8 +1,8 @@
 const call7Questions = [
   {
     id: 1,
-    mr: "आपल्याला आमच्या कार्यालयात येण्यास अडचण आली का?",
-    en: "Did you have trouble coming to our office?",
+    mr: "आपल्याला आमच्या कार्यालयात येण्यास काही अडचण आली का?",
+    en: "Did you face any difficulty in coming to our office?",
     type: "yesno",
   },
   {
@@ -13,20 +13,20 @@ const call7Questions = [
   },
   {
     id: 3,
-    mr: "आपल्याला रिसेप्शन सेवेबद्दल कसे वाटले?",
-    en: "How did you feel about the reception service?",
+    mr: "आपण रिसेप्शन सेवेबद्दल समाधानी आहात का?",
+    en: "Were you satisfied with the reception service?",
     type: "yesno",
   },
   {
     id: 4,
     mr: "बैठक निर्धारित वेळेत झाली का?",
-    en: "Was the meeting conducted in the provided time?",
+    en: "Was the meeting conducted at the scheduled time?",
     type: "yesno",
   },
   {
     id: 5,
     mr: "आपल्याला खूप वेळ प्रतीक्षा करावी लागली का?",
-    en: "Did you have to wait too long?",
+    en: "Did you have to wait for a long time?",
     type: "yesno",
   },
   {
@@ -37,14 +37,14 @@ const call7Questions = [
   },
   {
     id: 7,
-    mr: "बैठकीत सर्व मुद्दे आपल्याला समजावून सांगितले गेले का?",
-    en: "Were all the points in the meeting explained to you?",
+    mr: "बैठकीत सर्व मुद्दे आपल्याला स्पष्टपणे समजावून सांगितले गेले का?",
+    en: "Were all the points in the meeting explained to you clearly?",
     type: "yesno",
   },
   {
     id: 8,
-    mr: "आपण सर्व सिव्हिल आणि उपकरणांचे कोटेशन समजले का?",
-    en: "Did you understand all civil and equipment quotes?",
+    mr: "आपल्याला सर्व सिव्हिल आणि उपकरणांचे कोटेशन समजले का?",
+    en: "Did you understand the quotations for all civil work and equipment?",
     type: "yesno",
   },
   {
@@ -55,8 +55,8 @@ const call7Questions = [
   },
   {
     id: 10,
-    mr: "आम्ही कोटेशनमधील सर्व मुद्दे समजलो आहोत आणि BDM ने सांगितल्याप्रमाणे स्वीकारले आहे, त्यामुळे मी कोटेशन अंतिम करत आहे.",
-    en: "We have understood all the points in the quotation and it has been accepted as stated by BDM, so I am finalizing the quotation.",
+    mr: "आम्ही कोटेशनमधील सर्व मुद्दे समजलो आहोत आणि BDM ने सांगितल्याप्रमाणे ते स्वीकारत आहोत, त्यामुळे आम्ही हे कोटेशन अंतिम करत आहोत.",
+    en: "We have understood all the points in the quotation and accept them as explained by the BDM, therefore we are finalizing this quotation.",
     type: "info",
   },
 ];

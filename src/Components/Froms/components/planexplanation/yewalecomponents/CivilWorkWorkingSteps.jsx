@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import logo from "../../../../../../public/Images/OnlineSurvey/logo.png";
 
 export default function WorkStepsForm() {
-  const [lang, setLang] = useState("mr");
+  const [language, setLanguage] = useState("en");
   const [formData, setFormData] = useState({
     date: "",
     engineerName: "",
@@ -16,418 +16,484 @@ export default function WorkStepsForm() {
   };
 
   const handleLanguageToggle = () => {
-    setLang((prev) => (prev === "mr" ? "en" : "mr"));
+    setLanguage((prev) => (prev === "en" ? "mr" : "en"));
   };
 
   const translations = {
-    mr: {
-      title: "वायएनके",
-      formTitle: "काम करण्याच्या स्टेप्स",
-      switchLang: "English",
-      switchAria: "Switch to English",
-      labels: {
-        date: "<strong>तारीख</strong>",
-        engineer: "<strong>इंजिनियर नाव/सही</strong>",
-        owner: "<b>शाखा मालक नाव/सही</b>",
-        sign: "स्वाक्षरी",
-        mobile: "मोबाईल",
-        tableHead: ["नं", "तपशील", "कालावधी", "REMARK"],
-      },
-      note: "Total Days: 15/20 days\n\nNote:- काही आडचणी मुळे कामात कमी जास्त होते. उदा. पेमेंट",
-    },
     en: {
       title: "YNK",
-      formTitle: "Work Execution Steps",
+      formTitle: "Timeline & Work Steps",
       switchLang: "मराठी",
-      switchAria: "Switch to Marathi",
       labels: {
-        date: "<strong>Date</strong>",
-        engineer: "<strong>Engineer Name/Sign</strong>",
-        owner: "<b>Branch Owner Name/Sign</b>",
-        sign: "Signature",
-        mobile: "Mobile",
-        tableHead: ["No", "Details", "Duration", "Remark"],
+        date: "Date",
+        engineerName: "Engineer Name / Sign",
+        ownerName: "Branch Owner Name / Sign",
+        signature: "Signature",
+        mobile: "Mobile Number",
       },
-      note: "Total Days: 15/20 days\nNote: Work duration may vary due to issues like payment delays.",
+      placeholders: {
+        engineerName: "Enter Engineer Name",
+        ownerName: "Enter Owner Name",
+        signature: "Enter Signature",
+        mobile: "Enter Mobile Number",
+      },
+      note: "Total Estimated Duration: 15-20 Days\n\nNote: This duration may vary due to factors such as payment delays or other unforeseen issues.",
+      tableHeaders: ["Step", "Details", "Duration", "Remarks"],
+      stepsData: [
+        {
+          no: 1,
+          details:
+            "Shop Measurement & Survey:\n- Contact owner and schedule visit\n- Conduct site survey\n- Submit survey form to the office",
+          duration: "1 Day",
+          remark: "",
+        },
+        {
+          no: 2,
+          details:
+            "Demolition & Cleanup:\n- Scrape and break walls as needed\n- Remove old fixtures (tank, board, POP)\n- Clear all debris from the site",
+          duration: "1 Day",
+          remark: "",
+        },
+        {
+          no: 3,
+          details:
+            "Shutter Servicing & Water Tank:\n- Mandatory shutter servicing\n- Install mezzanine water tank (2000L) if required",
+          duration: "1 Day",
+          remark: "",
+        },
+        {
+          no: 4,
+          details:
+            "Civil Construction:\n- Complete necessary construction work in required areas",
+          duration: "1 Day",
+          remark: "",
+        },
+        {
+          no: 5,
+          details:
+            "POP Ceiling Framing:\n- Material: Gypsum or PVC\n- Height: 9 feet from the floor level",
+          duration: "1 Day",
+          remark: "",
+        },
+        {
+          no: 6,
+          details:
+            "Electrical & Plumbing Rough-in:\n- Electrical wiring (Polycab), CCTV, and speaker cables\n- Plumbing for water tank, sink, and steamer with separate pipelines",
+          duration: "1 Day",
+          remark: "",
+        },
+        {
+          no: 7,
+          details:
+            "Wall Tiling:\n- Apply URP chemical and rough plaster\n- Install wall tiles (24x12 or 18x12, Matte Milk White)",
+          duration: "3 Days",
+          remark: "",
+        },
+        {
+          no: 8,
+          details:
+            "Flooring:\n- Install floor tiles (24x24, Ivory)\n- Perform acid wash for cleaning",
+          duration: "1 Day",
+          remark: "",
+        },
+        {
+          no: 9,
+          details:
+            "Granite Installation:\n- Type: Black Telephone Granite for countertops",
+          duration: "½ Day",
+          remark: "",
+        },
+        {
+          no: 10,
+          details:
+            "POP Sheet Installation:\n- Install Gypsum or PVC sheets on the ceiling frame",
+          duration: "1 Day",
+          remark: "",
+        },
+        {
+          no: 11,
+          details:
+            "Painting:\n- Apply putty and paint the shop interior and shutter\n- Paint the shutter logo (36x36 inch)",
+          duration: "2 Days",
+          remark: "",
+        },
+        {
+          no: 12,
+          details:
+            "Main Board Frame Installation:\n- Install MS or Aluminum frame for the main signage board",
+          duration: "1 Day",
+          remark: "",
+        },
+        {
+          no: 13,
+          details:
+            "ACP Board Cladding:\n- Clad the frame with ACP sheets and apply silicone sealant",
+          duration: "2 Days",
+          remark: "",
+        },
+        {
+          no: 14,
+          details:
+            "Signage Letter Installation:\n- Install 3D letters on the main board and clean the area",
+          duration: "1 Day",
+          remark: "",
+        },
+        {
+          no: 15,
+          details:
+            "Final Setup & Handover:\n- Install all equipment (steel, electrical, plumbing)\n- Set up CCTV & Wi-Fi\n- Submit final details to YNK Office",
+          duration: "1 Day",
+          remark: "",
+        },
+      ],
+    },
+    mr: {
+      title: "वायएनके",
+      formTitle: "कामाचे टप्पे आणि टाइमलाइन",
+      switchLang: "English",
+      labels: {
+        date: "तारीख",
+        engineerName: "इंजिनिअरचे नाव / सही",
+        ownerName: "शाखा मालकाचे नाव / सही",
+        signature: "सही",
+        mobile: "मोबाइल नंबर",
+      },
+      placeholders: {
+        engineerName: "इंजिनिअरचे नाव प्रविष्ट करा",
+        ownerName: "मालकाचे नाव प्रविष्ट करा",
+        signature: "सही प्रविष्ट करा",
+        mobile: "मोबाइल नंबर प्रविष्ट करा",
+      },
+      note: "एकूण अंदाजित कालावधी: १५-२० दिवस\n\nटीप: पेमेंटला उशीर किंवा इतर अनपेक्षित समस्यांमुळे हा कालावधी बदलू शकतो.",
+      tableHeaders: ["टप्पा", "तपशील", "कालावधी", "शेरा"],
+      stepsData: [
+        {
+          no: 1,
+          details:
+            "दुकानाचे मोजमाप आणि सर्वेक्षण:\n- मालकाशी संपर्क साधून भेटीचे नियोजन\n- साइटचे सर्वेक्षण करणे\n- सर्वेक्षण फॉर्म ऑफिसमध्ये सादर करणे",
+          duration: "१ दिवस",
+          remark: "",
+        },
+        {
+          no: 2,
+          details:
+            "तोडफोड आणि स्वच्छता:\n- आवश्यकतेनुसार भिंती घासणे आणि तोडणे\n- जुने साहित्य काढणे (टाकी, बोर्ड, पीओपी)\n- साइटवरील सर्व कचरा साफ करणे",
+          duration: "१ दिवस",
+          remark: "",
+        },
+        {
+          no: 3,
+          details:
+            "शटर सर्व्हिसिंग आणि पाण्याची टाकी:\n- शटरची अनिवार्य सर्व्हिसिंग\n- आवश्यक असल्यास पोटमाळ्यावर पाण्याची टाकी (२००० लिटर) बसवणे",
+          duration: "१ दिवस",
+          remark: "",
+        },
+        {
+          no: 4,
+          details: "सिव्हिल बांधकाम:\n- आवश्यक भागांमध्ये बांधकाम पूर्ण करणे",
+          duration: "१ दिवस",
+          remark: "",
+        },
+        {
+          no: 5,
+          details:
+            "पीओपी सीलिंग फ्रेमिंग:\n- साहित्य: जिप्सम किंवा पीव्हीसी\n- उंची: जमिनीपासून ९ फूट",
+          duration: "१ दिवस",
+          remark: "",
+        },
+        {
+          no: 6,
+          details:
+            "इलेक्ट्रिकल आणि प्लंबिंगची तयारी:\n- इलेक्ट्रिकल वायरिंग (पॉलीकॅब), सीसीटीव्ही आणि स्पीकर केबल्स टाकणे\n- पाण्याची टाकी, सिंक आणि स्टीमरसाठी स्वतंत्र पाइपलाइनसह प्लंबिंग करणे",
+          duration: "१ दिवस",
+          remark: "",
+        },
+        {
+          no: 7,
+          details:
+            "भिंतीवर टाइल्स लावणे:\n- URP केमिकल आणि रफ प्लास्टर लावणे\n- वॉल टाइल्स बसवणे (२४x१२ किंवा १८x१२, मॅट मिल्क व्हाइट)",
+          duration: "३ दिवस",
+          remark: "",
+        },
+        {
+          no: 8,
+          details:
+            "फ्लोअरिंग:\n- फ्लोअर टाइल्स बसवणे (२४x२४, आयव्हरी)\n- स्वच्छतेसाठी ॲसिड वॉश करणे",
+          duration: "१ दिवस",
+          remark: "",
+        },
+        {
+          no: 9,
+          details:
+            "ग्रॅनाइट बसवणे:\n- प्रकार: काउंटरटॉपसाठी ब्लॅक टेलिफोन ग्रॅनाइट",
+          duration: "½ दिवस",
+          remark: "",
+        },
+        {
+          no: 10,
+          details:
+            "पीओपी शीट बसवणे:\n- सीलिंग फ्रेमवर जिप्सम किंवा पीव्हीसी शीट्स बसवणे",
+          duration: "१ दिवस",
+          remark: "",
+        },
+        {
+          no: 11,
+          details:
+            "रंगकाम:\n- पुट्टी लावून दुकानाच्या आत आणि शटरला रंग देणे\n- शटर लोगो रंगवणे (३६x३६ इंच)",
+          duration: "२ दिवस",
+          remark: "",
+        },
+        {
+          no: 12,
+          details:
+            "मुख्य बोर्ड फ्रेम बसवणे:\n- मुख्य सायनेज बोर्डसाठी एमएस किंवा ॲल्युमिनियम फ्रेम बसवणे",
+          duration: "१ दिवस",
+          remark: "",
+        },
+        {
+          no: 13,
+          details:
+            "एसीपी बोर्ड क्लॅडिंग:\n- फ्रेमवर एसीपी शीट्स लावणे आणि सिलिकॉन लावणे",
+          duration: "२ दिवस",
+          remark: "",
+        },
+        {
+          no: 14,
+          details:
+            "सायनेज लेटर बसवणे:\n- मुख्य बोर्डवर ३डी अक्षरे बसवणे आणि परिसर स्वच्छ करणे",
+          duration: "१ दिवस",
+          remark: "",
+        },
+        {
+          no: 15,
+          details:
+            "अंतिम सेटअप आणि हस्तांतरण:\n- सर्व उपकरणे बसवणे (स्टील, इलेक्ट्रिकल, प्लंबिंग)\n- सीसीटीव्ही आणि वाय-फाय सेटअप करणे\n- अंतिम तपशील YNK ऑफिसला सादर करणे",
+          duration: "१ दिवस",
+          remark: "",
+        },
+      ],
     },
   };
 
-  const stepsData = [
-    [
-      "1",
-      lang === "mr"
-        ? "शॉप चे मोजमाप\nowner ला कॉल कारणे\nशॉप व्हिसिट प्लॅन करणे\nशॉप सर्वे करणे\nसर्वे फॉर्म ऑफिस मध्ये जमा करणे"
-        : "Shop measurement\nCall the owner\nPlan shop visit\nConduct shop survey\nSubmit survey form to office",
-      "1 day",
-      "",
-    ],
-    [
-      "2",
-      lang === "mr"
-        ? "तोडफोड व रबिट उचलणे\nभीतघासणे:\nभीत तोडणे:\nजुनी पाण्याची टाकी काढणे:\nजुना बोड काढणे:\nजुनी pop काढणे:\nरॅबीट उचलणे:"
-        : "Demolition and debris removal\nWall scraping:\nWall breaking:\nRemove old water tank:\nRemove old board:\nRemove old POP:\nDebris removal:",
-      "1 day",
-      "",
-    ],
-    [
-      "3",
-      lang === "mr"
-        ? "शटर सर्विसिंग, पाण्याच्या टाकीचे लँडिंग करणे\nशटर सेर्विसिग हे कंपलसरी करणे\nपोटमाळा करायचा असेल तर तो २००० वॉटर टाकी बसेल एवढा करावा (7'x 10'x 3')"
-        : "Shutter servicing, water tank landing\nShutter servicing is compulsory\nIf mezzanine is needed, it should accommodate a 2000L water tank (7'x 10'x 3')",
-      "1 day",
-      "",
-    ],
-    [
-      "4",
-      lang === "mr"
-        ? "शॉप मध्ये काही ठिकाणी बांधकाम असेल तर बांधकाम करणे"
-        : "Construction work if required at certain places in the shop",
-      "1 day",
-      "",
-    ],
-    [
-      "5",
-      lang === "mr"
-        ? "शॉप pop फ्रेमिंग करणे (GYPSUM / PVC)\nफ्लोररिंग पासून ९' हाईट pop फ्रेमिंग करणे"
-        : "Shop POP framing (GYPSUM / PVC)\nPOP framing from flooring to 9' height",
-      "1 day",
-      "",
-    ],
-    [
-      "6",
-      lang === "mr"
-        ? 'इलेक्ट्रिकल वर्क करणे\nवायर :- पॉलीकॅप + स्पीकर + CCTV 4+1\nबटन :- ANCHOR पेन्टा / रोमा\nहिट्टर पॉईंट 16A + MCB X 1\nफ्रायर पॉईंट 16A + LCB X 1\nफ्रिज पॉईंट 16A + बटन X 2\nवर्क टेबल पॉईंट 16A + बटन X 4\nमेन बोर्ड 12 मॉडेल X 2 (18 मॉडेल X 1)\nसर्व शॉप MCB\nCCTV पॉईंट 5A X 4 (नो बटन)\nवॉल फॅन + स्पीकर पॉईंट 5A + बटन X 2\nसिलिंग लाइट\nपार्टिशन बोर्ड पॉईंट 5A + बटन X 4 (बिलिंग मशीन + मेनू फ्रेम)\nनेम बोर्ड पावर पॉईंट 16A X 5\nएक्झॉस्ट फॅन पॉईंट 5A + बटन X 1\nप्लंबर वर्क करणे\nशॉप मध्ये पाणी 24 तास असेल तर 1000 लिटर टाकी बसवावी\nशॉप मध्ये पाणी 10 तास असेल तर 2000 लिटर टाकी बसवावी\nशॉप मध्ये पाणी 4 तास असेल तर 3000 लिटर टाकी बसवावी\nसिंक इनलेट पॉईंट UPVC पाईप 1/2" इंच आणि आउटलेट PVC पाईप 3" इंच (75MM) वापरावा\nस्टीमर इनलेट पाईप CPVC 1" इंच आणि त्याला एक NRV वॉल्व्ह हा कंपलसरी टाकावा\nआउटलेट हा PVC पाईप 3" इंच (75MM) वापरावा\nनोट :- सिंक आणि स्टीमर चे पाण्याच्या टाकीला वेगवेगळे इनलेट पाईप जोडावे'
-        : 'Electrical work\nWire: Polycab + Speaker + CCTV 4+1\nButtons: ANCHOR Penta / Roma\nHeater point 16A + MCB X 1\nFryer point 16A + LCB X 1\nFridge point 16A + Button X 2\nWork table point 16A + Button X 4\nMain board 12 model X 2 (18 model X 1)\nAll shop MCB\nCCTV point 5A X 4 (no button)\nWall fan + speaker point 5A + Button X 2\nCeiling light\nPartition board point 5A + Button X 4 (billing machine + menu frame)\nName board power point 16A X 5\nExhaust fan point 5A + Button X 1\nPlumbing work\nIf water is available 24 hours, install 1000L tank\nIf water is available 10 hours, install 2000L tank\nIf water is available 4 hours, install 3000L tank\nSink inlet point UPVC pipe 1/2" inch and outlet PVC pipe 3" inch (75MM)\nSteamer inlet pipe CPVC 1" inch with compulsory NRV valve\nOutlet PVC pipe 3" inch (75MM)\nNote: Separate inlet pipes for sink and steamer to water tank',
-      "1 day",
-      "",
-    ],
-    [
-      "7",
-      lang === "mr"
-        ? "यूआरपी केमिकल भिंतीवर मारणे, टाइल्स भिंतीला लावणे\nटाईल्स काम\nभिंतीला टाचे मारणे\nभिंतीला URP केमिकल मारणे\nभिंतीला रफ प्लास्टर करणे\nभिंतीला टाईल्स लावणे\nटाईल्स साइझ (24X12, 18X12)\nटाईल्स कलर :- मिल्क प्लेन व्हाईट (मॅट फिनिश)"
-        : "Apply URP chemical on walls, install wall tiles\nTiles work\nApply tacks on walls\nApply URP chemical on walls\nRough plaster on walls\nInstall wall tiles\nTile size (24X12, 18X12)\nTile color: Milk Plain White (Matt Finish)",
-      "3 days",
-      "",
-    ],
-    [
-      "8",
-      lang === "mr"
-        ? "फ्लोरिंग टाईल्स लावणे (24X24 PLANE IVORY)\nअॅसिड वॉश करणे"
-        : "Install flooring tiles (24X24 PLANE IVORY)\nAcid wash",
-      "1 day",
-      "",
-    ],
-    [
-      "9",
-      lang === "mr"
-        ? "ग्रेनाईट लावणे (BLACK TELEPHONE)"
-        : "Granite installation (BLACK TELEPHONE)",
-      "Half day",
-      "",
-    ],
-    [
-      "10",
-      lang === "mr"
-        ? "POP शीट लावणे (GYPSUM / PVC)"
-        : "POP sheet installation (GYPSUM / PVC)",
-      "1 day",
-      "",
-    ],
-    [
-      "11",
-      lang === "mr"
-        ? "पेंटिंग पुट्टी भरणे टचअप काढणे\nशॉप व शटर कलर करणे\nशटर लोगो काढणे (36X36 गोळ)"
-        : "Painting putty filling and touch-up\nColor shop and shutter\nShutter logo (36X36 round)",
-      "2 days",
-      "",
-    ],
-    [
-      "12",
-      lang === "mr"
-        ? "बोर्ड एमएस फ्रेमींग, बोर्ड अॅल्युमिनियम फ्रेमींग"
-        : "Board MS framing, board aluminum framing",
-      "1 day",
-      "",
-    ],
-    [
-      "13",
-      lang === "mr"
-        ? "बोर्ड एसीपी फ्रेमींग व सिलिकॉन भरणे"
-        : "Board ACP framing and silicone filling",
-      "2 days",
-      "",
-    ],
-    [
-      "14",
-      lang === "mr"
-        ? "बोर्ड लेटर लावणे, साफसफाई करणे"
-        : "Board letter installation, cleaning",
-      "1 day",
-      "",
-    ],
-    [
-      "15",
-      lang === "mr"
-        ? "YNK टीम साइड स्टील मटेरियल मागवणे\nसेटअप लावणे पूर्ण शॉप\nइलेक्ट्रिकल फायनल काम करणे\nस्पीकर, फॅन, लाइट, बटन बसवणे\nएक्झॉस्ट फॅन बसवणे\nफायर टँक बसवणे\nमॅग्नेटिक बसवणे, स्टोअर बसवणे\nप्लंबर फायनल काम करणे\nसिंक नळ बसवणे, आउटलेट बसवणे\nस्टीमर नळ बसवणे, आउटलेट बसवणे\nगॅस पाइप लाइन चे फायनल काम करणे\nCCTV चे काम करणे\nवायफाय चे काम करणे\nYNK ऑफिस मध्ये CCTV डिटेल्स देणे कंपलसरी त्यानंतर NAADBRAMAHA IDLI ऑफिस मध्ये MAIL पाठवला जातो"
-        : "YNK team orders side steel material\nComplete shop setup\nFinal electrical work\nInstall speaker, fan, light, buttons\nInstall exhaust fan\nInstall fire tank\nInstall magnetic, store\nFinal plumbing work\nInstall sink tap, outlet\nInstall steamer tap, outlet\nFinal gas pipeline work\nCCTV work\nWi-Fi work\nSubmitting CCTV details to YNK office is compulsory, followed by sending mail to NAADBRAMAHA IDLI office",
-      "1 day",
-      "",
-    ],
-  ];
+  // --- Component Styles ---
+  const styles = {
+    pageContainer: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      minHeight: "100vh",
+      backgroundColor: "#ffffff",
+      padding: "20px",
+      boxSizing: "border-box",
+    },
+    formContainer: {
+      width: "100%",
+      maxWidth: "800px",
+      padding: "20px",
+      backgroundColor: "#e3f2fd",
+      borderRadius: "8px",
+      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    },
+    header: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      backgroundColor: "#fff",
+      padding: "10px",
+      borderRadius: "4px",
+      marginBottom: "10px",
+    },
+    headerTitleContainer: {
+      display: "flex",
+      alignItems: "center",
+    },
+    logo: {
+      height: "40px",
+      width: "40px",
+      marginRight: "10px",
+    },
+    title: {
+      fontSize: "24px",
+      fontWeight: "bold",
+      color: "#1e40af",
+      margin: 0,
+    },
+    langButton: {
+      background: "none",
+      border: "none",
+      fontSize: "14px",
+      color: "#4b5563",
+      textDecoration: "underline",
+      cursor: "pointer",
+      fontWeight: "bold",
+    },
+    formTitle: {
+      fontSize: "18px",
+      fontWeight: "bold",
+      textAlign: "center",
+      marginBottom: "10px",
+      color: "#1f2937",
+    },
+    note: {
+      fontSize: "12px",
+      margin: "20px 0",
+      backgroundColor: "#fffbeb",
+      padding: "10px",
+      borderRadius: "6px",
+      border: "1px solid #facc15",
+      color: "#78350f",
+      fontWeight: "bold",
+      whiteSpace: "pre-line",
+    },
+    tableWrapper: {
+      overflowX: "auto",
+      marginBottom: "20px",
+    },
+    table: {
+      width: "100%",
+      borderCollapse: "collapse",
+      backgroundColor: "#f8fafc",
+      fontSize: "12px",
+      borderRadius: "4px",
+      overflow: "hidden",
+      border: "1px solid #e5e7eb",
+    },
+    th: {
+      border: "1px solid #e5e7eb",
+      padding: "10px",
+      textAlign: "left",
+      backgroundColor: "#e2e8f0",
+      fontWeight: "bold",
+      color: "#1f2937",
+    },
+    td: {
+      border: "1px solid #e5e7eb",
+      padding: "10px",
+      color: "#374151",
+      verticalAlign: "top",
+      fontWeight: "bold",
+      whiteSpace: "pre-line",
+    },
+    footer: {
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+      gap: "20px",
+      padding: "15px",
+      backgroundColor: "#ffffff",
+      borderRadius: "8px",
+      border: "1px solid #e5e7eb",
+    },
+    footerLabel: {
+      fontWeight: "bold",
+      marginBottom: "4px",
+      fontSize: "12px",
+      color: "#374151",
+      display: "block",
+    },
+    footerInput: {
+      padding: "8px",
+      border: "1px solid #d1d5db",
+      borderRadius: "4px",
+      fontSize: "12px",
+      width: "100%",
+      backgroundColor: "#fff",
+      boxSizing: "border-box",
+    },
+  };
 
-  const t = translations[lang];
+  const t = translations[language];
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        backgroundColor: "#ffffff",
-        padding: "20px",
-        boxSizing: "border-box",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "800px",
-          padding: "20px",
-          backgroundColor: "#e3f2fd",
-          borderRadius: "8px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            backgroundColor: "#fff",
-            padding: "10px",
-            borderRadius: "4px",
-            marginBottom: "10px",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <img
-              src={logo}
-              alt="YNK Logo"
-              style={{ height: "40px", width: "40px" }}
-            />
-            <h1
-              style={{ fontSize: "24px", fontWeight: "bold", color: "#1e40af" }}
-            >
-              {t.title}
-            </h1>
+    <div style={styles.pageContainer}>
+      <div style={styles.formContainer}>
+        <header style={styles.header}>
+          <div style={styles.headerTitleContainer}>
+            <img src={logo} alt="YNK Logo" style={styles.logo} />
+            <h1 style={styles.title}>{t.title}</h1>
           </div>
-          <button
-            style={{
-              background: "none",
-              border: "none",
-              fontSize: "14px",
-              color: "#4b5563",
-              textDecoration: "underline",
-              cursor: "pointer",
-            }}
-            onClick={handleLanguageToggle}
-            aria-label={t.switchAria}
-          >
+          <button style={styles.langButton} onClick={handleLanguageToggle}>
             {t.switchLang}
           </button>
-        </div>
+        </header>
 
-        <h2
-          style={{
-            fontSize: "18px",
-            fontWeight: "bold",
-            textAlign: "center",
-            marginBottom: "10px",
-          }}
-        >
-          {t.formTitle}
-        </h2>
+        <h2 style={styles.formTitle}>{t.formTitle}</h2>
 
-        <div style={{ marginBottom: "10px" }}>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-            <div>
-              <label
-                className="block text-sm text-gray-700 mb-1"
-                dangerouslySetInnerHTML={{ __html: t.labels.date }}
-              ></label>
-
-              <input
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                className="w-full border rounded p-2 text-sm"
-              />
-            </div>
-            <div>
-              <label
-                className="block text-sm text-gray-700 mb-1"
-                dangerouslySetInnerHTML={{ __html: t.labels.engineer }}
-              ></label>
-
-              <input
-                type="text"
-                name="engineerName"
-                value={formData.engineerName}
-                onChange={handleChange}
-                className="w-full border rounded p-2 text-sm"
-              />
-            </div>
-            <div>
-              <label
-                className="block text-sm text-gray-700 mb-1"
-                dangerouslySetInnerHTML={{ __html: t.labels.owner }}
-              ></label>
-
-              <input
-                type="text"
-                name="ownerName"
-                value={formData.ownerName}
-                onChange={handleChange}
-                className="w-full border rounded p-2 text-sm"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              backgroundColor: "#f8fafc",
-              fontSize: "12px",
-              borderRadius: "4px",
-              overflow: "hidden",
-              border: "1px solid #e5e7eb",
-            }}
-          >
+        <div style={styles.tableWrapper}>
+          <table style={styles.table}>
             <thead>
               <tr>
-                {t.labels.tableHead.map((head, i) => (
-                  <th
-                    key={i}
-                    style={{
-                      padding: "8px 12px",
-                      textAlign: "left",
-                      backgroundColor: "#f1f5f9",
-                      fontWeight: "600",
-                      color: "#1e293b",
-                      fontSize: "12px",
-                      borderBottom: "1px solid #cbd5e1",
-                    }}
-                  >
-                    {head}
+                {t.tableHeaders.map((header, i) => (
+                  <th key={i} style={styles.th}>
+                    {header}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {stepsData.map((row, idx) => (
-                <tr key={idx} className="align-top">
-                  {row.map((cell, j) => (
-                    <td
-                      key={j}
-                      style={{
-                        border: "1px solid #e5e7eb",
-                        padding: "10px",
-                        color: "#374151",
-                        whiteSpace: "pre-wrap",
-                        border: "3px solid #e5e7eb",
-                        fontWeight: "bold",
-                        whiteSpace: "pre-line",
-                      }}
-                    >
-                      {cell}
-                    </td>
-                  ))}
+              {t.stepsData.map((row, idx) => (
+                <tr
+                  key={idx}
+                  style={{
+                    backgroundColor: idx % 2 === 0 ? "#ffffff" : "#f8fafc",
+                  }}
+                >
+                  <td style={styles.td}>{row.no}</td>
+                  <td style={styles.td}>{row.details}</td>
+                  <td style={styles.td}>{row.duration}</td>
+                  <td style={styles.td}>{row.remark}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        <p
-          style={{
-            fontSize: "13px",
-            marginBottom: "10px",
-            backgroundColor: "#fff7ed",
-            padding: "10px",
-            borderRadius: "6px",
-            border: "2px solid #fb923c",
-            color: "#7c2d12",
-            fontWeight: "bold",
-            whiteSpace: "pre-line",
-          }}
-        >
-          {t.note}
-        </p>
+        <p style={styles.note}>{t.note}</p>
 
-        <div style={{ textAlign: "center", marginTop: "10px" }}>
+        <footer style={styles.footer}>
           <div>
-            <label
-              style={{
-                fontWeight: "bold",
-                marginBottom: "4px",
-                fontSize: "12px",
-              }}
-            >
-              {t.labels.sign}:
-            </label>
+            <label style={styles.footerLabel}>{t.labels.date}:</label>
             <input
-              type="text"
-              name="signature"
-              value={formData.signature}
+              type="date"
+              name="date"
+              value={formData.date}
               onChange={handleChange}
-              placeholder={
-                lang === "en" ? "Enter Signature" : "स्वाक्षरी प्रविष्ट करा"
-              }
-              style={{
-                padding: "5px",
-                marginLeft: "10px",
-                borderBottom: "1px solid #000",
-                fontSize: "12px",
-                width: "100%",
-                maxWidth: "200px",
-                whiteSpace: "pre-line",
-              }}
+              style={styles.footerInput}
             />
           </div>
-          <div style={{ marginTop: "8px" }}>
-            <label
-              style={{
-                fontWeight: "bold",
-                marginBottom: "4px",
-                fontSize: "12px",
-              }}
-            >
-              {t.labels.mobile}:
-            </label>
+          <div>
+            <label style={styles.footerLabel}>{t.labels.engineerName}:</label>
+            <input
+              type="text"
+              name="engineerName"
+              value={formData.engineerName}
+              onChange={handleChange}
+              placeholder={t.placeholders.engineerName}
+              style={styles.footerInput}
+            />
+          </div>
+          <div>
+            <label style={styles.footerLabel}>{t.labels.ownerName}:</label>
+            <input
+              type="text"
+              name="ownerName"
+              value={formData.ownerName}
+              onChange={handleChange}
+              placeholder={t.placeholders.ownerName}
+              style={styles.footerInput}
+            />
+          </div>
+          <div>
+            <label style={styles.footerLabel}>{t.labels.mobile}:</label>
             <input
               type="text"
               name="mobile"
               value={formData.mobile}
               onChange={handleChange}
-              placeholder={
-                lang === "en" ? "Enter Mobile" : "मोबाइल प्रविष्ट करा"
-              }
-              style={{
-                padding: "5px",
-                marginLeft: "10px",
-                borderBottom: "1px solid #000",
-                fontSize: "12px",
-                width: "100%",
-                maxWidth: "200px",
-              }}
+              placeholder={t.placeholders.mobile}
+              style={styles.footerInput}
             />
           </div>
-        </div>
+        </footer>
       </div>
     </div>
   );

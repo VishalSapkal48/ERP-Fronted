@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../../../../../public/Images/BoardWorksListForm/logo.png"; // Adjusted to match the logo location from previous examples
+import logo from "../../../../../public/Images/BoardWorksListForm/logo.png";
 import img1 from "../../../../../public/Images/ElectricalWorks/Picture1.png";
 import img2 from "../../../../../public/Images/ElectricalWorks/Picture2.png";
 import img3 from "../../../../../public/Images/ElectricalWorks/Picture3.png";
@@ -12,13 +12,370 @@ import img9 from "../../../../../public/Images/ElectricalWorks/Picture9.png";
 import img10 from "../../../../../public/Images/ElectricalWorks/Picture10.png";
 import img11 from "../../../../../public/Images/ElectricalWorks/Picture11.png";
 
+// --- English Data for the form items ---
+const electricalItemsEN = [
+  {
+    id: 1,
+    name: "Conduit Pipe",
+    description: "Brand: Polycab, Color: Black, Size: 1 Inch",
+    qty: 1,
+    photos: [img1],
+  },
+  {
+    id: 2,
+    name: "Wire",
+    description:
+      "Brand: Polycab, Size: 1.5mm for Light Points, 2.5mm for Power Points",
+    qty: 1,
+    photos: [img2, img3],
+  },
+  {
+    id: 3,
+    name: "MCB",
+    description: "Brand: Legrand, Amperage: 32Amp",
+    qty: 1,
+    photos: [img4],
+  },
+  {
+    id: 4,
+    name: "Switches & Fittings",
+    description: "Brand: Legrand, Color: White",
+    qty: 1,
+    photos: [img5],
+  },
+  {
+    id: 5,
+    name: "Ceiling Fan",
+    description: "Brand: Crompton",
+    qty: 1,
+    photos: [img6],
+  },
+  {
+    id: 6,
+    name: 'Wall Fan 16"',
+    description: "Brand: Crompton, Color: White",
+    qty: 1,
+    photos: [img7],
+  },
+  {
+    id: 7,
+    name: "CCTV Cable",
+    description: "Brand: Polycab, Color: White, Wire Code: 4+1",
+    qty: 1,
+    photos: [img8],
+  },
+  {
+    id: 8,
+    name: '6" Square Light',
+    description:
+      "Usage: Kitchen Area & Main Shop, Brand: Local, Color: Full White, Wattage: 15W",
+    qty: 2,
+    photos: [img10],
+  },
+  {
+    id: 9,
+    name: '8" Square Light',
+    description:
+      "Usage: Board Ceiling, Brand: Local, Color: Full White, Wattage: 22W",
+    qty: 1,
+    photos: [img11],
+  },
+];
+
+// --- Translations for English and Marathi ---
+const translations = {
+  en: {
+    title: "YNK",
+    formTitle: "Letter of Undertaking - Electrical Works",
+    switchLang: "मराठी",
+    switchAria: "Switch to Marathi",
+    dateLabel: "Date",
+    partnerLabel: "Partner's Name",
+    firmLabel: "Firm Name",
+    footerPartner: "PARTNER'S NAME",
+    footerSign: "SIGNATURE & MOBILE NO.",
+    partnerPlaceholder: "Enter Partner's Name",
+    firmPlaceholder: "Enter Firm Name",
+    signPlaceholder: "Enter Signature or Mobile",
+    declaration:
+      "We, __PARTNER_NAME__ of __FIRM_NAME__, hereby provide this undertaking to YNK Enterprises for the completion of all electrical works. We confirm that we will complete all tasks as per the product specifications detailed below. We understand that failure to comply with this undertaking may result in YNK Enterprises taking the following actions against us:\n1. Rectification of any defects at our own cost.\n2. Assumption of full responsibility for any financial loss incurred due to delays (e.g., late NOC receipt) if defects are not promptly rectified.\n3. Liability for a penalty of Rs. 50,000/- for any unresolved defects.",
+    tableHeaders: {
+      no: "No.",
+      name: "Item Name",
+      description: "Description & Specification",
+      qty: "Qty",
+      photos: "Photos",
+    },
+    electricalItems: electricalItemsEN,
+  },
+  mr: {
+    title: "वायएनके",
+    formTitle: "वचनपत्र - विद्युत कामे",
+    switchLang: "English",
+    switchAria: "Switch to English",
+    dateLabel: "तारीख",
+    partnerLabel: "भागीदाराचे नाव",
+    firmLabel: "फर्मचे नाव",
+    footerPartner: "भागीदाराचे नाव",
+    footerSign: "स्वाक्षरी आणि मोबाइल नं.",
+    partnerPlaceholder: "भागीदाराचे नाव प्रविष्ट करा",
+    firmPlaceholder: "फर्मचे नाव प्रविष्ट करा",
+    signPlaceholder: "स्वाक्षरी किंवा मोबाइल प्रविष्ट करा",
+    declaration:
+      "आम्ही, __PARTNER_NAME__, __FIRM_NAME__ चे भागीदार, याद्वारे YNK एंटरप्रायझेसला सर्व विद्युत कामांच्या पूर्ततेसाठी हे वचनपत्र देत आहोत. आम्ही पुष्टी करतो की आम्ही खाली दिलेल्या उत्पादन तपशीलानुसार सर्व कामे पूर्ण करू. आम्ही समजतो की या वचनपत्राचे पालन करण्यात अयशस्वी झाल्यास, YNK एंटरप्रायझेस आमच्यावर खालील कारवाई करू शकते:\n१. आमच्या स्वतःच्या खर्चाने कोणत्याही त्रुटी सुधारणे.\n२. त्रुटी त्वरित न सुधारल्यास होणाऱ्या कोणत्याही आर्थिक नुकसानीची (उदा. एनओसी मिळण्यास उशीर) संपूर्ण जबाबदारी घेणे.\n३. कोणत्याही न सुटलेल्या त्रुटींसाठी रु. ५०,०००/- दंडाची जबाबदारी घेणे.",
+    tableHeaders: {
+      no: "क्र.",
+      name: "वस्तूचे नाव",
+      description: "वर्णन आणि तपशील",
+      qty: "नग",
+      photos: "फोटो",
+    },
+    electricalItems: [
+      {
+        id: 1,
+        name: "कंड्युइट पाईप",
+        description: "ब्रँड: पॉलीकॅब, रंग: काळा, आकार: १ इंच",
+        qty: 1,
+        photos: [img1],
+      },
+      {
+        id: 2,
+        name: "वायर",
+        description:
+          "ब्रँड: पॉलीकॅब, आकार: लाईट पॉईंटसाठी १.५ मिमी, पॉवर पॉईंटसाठी २.५ मिमी",
+        qty: 1,
+        photos: [img2, img3],
+      },
+      {
+        id: 3,
+        name: "एमसीबी",
+        description: "ब्रँड: लेग्रँड, अँपिअर: ३२ अँप",
+        qty: 1,
+        photos: [img4],
+      },
+      {
+        id: 4,
+        name: "स्विचेस आणि फिटिंग्ज",
+        description: "ब्रँड: लेग्रँड, रंग: पांढरा",
+        qty: 1,
+        photos: [img5],
+      },
+      {
+        id: 5,
+        name: "सीलिंग फॅन",
+        description: "ब्रँड: क्रॉम्प्टन",
+        qty: 1,
+        photos: [img6],
+      },
+      {
+        id: 6,
+        name: 'वॉल फॅन १६"',
+        description: "ब्रँड: क्रॉम्प्टन, रंग: पांढरा",
+        qty: 1,
+        photos: [img7],
+      },
+      {
+        id: 7,
+        name: "सीसीटीव्ही केबल",
+        description: "ब्रँड: पॉलीकॅब, रंग: पांढरा, वायर कोड: ४+१",
+        qty: 1,
+        photos: [img8],
+      },
+      {
+        id: 8,
+        name: '६" स्क्वेअर लाईट',
+        description:
+          "वापर: किचन आणि मुख्य दुकान, ब्रँड: लोकल, रंग: पूर्ण पांढरा, वॅटेज: १५W",
+        qty: 2,
+        photos: [img10],
+      },
+      {
+        id: 9,
+        name: '८" स्क्वेअर लाईट',
+        description:
+          "वापर: बोर्ड सीलिंग, ब्रँड: लोकल, रंग: पूर्ण पांढरा, वॅटेज: २२W",
+        qty: 1,
+        photos: [img11],
+      },
+    ],
+  },
+};
+
+// --- Component Styles ---
+const styles = {
+  pageContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "100vh",
+    backgroundColor: "#ffffff",
+    padding: "20px",
+    boxSizing: "border-box",
+  },
+  formContainer: {
+    width: "100%",
+    maxWidth: "800px",
+    padding: "20px",
+    backgroundColor: "#e3f2fd",
+    borderRadius: "8px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  },
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    padding: "10px",
+    borderRadius: "4px",
+    marginBottom: "10px",
+  },
+  headerTitleContainer: {
+    display: "flex",
+    alignItems: "center",
+  },
+  logo: {
+    height: "40px",
+    width: "40px",
+    marginRight: "10px",
+  },
+  title: {
+    fontSize: "24px",
+    fontWeight: "bold",
+    color: "#1e40af",
+    margin: 0,
+  },
+  langButton: {
+    background: "none",
+    border: "none",
+    fontSize: "14px",
+    color: "#4b5563",
+    textDecoration: "underline",
+    cursor: "pointer",
+    fontWeight: "bold",
+  },
+  formTitle: {
+    fontSize: "18px",
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: "10px",
+    color: "#1f2937",
+  },
+  declaration: {
+    color: "#1f2937",
+    fontSize: "12px",
+    marginBottom: "12px",
+    whiteSpace: "pre-wrap",
+    lineHeight: "1.5",
+    backgroundColor: "#f8fafc",
+    padding: "10px",
+    borderRadius: "4px",
+    border: "1px solid #e5e7eb",
+    fontWeight: "bold",
+  },
+  inputFieldsContainer: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+    gap: "20px",
+    marginBottom: "20px",
+  },
+  label: {
+    display: "block",
+    fontSize: "12px",
+    color: "#374151",
+    marginBottom: "4px",
+    fontWeight: "bold",
+  },
+  input: {
+    width: "100%",
+    border: "1px solid #d1d5db",
+    borderRadius: "4px",
+    padding: "8px",
+    fontSize: "12px",
+    backgroundColor: "#fff",
+    transition: "border-color 0.2s",
+    boxSizing: "border-box",
+  },
+  sectionContainer: {
+    marginBottom: "20px",
+    padding: "15px",
+    backgroundColor: "#ffffff",
+    borderRadius: "8px",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
+    border: "1px solid #e5e7eb",
+  },
+  sectionTitle: {
+    fontSize: "16px",
+    fontWeight: "bold",
+    color: "#1e40af",
+    marginBottom: "10px",
+    borderBottom: "2px solid #e3f2fd",
+    paddingBottom: "4px",
+  },
+  tableWrapper: {
+    overflowX: "auto",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    backgroundColor: "#f8fafc",
+    fontSize: "12px",
+    borderRadius: "4px",
+    overflow: "hidden",
+    border: "1px solid #e5e7eb",
+  },
+  th: {
+    border: "1px solid #e5e7eb",
+    padding: "10px",
+    textAlign: "left",
+    backgroundColor: "#e2e8f0",
+    fontWeight: "bold",
+    color: "#1f2937",
+  },
+  td: {
+    border: "1px solid #e5e7eb",
+    padding: "10px",
+    color: "#374151",
+    verticalAlign: "middle",
+    fontWeight: "bold",
+  },
+  photo: {
+    width: "50px",
+    height: "50px",
+    marginRight: "5px",
+    borderRadius: "4px",
+  },
+  footer: {
+    textAlign: "center",
+    marginTop: "20px",
+  },
+  footerInputContainer: {
+    marginBottom: "12px",
+  },
+  footerLabel: {
+    fontWeight: "bold",
+    marginBottom: "4px",
+    fontSize: "12px",
+    color: "#374151",
+    display: "block",
+  },
+  footerInput: {
+    padding: "8px",
+    border: "1px solid #d1d5db",
+    borderRadius: "4px",
+    fontSize: "12px",
+    width: "100%",
+    maxWidth: "250px",
+    backgroundColor: "#fff",
+    transition: "border-color 0.2s",
+  },
+};
+
 const ElectricalWorksForm = () => {
   const [language, setLanguage] = useState("en");
   const [formData, setFormData] = useState({
     dateTime: "",
     partnerName: "",
     firmName: "",
-    signMobile: "",
     footerPartner: "",
     footerSign: "",
   });
@@ -31,524 +388,151 @@ const ElectricalWorksForm = () => {
     setLanguage((prev) => (prev === "en" ? "mr" : "en"));
   };
 
-  const electricalItems = [
-    {
-      no: 1,
-      name: "Conduits Pipe",
-      description: "Polly Cab Brand, Black Color, Size 1 Inch",
-      qty: 1,
-      photos: [img1],
-    },
-    {
-      no: 2,
-      name: "Wire",
-      description:
-        "Polly Cab Brand, Size 1.5mm for Light Point, Size 2.5mm for Power Point",
-      qty: 1,
-      photos: [img2, img3],
-    },
-    {
-      no: 3,
-      name: "MCB",
-      description: "Legrand Brand, 32Amp",
-      qty: 1,
-      photos: [img4],
-    },
-    {
-      no: 4,
-      name: "Buttons & Fittings",
-      description: "Legrand Brand, White Color",
-      qty: 1,
-      photos: [img5],
-    },
-    {
-      no: 5,
-      name: "Ceiling Fan",
-      description: "Crompton Brand",
-      qty: 1,
-      photos: [img6],
-    },
-    {
-      no: 6,
-      name: "Wall Fan 16”",
-      description: "Crompton Brand, White Color",
-      qty: 1,
-      photos: [img7],
-    },
-    {
-      no: 7,
-      name: "CCTV Cable",
-      description: "Polly Cab Brand, White Color, 4+1 Wire Code",
-      qty: 1,
-      photos: [img8],
-    },
-    {
-      no: 8,
-      name: "6” Square Light",
-      description:
-        "Kitchen Area & All Shop, Local Brand, Full White Color, 15watt",
-      qty: 2,
-      photos: [img10],
-    },
-    {
-      no: 9,
-      name: "8” Square Light",
-      description: "Board Ceiling, Local Brand, Full White Color, 22watt",
-      qty: 1,
-      photos: [img11],
-    },
-  ];
-
-  const translations = {
-    en: {
-      title: "YNK",
-      formTitle: "Letter of Undertaking - Electrical Works",
-      switchLang: "मराठी",
-      switchAria: "Switch to Marathi",
-      dateLabel: "Date",
-      partnerLabel: "Partners Name",
-      firmLabel: "Firm Name",
-      signLabel: "SIGN & MO",
-      footerPartner: "PARTNERS NAME",
-      footerSign: "SIGN & MO",
-      salesManager: "Sales Manager of YNK Enterprises",
-      declaration:
-        "We, [Partners Name] Partners of [Firm Name], hereby give this undertaking to YNK Enterprises for the completion of the Electrical Works. We confirm that we will complete all the work as per the product details given above. We understand that if we fail to fulfill this undertaking, YNK Enterprises may take the following action against us:\n1. To rectify any defect in the work at our own cost.\n2. To take responsibility for the financial loss (late receipt of NOC) if the defect is not rectified at the earliest.\n3. To take responsibility for paying the penalty amount of Rs. 50,000/- for the defect.\nThis undertaking may be terminated in the following circumstances:\n1. Completion of the work as per the agreed measurements.\n2. Cancellation of the franchise.\nThis undertaking is governed by the laws of [Government Act].",
-      sections: [
-        {
-          title: "Electrical Works Items",
-          table: electricalItems.map((item) => ({
-            no: item.no,
-            name: item.name,
-            description: item.description,
-            qty: item.qty,
-            photos: item.photos,
-          })),
-        },
-      ],
-    },
-    mr: {
-      title: "वायएनके",
-      formTitle: "वचनपत्र - विद्युत कामे",
-      switchLang: "English",
-      switchAria: "Switch to English",
-      dateLabel: "तारीख",
-      partnerLabel: "भागीदारांचे नाव",
-      firmLabel: "फर्मचे नाव",
-      signLabel: "स्वाक्षरी व मोबाईल",
-      footerPartner: "भागीदारांचे नाव",
-      footerSign: "स्वाक्षरी व मोबाइल",
-      salesManager: "वायएनके एंटरप्रायझेसचे विक्री व्यवस्थापक",
-      declaration:
-        "आम्ही, [भागीदारांचे नाव] [फर्मचे नाव] चे भागीदार, येथे वायएनके एंटरप्रायझेसला विद्युत कामांच्या पूर्णतेसाठी हे वचनपत्र देत आहोत. आम्ही वर नमूद केलेल्या उत्पादन तपशीलानुसार सर्व काम पूर्ण करू, असे आम्ही पुष्टी करतो. आम्ही हे समजतो की जर आम्ही हे वचनपत्र पूर्ण करण्यात अयशस्वी झालो, तर वायएनके एंटरप्रायझेस आमच्याविरुद्ध खालील कारवाई करू शकते:\n1. कामातील कोणताही दोष आमच्या स्वतःच्या खर्चाने दुरुस्त करणे.\n2. दोष लवकरात लवकर दुरुस्त न केल्यास आर्थिक नुकसान (एनओसीचा उशीरा प्राप्ती) याची जबाबदारी घेणे.\n3. दोषासाठी 50,000/- रुपये दंडाची रक्कम भरण्याची जबाबदारी घेणे.\nहे वचनपत्र खालील परिस्थितीत समाप्त होऊ शकते:\n1. सहमतीनुसार मोजमापानुसार काम पूर्ण करणे.\n2. फ्रँचायझी रद्द करणे.\nहे वचनपत्र [सरकारी कायदा] च्या कायद्यांद्वारे नियंत्रित आहे.",
-      sections: [
-        {
-          title: "विद्युत कामांचे आयटम",
-          table: electricalItems.map((item) => ({
-            no: item.no,
-            name: item.name,
-            description: item.description,
-            qty: item.qty,
-            photos: item.photos,
-          })),
-        },
-      ],
-    },
-  };
-
   const t = translations[language];
+  const tableHeaders = t.tableHeaders;
+  const itemsToDisplay = t.electricalItems;
+
+  // Dynamically replace placeholders in the declaration
+  const declarationText = t.declaration
+    .replace(
+      "__PARTNER_NAME__",
+      formData.partnerName ||
+        (language === "en" ? "[Partner's Name]" : "[भागीदाराचे नाव]")
+    )
+    .replace(
+      "__FIRM_NAME__",
+      formData.firmName || (language === "en" ? "[Firm Name]" : "[फर्मचे नाव]")
+    );
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        backgroundColor: "#ffffff",
-        padding: "20px",
-        boxSizing: "border-box",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "800px",
-          padding: "20px",
-          backgroundColor: "#e3f2fd",
-          borderRadius: "8px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            backgroundColor: "#fff",
-            padding: "10px",
-            borderRadius: "4px",
-            marginBottom: "10px",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <img
-              src={logo}
-              alt="YNK Logo"
-              style={{ height: "40px", width: "40px" }}
-            />
-            <h1
-              style={{ fontSize: "24px", fontWeight: "bold", color: "#1e40af" }}
-            >
-              {t.title}
-            </h1>
+    <div style={styles.pageContainer}>
+      <div style={styles.formContainer}>
+        <header style={styles.header}>
+          <div style={styles.headerTitleContainer}>
+            <img src={logo} alt="YNK Logo" style={styles.logo} />
+            <h1 style={styles.title}>{t.title}</h1>
           </div>
           <button
-            style={{
-              background: "none",
-              border: "none",
-              fontSize: "14px",
-              color: "#4b5563",
-              textDecoration: "underline",
-              cursor: "pointer",
-            }}
+            style={styles.langButton}
             onClick={handleLanguageToggle}
             aria-label={t.switchAria}
           >
             {t.switchLang}
           </button>
-        </div>
-        <h2
-          style={{
-            fontSize: "18px",
-            fontWeight: "bold",
-            textAlign: "center",
-            marginBottom: "10px",
-            color: "#1f2937",
-          }}
-        >
-          {t.formTitle}
-        </h2>
-        <div style={{ marginBottom: "20px" }}>
-          <p
-            style={{
-              color: "#1f2937",
-              fontSize: "12px",
-              marginBottom: "12px",
-              whiteSpace: "pre-wrap",
-              lineHeight: "1.5",
-              backgroundColor: "#f8fafc",
-              padding: "10px",
-              borderRadius: "4px",
-            }}
-          >
-            {t.declaration
-              .replace(
-                "[Partners Name]",
-                formData.partnerName || "Partners Name"
-              )
-              .replace("[Firm Name]", formData.firmName || "Firm Name")
-              .replace("[Government Act]", "Government Act")}
-          </p>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-              gap: "20px",
-            }}
-          >
+        </header>
+
+        <h2 style={styles.formTitle}>{t.formTitle}</h2>
+
+        <div>
+          <div style={styles.inputFieldsContainer}>
             <div>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: "12px",
-                  color: "#374151",
-                  marginBottom: "4px",
-                  fontWeight: "500",
-                }}
-              >
-                {t.dateLabel}
-              </label>
+              <label style={styles.label}>{t.dateLabel}</label>
               <input
                 type="date"
                 name="dateTime"
                 value={formData.dateTime}
                 onChange={handleChange}
-                style={{
-                  width: "100%",
-                  border: "1px solid #d1d5db",
-                  borderRadius: "4px",
-                  padding: "8px",
-                  fontSize: "12px",
-                  backgroundColor: "#fff",
-                  transition: "border-color 0.2s",
-                }}
+                style={styles.input}
               />
             </div>
             <div>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: "12px",
-                  color: "#374151",
-                  marginBottom: "4px",
-                  fontWeight: "500",
-                }}
-              >
-                {t.partnerLabel}
-              </label>
+              <label style={styles.label}>{t.partnerLabel}</label>
               <input
                 type="text"
                 name="partnerName"
                 value={formData.partnerName}
                 onChange={handleChange}
-                style={{
-                  width: "100%",
-                  border: "1px solid #d1d5db",
-                  borderRadius: "4px",
-                  padding: "8px",
-                  fontSize: "12px",
-                  backgroundColor: "#fff",
-                  transition: "border-color 0.2s",
-                }}
+                placeholder={t.partnerPlaceholder}
+                style={styles.input}
               />
             </div>
             <div>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: "12px",
-                  color: "#374151",
-                  marginBottom: "4px",
-                  fontWeight: "500",
-                }}
-              >
-                {t.firmLabel}
-              </label>
+              <label style={styles.label}>{t.firmLabel}</label>
               <input
                 type="text"
                 name="firmName"
                 value={formData.firmName}
                 onChange={handleChange}
-                style={{
-                  width: "100%",
-                  border: "1px solid #d1d5db",
-                  borderRadius: "4px",
-                  padding: "8px",
-                  fontSize: "12px",
-                  backgroundColor: "#fff",
-                  transition: "border-color 0.2s",
-                }}
+                placeholder={t.firmPlaceholder}
+                style={styles.input}
               />
             </div>
           </div>
+          <p style={styles.declaration}>{declarationText}</p>
         </div>
-        {t.sections.map((section, index) => (
-          <div
-            key={index}
-            style={{
-              marginBottom: "20px",
-              padding: "15px",
-              backgroundColor: "#ffffff",
-              borderRadius: "8px",
-              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
-              border: "1px solid #e5e7eb",
-            }}
-          >
-            <h3
-              style={{
-                fontSize: "16px",
-                fontWeight: "600",
-                color: "#1e40af",
-                marginBottom: "10px",
-                borderBottom: "2px solid #e3f2fd",
-                paddingBottom: "4px",
-              }}
-            >
-              {section.title}
-            </h3>
-            {section.table && (
-              <div style={{ overflowX: "auto" }}>
-                <table
-                  style={{
-                    width: "100%",
-                    borderCollapse: "collapse",
-                    backgroundColor: "#f8fafc",
-                    fontSize: "12px",
-                    borderRadius: "4px",
-                    overflow: "hidden",
-                    border: "1px solid #e5e7eb",
-                  }}
-                >
-                  <thead>
-                    <tr>
-                      {Object.keys(section.table[0]).map((key, i) => (
-                        <th
-                          key={i}
-                          style={{
-                            border: "1px solid #e5e7eb",
-                            padding: "10px",
-                            textAlign: "left",
-                            backgroundColor: "#e2e8f0",
-                            fontWeight: "600",
-                            color: "#1f2937",
-                          }}
-                        >
-                          {language === "en"
-                            ? key.charAt(0).toUpperCase() + key.slice(1)
-                            : {
-                                no: "क्रमांक",
-                                name: "नाव",
-                                description: "वर्णन",
-                                qty: "प्रमाण",
-                                photos: "फोटो",
-                              }[key] ||
-                              key.charAt(0).toUpperCase() + key.slice(1)}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {section.table.map((row, idx) => (
-                      <tr
-                        key={idx}
-                        style={{
-                          backgroundColor:
-                            idx % 2 === 0 ? "#ffffff" : "#f8fafc",
-                        }}
-                      >
-                        {Object.values(row).map((value, i) => (
-                          <td
-                            key={i}
-                            style={{
-                              border: "1px solid #e5e7eb",
-                              padding: "10px",
-                              color: "#374151",
-                            }}
-                          >
-                            {Array.isArray(value)
-                              ? value.map((photo, pIdx) => (
-                                  <img
-                                    key={pIdx}
-                                    src={photo}
-                                    alt={`${row.name} Photo ${pIdx + 1}`}
-                                    style={{
-                                      width: "50px",
-                                      height: "50px",
-                                      marginRight: "5px",
-                                    }}
-                                  />
-                                ))
-                              : value}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+
+        <section style={styles.sectionContainer}>
+          <h3 style={styles.sectionTitle}>
+            {language === "en"
+              ? "Electrical Works Items"
+              : "विद्युत कामांच्या वस्तू"}
+          </h3>
+          <div style={styles.tableWrapper}>
+            <table style={styles.table}>
+              <thead>
+                <tr>
+                  <th style={styles.th}>{tableHeaders.no}</th>
+                  <th style={styles.th}>{tableHeaders.name}</th>
+                  <th style={styles.th}>{tableHeaders.description}</th>
+                  <th style={styles.th}>{tableHeaders.qty}</th>
+                  <th style={styles.th}>{tableHeaders.photos}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {itemsToDisplay.map((row, idx) => (
+                  <tr
+                    key={row.id}
+                    style={{
+                      backgroundColor: idx % 2 === 0 ? "#ffffff" : "#f8fafc",
+                    }}
+                  >
+                    <td style={styles.td}>{row.id}</td>
+                    <td style={styles.td}>{row.name}</td>
+                    <td style={styles.td}>{row.description}</td>
+                    <td style={styles.td}>{row.qty}</td>
+                    <td style={styles.td}>
+                      {row.photos.length > 0
+                        ? row.photos.map((photo, pIdx) => (
+                            <img
+                              key={pIdx}
+                              src={photo}
+                              alt={`${row.name} sample ${pIdx + 1}`}
+                              style={styles.photo}
+                            />
+                          ))
+                        : "N/A"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        ))}
-        <div style={{ textAlign: "center", marginTop: "20px" }}>
-          <div style={{ marginBottom: "12px" }}>
-            <label
-              style={{
-                fontWeight: "600",
-                marginBottom: "4px",
-                fontSize: "12px",
-                color: "#374151",
-                display: "block",
-              }}
-            >
-              {t.footerSign}:
-            </label>
+        </section>
+
+        <footer style={styles.footer}>
+          <div style={styles.footerInputContainer}>
+            <label style={styles.footerLabel}>{t.footerSign}:</label>
             <input
               type="text"
               name="footerSign"
               value={formData.footerSign}
               onChange={handleChange}
-              placeholder={
-                language === "en"
-                  ? "Enter Signature or Mobile"
-                  : "स्वाक्षरी किंवा मोबाइल प्रविष्ट करा"
-              }
-              style={{
-                padding: "8px",
-                border: "1px solid #d1d5db",
-                borderRadius: "4px",
-                fontSize: "12px",
-                width: "100%",
-                maxWidth: "250px",
-                backgroundColor: "#fff",
-                transition: "border-color 0.2s",
-              }}
+              placeholder={t.signPlaceholder}
+              style={styles.footerInput}
             />
           </div>
-          <div style={{ marginBottom: "12px" }}>
-            <label
-              style={{
-                fontWeight: "600",
-                marginBottom: "4px",
-                fontSize: "12px",
-                color: "#374151",
-                display: "block",
-              }}
-            >
-              {t.footerPartner}:
-            </label>
+          <div style={styles.footerInputContainer}>
+            <label style={styles.footerLabel}>{t.footerPartner}:</label>
             <input
               type="text"
               name="footerPartner"
               value={formData.footerPartner}
               onChange={handleChange}
-              placeholder={
-                language === "en"
-                  ? "Enter Partners Name"
-                  : "भागीदारांचे नाव प्रविष्ट करा"
-              }
-              style={{
-                padding: "8px",
-                border: "1px solid #d1d5db",
-                borderRadius: "4px",
-                fontSize: "12px",
-                width: "100%",
-                maxWidth: "250px",
-                backgroundColor: "#fff",
-                transition: "border-color 0.2s",
-              }}
+              placeholder={t.partnerPlaceholder}
+              style={styles.footerInput}
             />
           </div>
-          <div style={{ marginBottom: "12px" }}>
-            <label
-              style={{
-                fontWeight: "600",
-                marginBottom: "4px",
-                fontSize: "12px",
-                color: "#374151",
-                display: "block",
-              }}
-            >
-              {t.salesManager}:
-            </label>
-            <input
-              type="text"
-              name="salesManager"
-              value="Dipak Gokul Gaykar"
-              readOnly
-              style={{
-                padding: "8px",
-                border: "1px solid #d1d5db",
-                borderRadius: "4px",
-                fontSize: "12px",
-                width: "100%",
-                maxWidth: "250px",
-                backgroundColor: "#f1f5f9",
-                transition: "border-color 0.2s",
-              }}
-            />
-          </div>
-        </div>
+        </footer>
       </div>
     </div>
   );
