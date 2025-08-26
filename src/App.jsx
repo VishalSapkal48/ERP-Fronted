@@ -286,113 +286,113 @@
 //=====================================================
 //main 
 
-// import React, { useState } from 'react';
-// import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-// import Login from './Login/Login';
-// import AccountLayout from './Layout/AccountLayout';
-// import CRMLayout from './Layout/CRMLayout';
-// import InventoryLayout from './Layout/InventoryLayout';
-// import HrmLayout from './Layout/HrmLayout';
-// import ReportsLayout from './Layout/ReportsLayout';
-// import AdminLayout from './Layout/AdminLayout';
-// import PurchaseLayout from './Layout/PurcheseLayout';
-// import FormsLayout from './Layout/FormsLayout';
-// import DevelopmentLayout from './Layout/DevelopmentLayout';
-// const App = () => {
-//   const [role, setRole] = useState(null);
-//   const [username, setUsername] = useState(null);
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './Login/Login';
+import AccountLayout from './Layout/AccountLayout';
+import CRMLayout from './Layout/CRMLayout';
+import InventoryLayout from './Layout/InventoryLayout';
+import HrmLayout from './Layout/HrmLayout';
+import ReportsLayout from './Layout/ReportsLayout';
+import AdminLayout from './Layout/AdminLayout';
+import PurchaseLayout from './Layout/PurcheseLayout';
+import FormsLayout from './Layout/FormsLayout';
+import DevelopmentLayout from './Layout/DevelopmentLayout';
+const App = () => {
+  const [role, setRole] = useState(null);
+  const [username, setUsername] = useState(null);
 
-//   const handleLogin = (role, username) => {
-//     console.log('Login:', { role, username });
-//     setRole(role);
-//     setUsername(username);
-//     // Store in localStorage for persistence
-//     localStorage.setItem('role', role);
-//     localStorage.setItem('username', username);
-//   };
+  const handleLogin = (role, username) => {
+    console.log('Login:', { role, username });
+    setRole(role);
+    setUsername(username);
+    // Store in localStorage for persistence
+    localStorage.setItem('role', role);
+    localStorage.setItem('username', username);
+  };
 
-//   const handleLogout = () => {
-//     setRole(null);
-//     setUsername(null);
-//     // Clear all authentication-related storage
-//     localStorage.removeItem('role');
-//     localStorage.removeItem('username');
-//     localStorage.removeItem('authToken');
-//     sessionStorage.clear();
-//   };
+  const handleLogout = () => {
+    setRole(null);
+    setUsername(null);
+    // Clear all authentication-related storage
+    localStorage.removeItem('role');
+    localStorage.removeItem('username');
+    localStorage.removeItem('authToken');
+    sessionStorage.clear();
+  };
 
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route
-//           path="/"
-//           element={role ? <Navigate to={`/${role}`} replace /> : <Login onLogin={handleLogin} />}
-//         />
-//         <Route
-//           path="/account/*"
-//           element={role === 'account' ? <AccountLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
-//         />
-//         <Route
-//           path="/crm/*"
-//           element={role === 'crm' ? <CRMLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
-//         />
-//         <Route
-//           path="/inventory/*"
-//           element={role === 'inventory' ? <InventoryLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
-//         />
-//         <Route
-//           path="/hrm/*"
-//           element={role === 'hrm' ? <HrmLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
-//         />
-//         <Route
-//           path="/reports/*"
-//           element={role === 'reports' ? <ReportsLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
-//         />
-//         <Route
-//           path="/admin/*"
-//           element={role === 'admin' ? <AdminLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
-//         />
-//         <Route
-//           path="/purchase/*"
-//           element={role === 'purchase' ? <PurchaseLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
-//         />
-//         <Route
-//           path="/forms/*"
-//           element={role === 'forms' ? <FormsLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
-//         />
-// <Route
-//           path="/development/*"
-//           element={role === 'development' ? <DevelopmentLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
-//         />
+  return (
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={role ? <Navigate to={`/${role}`} replace /> : <Login onLogin={handleLogin} />}
+        />
+        <Route
+          path="/account/*"
+          element={role === 'account' ? <AccountLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/crm/*"
+          element={role === 'crm' ? <CRMLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/inventory/*"
+          element={role === 'inventory' ? <InventoryLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/hrm/*"
+          element={role === 'hrm' ? <HrmLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/reports/*"
+          element={role === 'reports' ? <ReportsLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/admin/*"
+          element={role === 'admin' ? <AdminLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/purchase/*"
+          element={role === 'purchase' ? <PurchaseLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/forms/*"
+          element={role === 'forms' ? <FormsLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+        />
+<Route
+          path="/development/*"
+          element={role === 'development' ? <DevelopmentLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+        />
 
 
-//         <Route
-//           path="*"
-//           element={
-//             <div className="flex items-center justify-center h-screen bg-gray-100">
-//               <div className="text-center text-2xl font-semibold text-red-500 bg-white p-6 rounded-lg shadow-md">
-//                 404 - Page Not Found
-//               </div>
-//             </div>
-//           }
-//         />
-//       </Routes>
-//     </Router>
-//   );
-// };
+        <Route
+          path="*"
+          element={
+            <div className="flex items-center justify-center h-screen bg-gray-100">
+              <div className="text-center text-2xl font-semibold text-red-500 bg-white p-6 rounded-lg shadow-md">
+                404 - Page Not Found
+              </div>
+            </div>
+          }
+        />
+      </Routes>
+    </Router>
+  );
+};
 
-// export default App;
+export default App;
 
 //======================================
 
-import React from 'react'
-import CivilWorkChecklistForm from './Components/Froms/VendoreForm/ElectricalWorkProcess'
-function App() {
-  return (
-    <div>
-      <CivilWorkChecklistForm/>
-    </div>
-  )
-}
+// import React from 'react'
+// import CivilWorkChecklistForm from './Components/Froms/VendoreForm/ElectricalWorkProcess'
+// function App() {
+//   return (
+//     <div>
+//       <CivilWorkChecklistForm/>
+//     </div>
+//   )
+// }
 
-export default App
+// export default App
