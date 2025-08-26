@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-// Translation object (same as provided)
 const translations = {
   mr: {
     yewaleTitle: 'येवले प्रोजेक्ट',
@@ -68,6 +67,23 @@ const translations = {
     ownerMaterial: 'मालक मटेरिअल',
     warrantyPeriod: 'वॉरंटी कालावधी',
     workStepsFor: 'कामाचे टप्पे',
+    vendors: 'विक्रेते',
+    awingShed: 'आविंग शेड',
+    boardWork: 'बोर्ड वर्क',
+    brickWork: 'विटकाम',
+    cctvWork: 'सीसीटीव्ही वर्क',
+    demolitionLabor: 'डिमॉलिशन लेबर',
+    ductingWork: 'डक्टिंग वर्क',
+    electricalWork: 'इलेक्ट्रिकल वर्क',
+    gasPipeline: 'गॅस पाइपलाइन',
+    internetWork: 'इंटरनेट वर्क',
+    loftChecklist: 'लॉफ्ट चेकलिस्ट',
+    materialUnloading: 'मटेरिअल अनलोडिंग',
+    painting: 'पेंटिंग',
+    plumbingWork: 'प्लंबिंग वर्क',
+    popVendor: 'पीओपी विक्रेता',
+    shutterLogo: 'शटर लोगो वर्क',
+    tilesVendor: 'टाइल्स विक्रेता',
   },
   en: {
     yewaleTitle: 'Yewale Project',
@@ -134,96 +150,25 @@ const translations = {
     ownerMaterial: 'Owner Material',
     warrantyPeriod: 'Warranty Period',
     workStepsFor: 'Work Steps For',
+    vendors: 'Vendors',
+    awingShed: 'Awing Shed',
+    boardWork: 'Board Work',
+    brickWork: 'Brick Work',
+    cctvWork: 'CCTV Work',
+    demolitionLabor: 'Demolition Labor',
+    ductingWork: 'Ducting Work',
+    electricalWork: 'Electrical Work',
+    gasPipeline: 'Gas Pipeline',
+    internetWork: 'Internet Work',
+    loftChecklist: 'Loft Checklist',
+    materialUnloading: 'Material Unloading',
+    painting: 'Painting',
+    plumbingWork: 'Plumbing Work',
+    popVendor: 'POP Vendor',
+    shutterLogo: 'Shutter Logo Work',
+    tilesVendor: 'Tiles Vendor',
   },
 };
-
-// Menu data (same as provided)
-const yewaleSteps = (t) => [
-  { name: t.terms, path: '/forms/projects/yewale/terms-and-condition' },
-  { name: t.preSurvey, path: '/forms/projects/yewale/pre-survey-script' },
-  { name: t.civilWork, path: '/forms/projects/yewale/civil-work-checklist-form' },
-  { name: t.internalDept, path: '/forms/projects/yewale/internal-department-working' },
-  { name: t.inspection, path: '/forms/projects/yewale/inspection-checklist' },
-  { name: t.material, path: '/forms/projects/yewale/material-checklist' },
-  { name: t.shopSetup, path: '/forms/projects/yewale/shop-setup-checklist' },
-  { name: t.projectFollowup, path: '/forms/projects/yewale/project-work-followup' },
-  { name: t.surveyInputs, path: '/forms/projects/yewale/survey-inputs' },
-  { name: t.survey, path: '/forms/projects/nadbrahma/project-work-followup'},
-  { name: t.roughLayout, path: '/forms/projects/yewale/rough-layout' },
-];
-
-const nadbrahmaSteps = (t) => [
-  { name: t.terms, path: '/forms/projects/nadbrahma/terms-and-condition' },
-  { name: t.preSurvey, path: '/forms/projects/nadbrahma/pre-survey-script' },
-  { name: t.civilWork, path: '/forms/projects/nadbrahma/civil-work-checklist-form' },
-  { name: t.internalDept, path: '/forms/projects/nadbrahma/internal-department-working' },
-  { name: t.inspection, path: '/forms/projects/nadbrahma/inspection-checklist' },
-  { name: t.material, path: '/forms/projects/nadbrahma/material-checklist' },
-  { name: t.shopSetup, path: '/forms/projects/nadbrahma/shop-setup-checklist' },
-  { name: t.projectFollowup, path: '/forms/projects/nadbrahma/project-work-followup' },
-  { name: t.surveyInputs, path: '/forms/projects/nadbrahma/survey-inputs' },
-  { name: t.survey, path: '/forms/projects/nadbrahma/project-work-followup' },
-  { name: t.roughLayout, path: '/forms/projects/nadbrahma/rough-layout' },
-];
-
-const yewaleFeedbacks = (t) => [
-  { name: t.agreementFeedback, path: '/forms/yewalecomponents/call1folder1', desc: t.agreementFeedbackDesc },
-  { name: t.civilWorkFeedback, path: '/forms/yewalecomponents/call2folder2', desc: t.civilWorkFeedbackDesc },
-  { name: t.setupFeedback, path: '/forms/yewalecomponents/call3folder3', desc: t.setupFeedbackDesc },
-  { name: t.finalDemoFeedback, path: '/forms/yewalecomponents/call4folder4', desc: t.finalDemoFeedbackDesc },
-  { name: t.oneMonthFeedback, path: '/forms/yewalecomponents/call5folder5', desc: t.oneMonthFeedbackDesc },
-  { name: t.oneMonthFeedback2, path: '/forms/yewalecomponents/call6folder6', desc: t.oneMonthFeedback2Desc },
-  { name: t.oneMonthFeedback7, path: '/forms/yewalecomponents/call7folder7', desc: t.oneMonthFeedback7Desc },
-  { name: t.oneMonthFeedback8, path: '/forms/yewalecomponents/call8folder8', desc: t.oneMonthFeedback8Desc },
-  { name: t.oneMonthFeedback9, path: '/forms/yewalecomponents/call9folder9', desc: t.oneMonthFeedback9Desc },
-];
-
-const nadbrahmaFeedbacks = (t) => [
-  { name: t.agreementFeedbackN, path: '/forms/nadbrahmacomponents/call1folder1', desc: t.agreementFeedbackDescN },
-  { name: t.planExplanationFeedback, path: '/forms/nadbrahmacomponents/call2folder2', desc: t.planExplanationFeedbackDesc },
-  { name: t.inspectionFeedback, path: '/forms/nadbrahmacomponents/call3folder3', desc: t.inspectionFeedbackDesc },
-  { name: t.setupFeedbackN, path: '/forms/nadbrahmacomponents/call4folder4', desc: t.setupFeedbackDescN },
-  { name: t.openingFeedback, path: '/forms/nadbrahmacomponents/call5folder5', desc: t.openingFeedbackDesc },
-  { name: t.oneMonthFeedbackN, path: '/forms/nadbrahmacomponents/call6folder6', desc: t.oneMonthFeedbackDescN },
-];
-
-const vendorRoutes = [
-  { name: 'Electrician', path: '/forms/vendors/electrician' },
-  { name: 'Plumber', path: '/forms/vendors/plumber' },
-  { name: 'Tiles vendor', path: '/forms/vendors/tiles' },
-  { name: 'POP vendor', path: '/forms/vendors/pop' },
-  { name: 'CCTV Installer', path: '/forms/vendors/cctv' },
-  { name: 'Internet Service Provider', path: '/forms/vendors/internet' },
-  { name: 'Painter', path: '/forms/vendors/painter' },
-  { name: 'Gas pipeline vendor', path: '/forms/vendors/gas' },
-  { name: 'Ducting vendor', path: '/forms/vendors/ducting' },
-  { name: 'Awing shed vendor', path: '/forms/vendors/awing' },
-  { name: 'Mason', path: '/forms/vendors/mason' },
-  { name: 'Board vendor', path: '/forms/vendors/board' },
-  { name: 'Fabricator', path: '/forms/vendors/fabricator' },
-];
-
-const letterOfUndertakingForms = (t) => [
-  { name: t.boardWorks, path: '/forms/LetterOfUndertaking/BoardWorksForm', icon: '📋' },
-  { name: t.cameraSet, path: '/forms/LetterOfUndertaking/CameraSetForm', icon: '📷' },
-  { name: t.electricalWorks, path: '/forms/LetterOfUndertaking/ElectricalWorksForm', icon: '🔌' },
-  { name: t.letterOfUndertakingForm, path: '/forms/LetterOfUndertaking/LetterOfUndertakingForm', icon: '📜' },
-  { name: t.steelEquipment, path: '/forms/LetterOfUndertaking/SteelEquipmentForm', icon: '🛠' },
-];
-
-const yewalePlanExplanationItems = (t) => [
-  { name: t.civilWorkWorking, path: '/forms/planexplanation/yewale/civil-work-working' },
-  { name: t.constructionForm, path: '/forms/planexplanation/yewale/construction-form' },
-  { name: t.materialChecklistPlanEx, path: '/forms/planexplanation/yewale/material-checklist' },
-  { name: t.warrantyFormPlanEx, path: '/forms/planexplanation/yewale/warranty-form' },
-  { name: t.revisedWorkFollowup, path: '/forms/planexplanation/yewale/revised-work-followup' },
-];
-
-const nadbrahmaPlanExplanationItems = (t) => [
-  { name: t.ownerMaterial, path: '/forms/planexplanation/nadbrahma/owner-material' },
-  { name: t.warrantyPeriod, path: '/forms/planexplanation/nadbrahma/warranty-period' },
-  { name: t.workStepsFor, path: '/forms/planexplanation/nadbrahma/work-steps-for' },
-];
 
 const Sidebar = ({ onLogout }) => {
   const [lang, setLang] = useState('mr');
@@ -231,39 +176,127 @@ const Sidebar = ({ onLogout }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Sidebar menu structure
+  const yewaleSteps = [
+    { name: t.terms, path: '/forms/projects/yewale/terms-and-condition' },
+    { name: t.preSurvey, path: '/forms/projects/yewale/pre-survey-script' },
+    { name: t.civilWork, path: '/forms/projects/yewale/civil-work-checklist-form' },
+    { name: t.internalDept, path: '/forms/projects/yewale/internal-department-working' },
+    { name: t.inspection, path: '/forms/projects/yewale/inspection-checklist' },
+    { name: t.material, path: '/forms/projects/yewale/material-checklist' },
+    { name: t.shopSetup, path: '/forms/projects/yewale/shop-setup-checklist' },
+    { name: t.projectFollowup, path: '/forms/projects/yewale/project-work-followup' },
+    { name: t.surveyInputs, path: '/forms/projects/yewale/survey-inputs' },
+    { name: t.survey, path: '/forms/projects/yewale/survey' },
+    { name: t.roughLayout, path: '/forms/projects/yewale/rough-layout' },
+  ];
+
+  const nadbrahmaSteps = [
+    { name: t.terms, path: '/forms/projects/nadbrahma/terms-and-condition' },
+    { name: t.preSurvey, path: '/forms/projects/nadbrahma/pre-survey-script' },
+    { name: t.civilWork, path: '/forms/projects/nadbrahma/civil-work-checklist-form' },
+    { name: t.internalDept, path: '/forms/projects/nadbrahma/internal-department-working' },
+    { name: t.inspection, path: '/forms/projects/nadbrahma/inspection-checklist' },
+    { name: t.material, path: '/forms/projects/nadbrahma/material-checklist' },
+    { name: t.shopSetup, path: '/forms/projects/nadbrahma/shop-setup-checklist' },
+    { name: t.projectFollowup, path: '/forms/projects/nadbrahma/project-work-followup' },
+    { name: t.surveyInputs, path: '/forms/projects/nadbrahma/survey-inputs' },
+    { name: t.survey, path: '/forms/projects/nadbrahma/survey' },
+    { name: t.roughLayout, path: '/forms/projects/nadbrahma/rough-layout' },
+  ];
+
+  const yewaleFeedbacks = [
+    { name: t.agreementFeedback, path: '/forms/yewalecomponents/call1folder1', desc: t.agreementFeedbackDesc },
+    { name: t.civilWorkFeedback, path: '/forms/yewalecomponents/call2folder2', desc: t.civilWorkFeedbackDesc },
+    { name: t.setupFeedback, path: '/forms/yewalecomponents/call3folder3', desc: t.setupFeedbackDesc },
+    { name: t.finalDemoFeedback, path: '/forms/yewalecomponents/call4folder4', desc: t.finalDemoFeedbackDesc },
+    { name: t.oneMonthFeedback, path: '/forms/yewalecomponents/call5folder5', desc: t.oneMonthFeedbackDesc },
+    { name: t.oneMonthFeedback2, path: '/forms/yewalecomponents/call6folder6', desc: t.oneMonthFeedback2Desc },
+    { name: t.oneMonthFeedback7, path: '/forms/yewalecomponents/call7folder7', desc: t.oneMonthFeedback7Desc },
+    { name: t.oneMonthFeedback8, path: '/forms/yewalecomponents/call8folder8', desc: t.oneMonthFeedback8Desc },
+    { name: t.oneMonthFeedback9, path: '/forms/yewalecomponents/call9folder9', desc: t.oneMonthFeedback9Desc },
+  ];
+
+  const nadbrahmaFeedbacks = [
+    { name: t.agreementFeedbackN, path: '/forms/nadbrahmacomponents/call1folder1', desc: t.agreementFeedbackDescN },
+    { name: t.planExplanationFeedback, path: '/forms/nadbrahmacomponents/call2folder2', desc: t.planExplanationFeedbackDesc },
+    { name: t.inspectionFeedback, path: '/forms/nadbrahmacomponents/call3folder3', desc: t.inspectionFeedbackDesc },
+    { name: t.setupFeedbackN, path: '/forms/nadbrahmacomponents/call4folder4', desc: t.setupFeedbackDescN },
+    { name: t.openingFeedback, path: '/forms/nadbrahmacomponents/call5folder5', desc: t.openingFeedbackDesc },
+    { name: t.oneMonthFeedbackN, path: '/forms/nadbrahmacomponents/call6folder6', desc: t.oneMonthFeedbackDescN },
+  ];
+
+  const vendorRoutes = [
+    { name: t.awingShed, path: '/forms/vendors/awing', icon: '🏠' },
+    { name: t.boardWork, path: '/forms/vendors/board', icon: '📋' },
+    { name: t.brickWork, path: '/forms/vendors/mason', icon: '🧱' },
+    { name: t.cctvWork, path: '/forms/vendors/cctv', icon: '📷' },
+    { name: t.demolitionLabor, path: '/forms/vendors/demolition', icon: '🪓' },
+    { name: t.ductingWork, path: '/forms/vendors/ducting', icon: '🌬️' },
+    { name: t.electricalWork, path: '/forms/vendors/electrician', icon: '🔌' },
+    { name: t.gasPipeline, path: '/forms/vendors/gas', icon: '🔥' },
+    { name: t.internetWork, path: '/forms/vendors/internet', icon: '🌐' },
+    { name: t.loftChecklist, path: '/forms/vendors/loft', icon: '🛋️' },
+    { name: t.materialUnloading, path: '/forms/vendors/material-unloading', icon: '📦' },
+    { name: t.painting, path: '/forms/vendors/painter', icon: '🎨' },
+    { name: t.plumbingWork, path: '/forms/vendors/plumber', icon: '🚰' },
+    { name: t.popVendor, path: '/forms/vendors/pop', icon: '🏛️' },
+    { name: t.shutterLogo, path: '/forms/vendors/shutter-logo', icon: '🖼️' },
+    { name: t.tilesVendor, path: '/forms/vendors/tiles', icon: '🧩' },
+  ];
+
+  const letterOfUndertakingForms = [
+    { name: t.boardWorks, path: '/forms/LetterOfUndertaking/BoardWorksForm', icon: '📋' },
+    { name: t.cameraSet, path: '/forms/LetterOfUndertaking/CameraSetForm', icon: '📷' },
+    { name: t.electricalWorks, path: '/forms/LetterOfUndertaking/ElectricalWorksForm', icon: '🔌' },
+    { name: t.letterOfUndertakingForm, path: '/forms/LetterOfUndertaking/LetterOfUndertakingForm', icon: '📜' },
+    { name: t.steelEquipment, path: '/forms/LetterOfUndertaking/SteelEquipmentForm', icon: '🛠' },
+  ];
+
+  const yewalePlanExplanationItems = [
+    { name: t.civilWorkWorking, path: '/forms/planexplanation/yewale/civil-work-working' },
+    { name: t.constructionForm, path: '/forms/planexplanation/yewale/construction-form' },
+    { name: t.materialChecklistPlanEx, path: '/forms/planexplanation/yewale/material-checklist' },
+    { name: t.warrantyFormPlanEx, path: '/forms/planexplanation/yewale/warranty-form' },
+    { name: t.revisedWorkFollowup, path: '/forms/planexplanation/yewale/revised-work-followup' },
+  ];
+
+  const nadbrahmaPlanExplanationItems = [
+    { name: t.ownerMaterial, path: '/forms/planexplanation/nadbrahma/owner-material' },
+    { name: t.warrantyPeriod, path: '/forms/planexplanation/nadbrahma/warranty-period' },
+    { name: t.workStepsFor, path: '/forms/planexplanation/nadbrahma/work-steps-for' },
+  ];
+
   const sidebarMenu = [
-    { name: 'Home', icon: '🏠', path: '/forms/dashboard' },
+    { name: 'Home', icon: '🏠', path: '/forms Fees must be paid to access this content. Please purchase a subscription or contact an administrator to gain full access.forms/dashboard' },
     {
       name: t.yewaleTitle,
       icon: '🏢',
       subItems: [
-        ...yewaleSteps(t),
-        { name: t.yewaleFeedback, icon: '📁', subItems: yewaleFeedbacks(t) },
+        ...yewaleSteps,
+        { name: t.yewaleFeedback, icon: '📁', subItems: yewaleFeedbacks },
       ],
     },
     {
       name: t.nadbrahmaTitle,
       icon: '🏢',
       subItems: [
-        ...nadbrahmaSteps(t),
-        { name: t.nadbrahmaFeedback, icon: '📁', subItems: nadbrahmaFeedbacks(t) },
+        ...nadbrahmaSteps,
+        { name: t.nadbrahmaFeedback, icon: '📁', subItems: nadbrahmaFeedbacks },
       ],
     },
-    { name: 'Vendors', icon: '👷', subItems: vendorRoutes },
-    { name: t.letterOfUndertaking, icon: '📜', subItems: letterOfUndertakingForms(t) },
+    { name: t.vendors, icon: '👷', subItems: vendorRoutes },
+    { name: t.letterOfUndertaking, icon: '📜', subItems: letterOfUndertakingForms },
     {
       name: t.planExplanationTitle,
       icon: '📋',
       subItems: [
-        { name: t.yewalePlanExplanation, icon: '📁', subItems: yewalePlanExplanationItems(t) },
-        { name: t.nadbrahmaPlanExplanation, icon: '📁', subItems: nadbrahmaPlanExplanationItems(t) },
+        { name: t.yewalePlanExplanation, icon: '📁', subItems: yewalePlanExplanationItems },
+        { name: t.nadbrahmaPlanExplanation, icon: '📁', subItems: nadbrahmaPlanExplanationItems },
       ],
     },
     { name: 'Test3', icon: '🔬', path: '/forms/test3' },
   ];
 
-  // Check if any sub-item is active
   const isAnySubItemActive = (subItems) => {
     if (!subItems) return false;
     return subItems.some((sub) => {
@@ -273,7 +306,6 @@ const Sidebar = ({ onLogout }) => {
     });
   };
 
-  // Initialize open menus based on active paths
   const getInitialOpenMenus = () => {
     const open = {};
     sidebarMenu.forEach((item) => {
@@ -299,9 +331,7 @@ const Sidebar = ({ onLogout }) => {
   }, [location.pathname, lang]);
 
   const handleNavigation = (path) => {
-    if (path) {
-      navigate(path);
-    }
+    if (path) navigate(path);
   };
 
   const handleToggle = (menuName) => {
@@ -378,7 +408,6 @@ const Sidebar = ({ onLogout }) => {
 
   return (
     <div className="w-72 bg-white shadow-lg border-r border-gray-200 h-screen flex flex-col transition-all duration-300">
-      {/* Header */}
       <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img
@@ -397,8 +426,6 @@ const Sidebar = ({ onLogout }) => {
           {t.switchLang}
         </button>
       </div>
-
-      {/* Navigation */}
       <div className="flex-1 px-4 py-6 overflow-y-auto">
         <nav>
           <div className="mb-4">
@@ -409,8 +436,6 @@ const Sidebar = ({ onLogout }) => {
           <div className="space-y-1">{renderMenu(sidebarMenu)}</div>
         </nav>
       </div>
-
-      {/* Footer */}
       <div className="px-4 py-4 border-t border-gray-200">
         <button
           onClick={handleLogoutClick}

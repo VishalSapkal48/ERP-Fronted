@@ -53,8 +53,24 @@ import WarrantyPeriodForm from '../Components/Froms/components/planexplanation/n
 import WorkStepsForm from '../Components/Froms/components/planexplanation/nadbramhacomponents/WorkStepsForm.jsx';
 
 
+//vendor Forms
+import AWINGSHED  from '../Components/Froms/VendoreForm/AWINGSHED.jsx';
+import BoardWork from '../Components/Froms/VendoreForm/BoardWork.jsx';
+import BRICKWORK from '../Components/Froms/VendoreForm/BRICKWORK.jsx';
+import CCTVWORK from '../Components/Froms/VendoreForm/CCTVWORK.jsx';
+import DemolitionLabor from '../Components/Froms/VendoreForm/DemolitionLabor.jsx';
+import DUCTINGWORK from '../Components/Froms/VendoreForm/DUCTINGWORK.jsx';
+import ElectricalWorkProcess from '../Components/Froms/VendoreForm/ElectricalWorkProcess.jsx';
+import GASPIPELINEWORK from '../Components/Froms/VendoreForm/GASPIPELINEWORK.jsx';
+import INTERNETWORK from '../Components/Froms/VendoreForm/INTERNETWORK.jsx';
+import LoftChecklist from '../Components/Froms/VendoreForm/LoftChecklist.jsx';
+import MaterialUnloading from '../Components/Froms/VendoreForm/MaterialUnloading.jsx';
+import Painting from '../Components/Froms/VendoreForm/Painting.jsx';
+import PlumbingWorkProcess from '../Components/Froms/VendoreForm/PlumbingWorkProcess.jsx';
+import POPVendor from '../Components/Froms/VendoreForm/POPVendor.jsx';
+import SHUTTERLOGOWORK from '../Components/Froms/VendoreForm/SHUTTERLOGOWORK.jsx';
+import TilesVendor from '../Components/Froms/VendoreForm/TilesWorkVendor.jsx';
 
-// Error Boundary Component
 class ErrorBoundary extends Component {
   state = { error: null };
 
@@ -97,22 +113,8 @@ const FormsRoutes = () => {
 
   const routes = useRoutes([
     { path: '/', element: <Navigate to="/forms/dashboard" replace /> },
-    {
-      path: '/dashboard',
-      element: (
-        <ErrorBoundary path="/dashboard">
-          <ERPDashboard />
-        </ErrorBoundary>
-      ),
-    },
-    {
-      path: '/forms',
-      element: (
-        <ErrorBoundary path="/forms">
-          <ERPDashboard />
-        </ErrorBoundary>
-      ),
-    },
+    { path: '/dashboard', element: <ErrorBoundary path="/dashboard"><ERPDashboard /></ErrorBoundary> },
+    { path: '/forms', element: <ErrorBoundary path="/forms"><ERPDashboard /></ErrorBoundary> },
     { path: '/calendar', element: <CustomCalendar /> },
     { path: '/navbar', element: <Navbar /> },
     { path: '/projects', element: <ProjectsPage /> },
@@ -136,14 +138,7 @@ const FormsRoutes = () => {
     { path: '/LetterOfUndertaking/ElectricalWorksForm', element: <ElectricalWorksForm /> },
     { path: '/LetterOfUndertaking/LetterOfUndertakingForm', element: <LetterOfUndertakingForm /> },
     { path: '/LetterOfUndertaking/SteelEquipmentForm', element: <SteelEquipmentForm /> },
-    {
-      path: '/projects/yewale/terms-and-condition',
-      element: (
-        <ErrorBoundary path="/projects/yewale/terms-and-condition">
-          <TermsandCondition />
-        </ErrorBoundary>
-      ),
-    },
+    { path: '/projects/yewale/terms-and-condition', element: <ErrorBoundary path="/projects/yewale/terms-and-condition"><TermsandCondition /></ErrorBoundary> },
     { path: '/projects/yewale/pre-survey-script', element: <ProjectWorkFollowup /> },
     { path: '/projects/yewale/civil-work-checklist-form', element: <CivilWorkChecklistForm /> },
     { path: '/projects/yewale/internal-department-working', element: <InternalDepartmentWorking /> },
@@ -165,19 +160,22 @@ const FormsRoutes = () => {
     { path: '/projects/nadbrahma/survey-inputs', element: <StepPage name="Nadbrahma - Survey Inputs for Owner" /> },
     { path: '/projects/nadbrahma/survey', element: <StepPage name="Nadbrahma - Survey" /> },
     { path: '/projects/nadbrahma/rough-layout', element: <StepPage name="Nadbrahma - Rough Layout" /> },
-    { path: '/vendors/electrician', element: <StepPage name="Vendor - Electrician" /> },
-    { path: '/vendors/plumber', element: <StepPage name="Vendor - Plumber" /> },
-    { path: '/vendors/tiles', element: <StepPage name="Vendor - Tiles vendor" /> },
-    { path: '/vendors/pop', element: <StepPage name="Vendor - POP vendor" /> },
-    { path: '/vendors/cctv', element: <StepPage name="Vendor - CCTV Installer" /> },
-    { path: '/vendors/internet', element: <StepPage name="Vendor - Internet Service Provider" /> },
-    { path: '/vendors/painter', element: <StepPage name="Vendor - Painter" /> },
-    { path: '/vendors/gas', element: <StepPage name="Vendor - Gas pipeline vendor" /> },
-    { path: '/vendors/ducting', element: <StepPage name="Vendor - Ducting vendor" /> },
-    { path: '/vendors/awing', element: <StepPage name="Vendor - Awing shed vendor" /> },
-    { path: '/vendors/mason', element: <StepPage name="Vendor - Mason" /> },
-    { path: '/vendors/board', element: <StepPage name="Vendor - Board vendor" /> },
-    { path: '/vendors/fabricator', element: <StepPage name="Vendor - Fabricator" /> },
+    { path: '/vendors/awing', element: <AWINGSHED /> },
+    { path: '/vendors/board', element: <BoardWork /> },
+    { path: '/vendors/mason', element: <BRICKWORK /> },
+    { path: '/vendors/cctv', element: <CCTVWORK /> },
+    { path: '/vendors/demolition', element: <DemolitionLabor /> },
+    { path: '/vendors/ducting', element: <DUCTINGWORK /> },
+    { path: '/vendors/electrician', element: <ElectricalWorkProcess /> },
+    { path: '/vendors/gas', element: <GASPIPELINEWORK /> },
+    { path: '/vendors/internet', element: <INTERNETWORK /> },
+    { path: '/vendors/loft', element: <LoftChecklist /> },
+    { path: '/vendors/material-unloading', element: <MaterialUnloading /> },
+    { path: '/vendors/painter', element: <Painting /> },
+    { path: '/vendors/plumber', element: <PlumbingWorkProcess /> },
+    { path: '/vendors/pop', element: <POPVendor /> },
+    { path: '/vendors/shutter-logo', element: <SHUTTERLOGOWORK /> },
+    { path: '/vendors/tiles', element: <TilesVendor /> },
     { path: '/planexplanation/yewale/civil-work-working', element: <CivilWorkWorking /> },
     { path: '/planexplanation/yewale/construction-form', element: <ConstructionForm /> },
     { path: '/planexplanation/yewale/material-checklist', element: <MaterialChecklistForm /> },
@@ -190,10 +188,8 @@ const FormsRoutes = () => {
     { path: '/test3', element: <StepPage name="Test3" /> },
   ]);
 
-  console.log('FormsRoutes: Matched route element:', routes);
-
   if (!routes) {
-    console.error('FormsRoutes: No route matched for', location.pathname, 'Possible causes: Missing Router context, invalid path, or import failure');
+    console.error('FormsRoutes: No route matched for', location.pathname);
     return <FallbackComponent path={location.pathname} />;
   }
 
