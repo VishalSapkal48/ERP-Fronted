@@ -332,17 +332,44 @@ const Leaves = () => {
                     </label>
                   </div>
                 )}
-                <select
-                  name="type"
-                  value={formData.type}
-                  onChange={handleInputChange}
-                  className="p-2 sm:p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-200 text-xs sm:text-sm md:text-base"
-                >
-                  <option>Sick Leave</option>
-                  <option>Privilege Leave</option>
-                  <option>Casual Leave</option>
-                  <option>Maternity Leave</option>
-                </select>
+              <div className="mb-4">
+  <label
+    className="block text-gray-600 text-xs sm:text-sm font-medium mb-2"
+    htmlFor="type"
+  >
+    Leave Type
+  </label>
+  <div className="relative">
+    <select
+      name="type"
+      value={formData.type}
+      onChange={handleInputChange}
+      className="p-2 sm:p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-200 text-xs sm:text-sm md:text-base appearance-none"
+    >
+      <option value="Sick Leave">Sick Leave</option>
+      <option value="Privilege Leave">Privilege Leave</option>
+      <option value="Casual Leave">Casual Leave</option>
+      <option value="Maternity Leave">Maternity Leave</option>
+    </select>
+    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+      <svg
+        className="w-4 h-4 text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M19 9l-7 7-7-7"
+        />
+      </svg>
+    </div>
+  </div>
+
+</div>
+
                 <div className="relative">
                   <input
                     type="text"
@@ -351,20 +378,47 @@ const Leaves = () => {
                     placeholder="Search employee..."
                     className="p-2 sm:p-3 border rounded-lg w-full mb-2 focus:ring-2 focus:ring-blue-200 text-xs sm:text-sm md:text-base"
                   />
-                  <select
-                    name="employeeId"
-                    value={formData.employeeId}
-                    onChange={handleInputChange}
-                    className="p-2 sm:p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-200 text-xs sm:text-sm md:text-base"
-                    required
-                  >
-                    <option value="">Select Employee</option>
-                    {filteredEmployees.map((employee) => (
-                      <option key={employee._id} value={employee._id}>
-                        {employee.name}
-                      </option>
-                    ))}
-                  </select>
+                <div className="mb-4">
+  <label
+    className="block text-gray-600 text-xs sm:text-sm font-medium mb-2"
+    htmlFor="employeeId"
+  >
+    Employee
+  </label>
+  <div className="relative">
+    <select
+      name="employeeId"
+      value={formData.employeeId}
+      onChange={handleInputChange}
+      required
+      className="p-2 sm:p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-200 text-xs sm:text-sm md:text-base appearance-none"
+    >
+      <option value="">Select Employee</option>
+      {filteredEmployees.map((employee) => (
+        <option key={employee._id} value={employee._id}>
+          {employee.name}
+        </option>
+      ))}
+    </select>
+    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+      <svg
+        className="w-4 h-4 text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M19 9l-7 7-7-7"
+        />
+      </svg>
+    </div>
+  </div>
+ 
+</div>
+
                   <label
                     htmlFor="employeeId"
                     className="absolute left-2 -top-2.5 text-gray-700 text-xs sm:text-sm font-semibold bg-white px-1"
@@ -393,29 +447,81 @@ const Leaves = () => {
                   </label>
                 </div>
                 {formData.isHalfDay && (
-                  <div className="relative">
-                    <select
-                      name="halfDayType"
-                      value={formData.halfDayType}
-                      onChange={handleInputChange}
-                      className="p-2 sm:p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-200 text-xs sm:text-sm md:text-base"
-                    >
-                      <option value="First Half">First Half</option>
-                      <option value="Second Half">Second Half</option>
-                    </select>
-                  </div>
+                 <div className="mb-4">
+  <label
+    className="block text-gray-600 text-xs sm:text-sm font-medium mb-2"
+    htmlFor="halfDayType"
+  >
+    Half Day Type
+  </label>
+  <div className="relative">
+    <select
+      name="halfDayType"
+      value={formData.halfDayType}
+      onChange={handleInputChange}
+      className="p-2 sm:p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-200 text-xs sm:text-sm md:text-base appearance-none"
+    >
+      <option value="First Half">First Half</option>
+      <option value="Second Half">Second Half</option>
+    </select>
+    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+      <svg
+        className="w-4 h-4 text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M19 9l-7 7-7-7"
+        />
+      </svg>
+    </div>
+  </div>
+
+</div>
+
                 )}
                 {editing && (
-                  <select
-                    name="status"
-                    value={formData.status}
-                    onChange={handleInputChange}
-                    className="p-2 sm:p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-200 text-xs sm:text-sm md:text-base"
-                  >
-                    <option>Pending</option>
-                    <option>Approved</option>
-                    <option>Rejected</option>
-                  </select>
+                 <div className="mb-4">
+  <label
+    className="block text-gray-600 text-xs sm:text-sm font-medium mb-2"
+    htmlFor="status"
+  >
+    Status
+  </label>
+  <div className="relative">
+    <select
+      name="status"
+      value={formData.status}
+      onChange={handleInputChange}
+      className="p-2 sm:p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-200 text-xs sm:text-sm md:text-base appearance-none"
+    >
+      <option value="Pending">Pending</option>
+      <option value="Approved">Approved</option>
+      <option value="Rejected">Rejected</option>
+    </select>
+    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+      <svg
+        className="w-4 h-4 text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M19 9l-7 7-7-7"
+        />
+      </svg>
+    </div>
+  </div>
+
+</div>
+
                 )}
                 <button
                   onClick={handleSubmit}

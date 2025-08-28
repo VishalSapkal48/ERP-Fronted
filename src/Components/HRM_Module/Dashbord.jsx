@@ -423,21 +423,43 @@ const Dashboard = () => {
                 placeholder="Enter task title"
               />
             </div>
-            <div>
-              <label className="block text-gray-600 text-xs sm:text-sm font-medium mb-2" htmlFor="type">
-                Task Type
-              </label>
-              <select
-                name="type"
-                value={newTask.type}
-                onChange={handleNewTaskChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-sm sm:text-base"
-              >
-                <option value="General">General</option>
-                <option value="Meeting">Meeting</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
+           <div className="mb-4">
+  <label
+    className="block text-gray-600 text-xs sm:text-sm font-medium mb-2"
+    htmlFor="type"
+  >
+    Task Type
+  </label>
+  <div className="relative">
+    <select
+      name="type"
+      value={newTask.type}
+      onChange={handleNewTaskChange}
+      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-sm sm:text-base appearance-none"
+    >
+      <option value="General">General</option>
+      <option value="Meeting">Meeting</option>
+      <option value="Other">Other</option>
+    </select>
+    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+      <svg
+        className="w-4 h-4 text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M19 9l-7 7-7-7"
+        />
+      </svg>
+    </div>
+  </div>
+
+</div>
+
             <div>
               <label className="block text-gray-600 text-xs sm:text-sm font-medium mb-2" htmlFor="dueDate">
                 Due Date

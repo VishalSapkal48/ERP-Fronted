@@ -299,13 +299,14 @@ import PurchaseLayout from './Layout/PurcheseLayout';
 import FormsLayout from './Layout/FormsLayout';
 import DevelopmentLayout from './Layout/DevelopmentLayout';
 const App = () => {
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState(null); // Start as null (don't auto-load from localStorage)
   const [username, setUsername] = useState(null);
 
   const handleLogin = (role, username) => {
     console.log('Login:', { role, username });
     setRole(role);
     setUsername(username);
+
     // Store in localStorage for persistence
     localStorage.setItem('role', role);
     localStorage.setItem('username', username);
@@ -314,6 +315,7 @@ const App = () => {
   const handleLogout = () => {
     setRole(null);
     setUsername(null);
+
     // Clear all authentication-related storage
     localStorage.removeItem('role');
     localStorage.removeItem('username');
@@ -328,6 +330,14 @@ const App = () => {
           path="/"
           element={role ? <Navigate to={`/${role}`} replace /> : <Login onLogin={handleLogin} />}
         />
+
+        {/* Always show Login first */}
+        <Route path="/" element={<Login onLogin={handleLogin} />} />
+
+        {/* After login, redirect to their dashboard */}
+        {role && <Route path="/" element={<Navigate to={`/${role}`} replace />} />}
+
+        {/* Protected Routes */}
         <Route
           path="/account/*"
           element={role === 'account' ? <AccountLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
@@ -360,12 +370,10 @@ const App = () => {
           path="/forms/*"
           element={role === 'forms' ? <FormsLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
         />
-<Route
+        <Route
           path="/development/*"
           element={role === 'development' ? <DevelopmentLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
         />
-
-
         <Route
           path="*"
           element={
@@ -387,6 +395,7 @@ export default App;
 
 // import React from 'react'
 // import CivilWorkChecklistForm from './Components/Froms/VendoreForm/ElectricalWorkProcess'
+// import CivilWorkChecklistForm from './Components/Froms/VendoreForm/SHUTTERLOGOWORK'
 // function App() {
 //   return (
 //     <div>
