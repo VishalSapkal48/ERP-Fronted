@@ -298,7 +298,6 @@ import AdminLayout from './Layout/AdminLayout';
 import PurchaseLayout from './Layout/PurcheseLayout';
 import FormsLayout from './Layout/FormsLayout';
 import DevelopmentLayout from './Layout/DevelopmentLayout';
-
 const App = () => {
   const [role, setRole] = useState(null); // Start as null (don't auto-load from localStorage)
   const [username, setUsername] = useState(null);
@@ -307,6 +306,8 @@ const App = () => {
     console.log('Login:', { role, username });
     setRole(role);
     setUsername(username);
+
+    // Store in localStorage for persistence
     localStorage.setItem('role', role);
     localStorage.setItem('username', username);
   };
@@ -314,6 +315,8 @@ const App = () => {
   const handleLogout = () => {
     setRole(null);
     setUsername(null);
+
+    // Clear all authentication-related storage
     localStorage.removeItem('role');
     localStorage.removeItem('username');
     localStorage.removeItem('authToken');
@@ -323,6 +326,11 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        <Route
+          path="/"
+          element={role ? <Navigate to={`/${role}`} replace /> : <Login onLogin={handleLogin} />}
+        />
+
         {/* Always show Login first */}
         <Route path="/" element={<Login onLogin={handleLogin} />} />
 
@@ -366,8 +374,6 @@ const App = () => {
           path="/development/*"
           element={role === 'development' ? <DevelopmentLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
         />
-
-        {/* 404 Page */}
         <Route
           path="*"
           element={
@@ -388,6 +394,7 @@ export default App;
 //======================================
 
 // import React from 'react'
+// import CivilWorkChecklistForm from './Components/Froms/VendoreForm/ElectricalWorkProcess'
 // import CivilWorkChecklistForm from './Components/Froms/VendoreForm/SHUTTERLOGOWORK'
 // function App() {
 //   return (
