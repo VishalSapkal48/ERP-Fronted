@@ -35,8 +35,6 @@ const Employees = () => {
     navigate(`/hrm/employee/edit/${employeeId}`);
   };
 
-
-
   const handleDelete = async () => {
     if (!deleteModal.employeeId) return;
     setLoading(true);
@@ -59,6 +57,7 @@ const Employees = () => {
 
   const closeDeleteModal = () => {
     setDeleteModal({ show: false, employeeId: null, employeeName: "" });
+    setError(null);
   };
 
   const filteredEmployees = employees.filter((employee) => {
@@ -172,79 +171,138 @@ const Employees = () => {
     }
   };
 
+  const InputField = ({ label, name, type = "text", value, onChange, ...props }) => (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor={name}>
+        {label}
+      </label>
+      <div className="relative">
+        <input
+          id={name}
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          {...props}
+        />
+      </div>
+    </div>
+  );
+
+  const SelectField = ({ label, name, value, onChange, options }) => (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor={name}>
+        {label}
+      </label>
+      <div className="relative">
+        <select
+          id={name}
+          name={name}
+          value={value}
+          onChange={onChange}
+          className="w-full p-2 pr-10 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+        >
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option.charAt(0).toUpperCase() + option.slice(1)}
+            </option>
+          ))}
+        </select>
+        <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 gap-4">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Employee Directory</h2>
-          
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+      <div className=" mx-auto">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Employee Directory</h2>
+         
         </div>
         {error && (
-          <div className="mb-4 sm:mb-6 p-3 bg-red-100 text-red-700 rounded-lg text-xs sm:text-sm">
+          <div className="mb-6 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
             {error}
           </div>
         )}
-        <div className="mb-4 sm:mb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
-          <input
-            type="text"
-            placeholder="Search by name, email, or ID..."
+        <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <InputField
+            label="Search"
+            name="searchTerm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full text-xs sm:text-sm"
+            placeholder="Search by name, email, or ID..."
             aria-label="Search employees"
           />
-          <select
+          <SelectField
+            label="Department"
+            name="department"
             value={selectedDepartment}
             onChange={(e) => setSelectedDepartment(e.target.value)}
-            className="p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full text-xs sm:text-sm"
+            options={uniqueDepartments}
             aria-label="Filter by department"
-          >
-            {uniqueDepartments.map((dept) => (
-              <option key={dept} value={dept}>
-                {dept}
-              </option>
-            ))}
-          </select>
-          <select
+          />
+          <SelectField
+            label="Job Title"
+            name="role"
             value={selectedRole}
             onChange={(e) => setSelectedRole(e.target.value)}
-            className="p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full text-xs sm:text-sm"
+            options={uniqueRoles}
             aria-label="Filter by job title"
-          >
-            {uniqueRoles.map((role) => (
-              <option key={role} value={role}>
-                {role}
-              </option>
-            ))}
-          </select>
-          <select
+          />
+          <SelectField
+            label="Status"
+            name="status"
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full text-xs sm:text-sm"
+            options={uniqueStatuses}
             aria-label="Filter by status"
-          >
-            {uniqueStatuses.map((status) => (
-              <option key={status} value={status}>
-                {status.charAt(0).toUpperCase() + status.slice(1)}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={exportToExcel}
-            className="px-4 py-2 sm:py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-150 text-xs sm:text-sm"
-            aria-label="Export employees to Excel"
-            disabled={loading}
-          >
-            {loading ? "Exporting..." : "Export to Excel"}
-          </button>
+          />
+          <div className="flex items-end">
+            <button
+              onClick={exportToExcel}
+              className="w-full px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors disabled:bg-green-300"
+              aria-label="Export employees to Excel"
+              disabled={loading}
+            >
+              {loading ? "Exporting..." : "Export to Excel"}
+            </button>
+          </div>
         </div>
         {loading ? (
-          <div className="text-center text-gray-600 py-10 text-xs sm:text-sm">Loading employees...</div>
+          <div className="text-center text-gray-600 py-10">
+            <svg
+              className="animate-spin h-5 w-5 mx-auto text-gray-600"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            Loading employees...
+          </div>
         ) : filteredEmployees.length === 0 ? (
-          <div className="text-center text-gray-600 py-10 text-xs sm:text-sm">No employees found.</div>
+          <div className="text-center text-gray-600 py-10 text-sm">No employees found.</div>
         ) : (
           <>
-            {/* Card Layout for Mobile (block sm:hidden) */}
+            {/* Card Layout for Mobile */}
             <div className="block sm:hidden grid grid-cols-1 gap-4">
               {filteredEmployees.map((employee) => (
                 <div
@@ -264,21 +322,21 @@ const Employees = () => {
                       <h3 className="text-base font-semibold text-gray-800">
                         {employee.name || "N/A"}
                       </h3>
-                      <p className="text-xs text-gray-600">{employee.jobTitle || "N/A"}</p>
+                      <p className="text-sm text-gray-600">{employee.jobTitle || "N/A"}</p>
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <p className="text-xs text-gray-600">
+                    <p className="text-sm text-gray-600">
                       <span className="font-medium">Department:</span> {employee.department || "N/A"}
                     </p>
-                    <p className="text-xs text-gray-600">
+                    <p className="text-sm text-gray-600">
                       <span className="font-medium">Email:</span> {employee.email || "N/A"}
                     </p>
-                    <p className="text-xs text-gray-600">
+                    <p className="text-sm text-gray-600">
                       <span className="font-medium">Net Salary:</span>{" "}
                       {employee.netSalary != null ? `${employee.netSalary.toLocaleString()}` : "N/A"}
                     </p>
-                    <p className="text-xs">
+                    <p className="text-sm">
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-medium ${
                           employee.status === "active"
@@ -295,7 +353,7 @@ const Employees = () => {
                   <div className="flex flex-wrap gap-2 mt-3">
                     <button
                       onClick={() => handleEdit(employee.employeeId)}
-                      className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs transition duration-150"
+                      className="px-3 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors text-sm"
                       aria-label={`Edit ${employee.name || "employee"}`}
                       disabled={loading}
                     >
@@ -303,7 +361,7 @@ const Employees = () => {
                     </button>
                     <button
                       onClick={() => openDeleteModal(employee.employeeId, employee.name)}
-                      className="px-3 py-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 text-xs transition duration-150"
+                      className="px-3 py-1.5 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors text-sm"
                       aria-label={`Delete ${employee.name || "employee"}`}
                       disabled={loading}
                     >
@@ -313,7 +371,7 @@ const Employees = () => {
                 </div>
               ))}
             </div>
-            {/* Table Layout for Desktop (hidden sm:block) */}
+            {/* Table Layout for Desktop */}
             <div className="hidden sm:block overflow-x-auto rounded-lg shadow-md">
               <table className="min-w-full bg-white border border-gray-200">
                 <thead>
@@ -364,7 +422,7 @@ const Employees = () => {
                       <td className="py-2 px-4 border-b flex flex-wrap gap-2">
                         <button
                           onClick={() => handleEdit(employee.employeeId)}
-                          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm transition duration-150"
+                          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors text-sm"
                           aria-label={`Edit ${employee.name || "employee"}`}
                           disabled={loading}
                         >
@@ -372,7 +430,7 @@ const Employees = () => {
                         </button>
                         <button
                           onClick={() => openDeleteModal(employee.employeeId, employee.name)}
-                          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 text-sm transition duration-150"
+                          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors text-sm"
                           aria-label={`Delete ${employee.name || "employee"}`}
                           disabled={loading}
                         >
@@ -387,28 +445,28 @@ const Employees = () => {
           </>
         )}
         {deleteModal.show && (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 px-4">
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg max-w-md w-full">
-              <h2 className="text-base sm:text-lg font-semibold text-gray-800 mb-4">Confirm Deletion</h2>
-              <p className="text-gray-600 mb-4 text-xs sm:text-sm">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Confirm Deletion</h2>
+              <p className="text-gray-600 mb-4 text-sm">
                 Are you sure you want to delete <strong>{deleteModal.employeeName || "this employee"}</strong>?
               </p>
               {error && (
-                <div className="mb-4 p-2 bg-red-100 text-red-700 rounded-lg text-xs sm:text-sm">
+                <div className="mb-4 p-2 bg-red-100 text-red-700 rounded-lg text-sm">
                   {error}
                 </div>
               )}
               <div className="flex justify-end gap-3">
                 <button
                   onClick={closeDeleteModal}
-                  className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 text-xs sm:text-sm transition duration-150"
+                  className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors text-sm"
                   aria-label="Cancel deletion"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="px-3 py-1.5 sm:px-4 sm:py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 text-xs sm:text-sm transition duration-150"
+                  className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors text-sm disabled:bg-red-300"
                   disabled={loading}
                   aria-label="Confirm deletion"
                 >

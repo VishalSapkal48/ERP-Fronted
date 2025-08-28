@@ -6,7 +6,7 @@ const AddAttendance = () => {
     employeeId: "",
     checkIn: "",
     checkOut: "",
-    date: new Date().toISOString().split("T")[0], // Today's date in YYYY-MM-DD
+    date: new Date().toISOString().split("T")[0],
     status: "present",
   });
   const [employees, setEmployees] = useState([]);
@@ -44,9 +44,9 @@ const AddAttendance = () => {
 
     // Validate date not in the future
     if (name === "date") {
-      const inputDate = new Date(value + "T00:00:00Z"); // Normalize to UTC midnight
+      const inputDate = new Date(value + "T00:00:00Z");
       const today = new Date();
-      today.setUTCHours(0, 0, 0, 0); // Normalize to UTC midnight
+      today.setUTCHours(0, 0, 0, 0);
       if (inputDate > today) {
         setError("Date cannot be in the future.");
         return;
@@ -59,7 +59,7 @@ const AddAttendance = () => {
       setWorkHoursPreview(null);
     }
 
-    // Calculate work hours preview only for 'present' status
+    // Validate and calculate work hours preview
     if (name === "checkIn" || name === "checkOut" || name === "status") {
       const { checkIn, checkOut, status } = updatedFormData;
       if (status === "present" && checkIn && checkOut) {
@@ -85,53 +85,52 @@ const AddAttendance = () => {
     setFormData(updatedFormData);
   };
 
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.employeeId) {
+      errors.employeeId = "Please select an employee.";
+    }
+    if (!formData.date) {
+      errors.date = "Please select a date.";
+    }
+    const inputDate = new Date(formData.date + "T00:00:00Z");
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    if (inputDate > today) {
+      errors.date = "Date cannot be in the future.";
+    }
+    if (formData.status === "present") {
+      if (!formData.checkIn) errors.checkIn = "Check-in time is required.";
+      if (!formData.checkOut) errors.checkOut = "Check-out time is required.";
+      if (formData.checkIn && formData.checkOut) {
+        try {
+          const checkInTime = new Date(`1970-01-01T${formData.checkIn}:00Z`);
+          const checkOutTime = new Date(`1970-01-01T${formData.checkOut}:00Z`);
+          if (checkOutTime <= checkInTime) {
+            errors.checkOut = "Check-out time must be after check-in time.";
+          }
+        } catch (err) {
+          errors.checkIn = "Invalid time format. Use HH:mm (e.g., 09:00).";
+        }
+      }
+    }
+    return errors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setError(Object.values(validationErrors)[0]);
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     setMessage("");
     setError(null);
 
     console.log("Form data before submission:", { ...formData, currentTime: new Date().toISOString() });
-
-    // Validate form
-    if (!formData.employeeId) {
-      setError("Please select an employee.");
-      setIsLoading(false);
-      return;
-    }
-    if (!formData.date) {
-      setError("Please select a date.");
-      setIsLoading(false);
-      return;
-    }
-    const inputDate = new Date(formData.date + "T00:00:00Z"); // Normalize to UTC midnight
-    const today = new Date();
-    today.setUTCHours(0, 0, 0, 0); // Normalize to UTC midnight
-    if (inputDate > today) {
-      setError("Date cannot be in the future.");
-      setIsLoading(false);
-      return;
-    }
-    if (formData.status === "present") {
-      if (!formData.checkIn || !formData.checkOut) {
-        setError("Check-in and check-out times are required for present status.");
-        setIsLoading(false);
-        return;
-      }
-      try {
-        const checkInTime = new Date(`1970-01-01T${formData.checkIn}:00Z`);
-        const checkOutTime = new Date(`1970-01-01T${formData.checkOut}:00Z`);
-        if (checkOutTime <= checkInTime) {
-          setError("Check-out time must be after check-in time.");
-          setIsLoading(false);
-          return;
-        }
-      } catch (err) {
-        setError("Invalid time format. Use HH:mm (e.g., 09:00).");
-        setIsLoading(false);
-        return;
-      }
-    }
 
     try {
       const submissionData = {
@@ -179,11 +178,62 @@ const AddAttendance = () => {
     setMessage("");
   };
 
+  const InputField = ({ label, name, type = "text", value, onChange, error, disabled, ...props }) => (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor={name}>
+        {label}
+      </label>
+      <div className="relative">
+        <input
+          id={name}
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+          className={`w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${disabled ? 'bg-gray-100' : ''} ${error ? 'border-red-500' : ''}`}
+          {...props}
+        />
+      </div>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+    </div>
+  );
+
+  const SelectField = ({ label, name, value, onChange, error, options, disabled }) => (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor={name}>
+        {label}
+      </label>
+      <div className="relative">
+        <select
+          id={name}
+          name={name}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+          className={`w-full p-2 pr-10 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none ${disabled ? 'bg-gray-100' : ''} ${error ? 'border-red-500' : ''}`}
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+    </div>
+  );
+
   return (
-    <div className=" p-6 bg-gray-screen100 min-h-">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-800">Add Attendance</h1>
-        <div className="bg-white p-6 rounded-lg shadow">
+    <div className="min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-800">Add Attendance</h1>
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md">
           {message && (
             <div
               className={`mb-4 p-3 rounded-md ${
@@ -224,121 +274,103 @@ const AddAttendance = () => {
             <div className="p-4 text-center text-gray-600">No employees available.</div>
           ) : (
             <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700" htmlFor="employeeId">
-                    Employee
-                  </label>
-                  <select
-                    id="employeeId"
-                    name="employeeId"
-                    value={formData.employeeId}
-                    onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                    aria-label="Select employee"
-                  >
-                    <option value="">Select Employee</option>
-                    {employees.map((employee) => (
-                      <option key={employee._id} value={employee._id}>
-                        {employee.name} ({employee.department || "N/A"})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700" htmlFor="date">
-                    Date
-                  </label>
-                  <input
-                    id="date"
-                    type="date"
-                    name="date"
-                    value={formData.date}
-                    onChange={handleChange}
-                    max={new Date().toISOString().split("T")[0]}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                    aria-label="Select date"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700" htmlFor="checkIn">
-                    Check In
-                  </label>
-                  <input
-                    id="checkIn"
-                    type="time"
-                    name="checkIn"
-                    value={formData.checkIn}
-                    onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    disabled={formData.status !== "present"}
-                    required={formData.status === "present"}
-                    aria-label="Check-in time"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700" htmlFor="checkOut">
-                    Check Out
-                  </label>
-                  <input
-                    id="checkOut"
-                    type="time"
-                    name="checkOut"
-                    value={formData.checkOut}
-                    onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    disabled={formData.status !== "present"}
-                    required={formData.status === "present"}
-                    aria-label="Check-out time"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700" htmlFor="status">
-                    Status
-                  </label>
-                  <select
-                    id="status"
-                    name="status"
-                    value={formData.status}
-                    onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    aria-label="Select status"
-                  >
-                    <option value="present">Present</option>
-                    <option value="absent">Absent</option>
-                    <option value="leave">Leave</option>
-                  </select>
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                <SelectField
+                  label="Employee"
+                  name="employeeId"
+                  value={formData.employeeId}
+                  onChange={handleChange}
+                  error={error && !formData.employeeId ? "Please select an employee." : null}
+                  options={[
+                    { value: "", label: "Select Employee" },
+                    ...employees.map((employee) => ({
+                      value: employee._id,
+                      label: `${employee.name} (${employee.department || "N/A"})`,
+                    })),
+                  ]}
+                  aria-label="Select employee"
+                />
+                <InputField
+                  label="Date"
+                  name="date"
+                  type="date"
+                  value={formData.date}
+                  onChange={handleChange}
+                  error={error && (!formData.date || new Date(formData.date + "T00:00:00Z") > new Date().setUTCHours(0, 0, 0, 0)) ? error : null}
+                  max={new Date().toISOString().split("T")[0]}
+                  required
+                  aria-label="Select date"
+                />
+                <InputField
+                  label="Check In"
+                  name="checkIn"
+                  type="time"
+                  value={formData.checkIn}
+                  onChange={handleChange}
+                  error={error && formData.status === "present" && !formData.checkIn ? "Check-in time is required." : null}
+                  disabled={formData.status !== "present"}
+                  required={formData.status === "present"}
+                  aria-label="Check-in time"
+                />
+                <InputField
+                  label="Check Out"
+                  name="checkOut"
+                  type="time"
+                  value={formData.checkOut}
+                  onChange={handleChange}
+                  error={error && formData.status === "present" && !formData.checkOut ? "Check-out time is required." : null}
+                  disabled={formData.status !== "present"}
+                  required={formData.status === "present"}
+                  aria-label="Check-out time"
+                />
+                <SelectField
+                  label="Status"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  options={[
+                    { value: "present", label: "Present" },
+                    { value: "absent", label: "Absent" },
+                    { value: "leave", label: "Leave" },
+                  ]}
+                  aria-label="Select status"
+                />
                 {workHoursPreview && formData.status === "present" && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Work Hours (Preview)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Work Hours (Preview)
+                    </label>
                     <p className="mt-1 text-gray-600">{workHoursPreview} hours</p>
                   </div>
                 )}
               </div>
-              <div className="mt-4 flex space-x-4">
+              <div className="mt-6 flex flex-wrap justify-end gap-3 sm:gap-4">
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition-colors flex items-center gap-2 text-sm"
+                  aria-label="Reset form"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M4 4v5h5m3 7h5v-5m-10 0v5h-5"
+                    />
+                  </svg>
+                  Reset
+                </button>
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`bg-green-600 text-white px-4 py-2 rounded-md flex items-center gap-2 text-sm ${
-                    isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-green-700"
-                  }`}
+                  className={`px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:bg-green-300 transition-colors flex items-center gap-2 text-sm`}
                   aria-label="Record attendance"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
                   </svg>
-                  Record Attendance
-                </button>
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md flex items-center gap-2 text-sm hover:bg-gray-400"
-                  aria-label="Reset form"
-                >
-                  Reset
+                  {isLoading ? "Recording..." : "Record Attendance"}
                 </button>
               </div>
             </form>
