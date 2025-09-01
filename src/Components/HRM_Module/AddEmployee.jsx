@@ -1116,11 +1116,11 @@ const AddEmployee = () => {
       try {
         const employees = await hrmApi.getEmployees();
         const today = new Date().toISOString().split("T")[0];
-        const todayEmployees = employees.filter(emp =>
+        const todayEmployees = employees.filter((emp) =>
           emp.employeeId && emp.employeeId.startsWith(today.slice(2, 10).replace(/-/g, ""))
         );
         const maxSerial = todayEmployees.length > 0
-          ? Math.max(...todayEmployees.map(emp => parseInt(emp.employeeId.slice(-2)))) + 1
+          ? Math.max(...todayEmployees.map((emp) => parseInt(emp.employeeId.slice(-2)))) + 1
           : 1;
         setDailySerial(maxSerial);
       } catch (error) {
@@ -1400,36 +1400,29 @@ const AddEmployee = () => {
                   <p className="text-red-500 text-sm mt-1">{errors.profileImage}</p>
                 )}
               </div>
-
-
- <div>
-
-            <div>
-  <label className="block text-sm font-medium text-gray-700 mb-1">Employee Type</label>
-  <div className="relative">
-    <select
-      name="employeeType"
-      value={formData.employeeType}
-      onChange={handleChange}
-
-      className="w-full p-2 pr-10 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
-    >
-      <option value="">Select</option>
-      <option value="Employee">Employee</option>
-      <option value="Vendor">Vendor</option>
-      <option value="Guest">Guest</option>
-      <option value="Franchise Owner">Franchise Owner</option>
-    </select>
-    {/* Custom arrow icon positioned with more space from border */}
-    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-      </svg>
-    </div>
-  </div>
-  {errors.employeeType && <p className="text-red-500 text-sm mt-1">{errors.employeeType}</p>}
-</div>
-
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Employee Type</label>
+                <div className="relative">
+                  <select
+                    name="employeeType"
+                    value={formData.employeeType}
+                    onChange={handleChange}
+                    className="w-full p-2 pr-10 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
+                  >
+                    <option value="">Select</option>
+                    <option value="Employee">Employee</option>
+                    <option value="Vendor">Vendor</option>
+                    <option value="Guest">Guest</option>
+                    <option value="Franchise Owner">Franchise Owner</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+                {errors.employeeType && <p className="text-red-500 text-sm mt-1">{errors.employeeType}</p>}
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Employee ID</label>
                 <input
@@ -1505,39 +1498,28 @@ const AddEmployee = () => {
                 />
                 {errors.joiningDate && <p className="text-red-500 text-sm mt-1">{errors.joiningDate}</p>}
               </div>
-            <div className="mb-4">
-  <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-  <div className="relative">
-    <select
-      name="gender"
-      value={formData.gender}
-      onChange={handleChange}
-      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-    >
-      <option value="">Select</option>
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-      <option value="Other">Other</option>
-    </select>
-    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-      <svg
-        className="w-4 h-4 text-gray-400"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 9l-7 7-7-7"
-        />
-      </svg>
-    </div>
-  </div>
-  {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
-</div>
-
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                <div className="relative">
+                  <select
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                  >
+                    <option value="">Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+                {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
                 <input
@@ -1580,7 +1562,6 @@ const AddEmployee = () => {
                   className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-            
             </div>
           )}
           {activeTab === "Contact" && (
@@ -1762,43 +1743,29 @@ const AddEmployee = () => {
                 />
                 {errors.taxRate && <p className="text-red-500 text-sm mt-1">{errors.taxRate}</p>}
               </div>
-            <div className="mb-4">
-  <label className="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
-  <div className="relative">
-    <select
-      name="paymentMethod"
-      value={formData.paymentMethod}
-      onChange={handleChange}
-      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-    >
-      <option value="">Select</option>
-      <option value="Bank Transfer">Bank Transfer</option>
-      <option value="NFT">NFT</option>
-      <option value="RTGS">RTGS</option>
-      <option value="Cash">Cash</option>
-    </select>
-    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-      <svg
-        className="w-4 h-4 text-gray-400"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 9l-7 7-7-7"
-        />
-      </svg>
-    </div>
-  </div>
-  {errors.paymentMethod && (
-    <p className="text-red-500 text-sm mt-1">{errors.paymentMethod}</p>
-  )}
-</div>
-
-       
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
+                <div className="relative">
+                  <select
+                    name="paymentMethod"
+                    value={formData.paymentMethod}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                  >
+                    <option value="">Select</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                    <option value="NFT">NFT</option>
+                    <option value="RTGS">RTGS</option>
+                    <option value="Cash">Cash</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+                {errors.paymentMethod && <p className="text-red-500 text-sm mt-1">{errors.paymentMethod}</p>}
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Bank Name</label>
                 <input
@@ -1888,39 +1855,26 @@ const AddEmployee = () => {
                 />
                 {errors.pfAccountNumber && <p className="text-red-500 text-sm mt-1">{errors.pfAccountNumber}</p>}
               </div>
-            <div className="mb-4">
-  <label className="block text-sm font-medium text-gray-700 mb-1">
-    PF Type <span title="Provident Fund">(PF)</span>
-  </label>
-  <div className="relative">
-    <select
-      name="pfType"
-      value={formData.pfType}
-      onChange={handleChange}
-      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-    >
-      <option value="">Select</option>
-      <option value="PF">PF</option>
-    </select>
-    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-      <svg
-        className="w-4 h-4 text-gray-400"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 9l-7 7-7-7"
-        />
-      </svg>
-    </div>
-  </div>
-  {errors.pfType && <p className="text-red-500 text-sm mt-1">{errors.pfType}</p>}
-</div>
-
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">PF Type <span title="Provident Fund">(PF)</span></label>
+                <div className="relative">
+                  <select
+                    name="pfType"
+                    value={formData.pfType}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                  >
+                    <option value="">Select</option>
+                    <option value="PF">PF</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+                {errors.pfType && <p className="text-red-500 text-sm mt-1">{errors.pfType}</p>}
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Employer Contribution PF</label>
                 <input
@@ -1945,41 +1899,26 @@ const AddEmployee = () => {
                 />
                 {errors.employeeContributionPf && <p className="text-red-500 text-sm mt-1">{errors.employeeContributionPf}</p>}
               </div>
-             <div className="mb-4">
-  <label className="block text-sm font-medium text-gray-700 mb-1">
-    SSES Type <span title="Social Security & Employee Savings">(SSES)</span>
-  </label>
-  <div className="relative">
-    <select
-      name="ssesType"
-      value={formData.ssesType}
-      onChange={handleChange}
-      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-    >
-      <option value="">Select</option>
-      <option value="SSES">SSES</option>
-    </select>
-    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-      <svg
-        className="w-4 h-4 text-gray-400"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 9l-7 7-7-7"
-        />
-      </svg>
-    </div>
-  </div>
-  {errors.ssesType && (
-    <p className="text-red-500 text-sm mt-1">{errors.ssesType}</p>
-  )}
-</div>
-
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">SSES Type <span title="Social Security & Employee Savings">(SSES)</span></label>
+                <div className="relative">
+                  <select
+                    name="ssesType"
+                    value={formData.ssesType}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                  >
+                    <option value="">Select</option>
+                    <option value="SSES">SSES</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+                {errors.ssesType && <p className="text-red-500 text-sm mt-1">{errors.ssesType}</p>}
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Employer Contribution SSES</label>
                 <input
@@ -2004,41 +1943,26 @@ const AddEmployee = () => {
                 />
                 {errors.employeeContributionSses && <p className="text-red-500 text-sm mt-1">{errors.employeeContributionSses}</p>}
               </div>
-<div className="mb-4">
-  <label className="block text-sm font-medium text-gray-700 mb-1">
-    EOBI Type <span title="Employees Old-Age Benefits Institution">(EOBI)</span>
-  </label>
-  <div className="relative">
-    <select
-      name="eobiType"
-      value={formData.eobiType}
-      onChange={handleChange}
-      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-    >
-      <option value="">Select</option>
-      <option value="EOBI">EOBI</option>
-    </select>
-    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-      <svg
-        className="w-4 h-4 text-gray-400"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 9l-7 7-7-7"
-        />
-      </svg>
-    </div>
-  </div>
-  {errors.eobiType && (
-    <p className="text-red-500 text-sm mt-1">{errors.eobiType}</p>
-  )}
-</div>
-
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">EOBI Type <span title="Employees Old-Age Benefits Institution">(EOBI)</span></label>
+                <div className="relative">
+                  <select
+                    name="eobiType"
+                    value={formData.eobiType}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                  >
+                    <option value="">Select</option>
+                    <option value="EOBI">EOBI</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+                {errors.eobiType && <p className="text-red-500 text-sm mt-1">{errors.eobiType}</p>}
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Employer Contribution EOBI</label>
                 <input
@@ -2063,41 +1987,26 @@ const AddEmployee = () => {
                 />
                 {errors.employeeContributionEobi && <p className="text-red-500 text-sm mt-1">{errors.employeeContributionEobi}</p>}
               </div>
-             <div className="mb-4">
-  <label className="block text-sm font-medium text-gray-700 mb-1">
-    ESIC Type <span title="Employees' State Insurance Corporation">(ESIC)</span>
-  </label>
-  <div className="relative">
-    <select
-      name="esicType"
-      value={formData.esicType}
-      onChange={handleChange}
-      className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-    >
-      <option value="">Select</option>
-      <option value="ESIC">ESIC</option>
-    </select>
-    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-      <svg
-        className="w-4 h-4 text-gray-400"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 9l-7 7-7-7"
-        />
-      </svg>
-    </div>
-  </div>
-  {errors.esicType && (
-    <p className="text-red-500 text-sm mt-1">{errors.esicType}</p>
-  )}
-</div>
-
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">ESIC Type <span title="Employees' State Insurance Corporation">(ESIC)</span></label>
+                <div className="relative">
+                  <select
+                    name="esicType"
+                    value={formData.esicType}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                  >
+                    <option value="">Select</option>
+                    <option value="ESIC">ESIC</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+                {errors.esicType && <p className="text-red-500 text-sm mt-1">{errors.esicType}</p>}
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Employer Contribution ESIC</label>
                 <input
@@ -2201,7 +2110,6 @@ const AddEmployee = () => {
           )}
         </div>
       </div>
-
       {showModal && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-md">
