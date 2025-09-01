@@ -1,4 +1,3 @@
-// DevelopmentDashboard.jsx
 import React, { useState, useEffect } from 'react';
 import {
   CheckCircle,
@@ -16,15 +15,12 @@ import {
   Phone,
   DoorOpen,
   BarChart3,
-  Menu,
-  X,
-  Settings,
-  Users,
-  AlertTriangle,
   Plus,
   ArrowRight,
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Sidebar from './Sidebar.jsx';
+import Navbar from './Navbar.jsx';
 
 class ErrorBoundary extends React.Component {
   state = { hasError: false, error: null };
@@ -60,7 +56,6 @@ class ErrorBoundary extends React.Component {
 const DevelopmentDashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeView, setActiveView] = useState('dashboard');
   const [showProjectForm, setShowProjectForm] = useState(false);
@@ -92,7 +87,7 @@ const DevelopmentDashboard = () => {
 
   useEffect(() => {
     const path = location.pathname.replace('/development/', '') || 'dashboard';
-    if (['dashboard', 'projects', 'engineers', 'challenges', 'reports', 'settings'].includes(path)) {
+    if (['dashboard', 'projects', 'engineers', 'challenges', 'settings'].includes(path)) {
       setActiveView(path);
     }
     setLoading(false);
@@ -105,7 +100,7 @@ const DevelopmentDashboard = () => {
 
   const workflowSteps = [
     { id: 1, title: 'Lead Generation', description: 'Generate and capture potential customer leads', icon: <User className="w-5 h-5" />, color: 'blue' },
-    { id: 2, title: 'Assign Engineer', description: 'Assign qualified engineer to the project', icon: <Users className="w-5 h-5" />, color: 'green' },
+    { id: 2, title: 'Assign Engineer', description: 'Assign qualified engineer to the project', icon: <User className="w-5 h-5" />, color: 'green' },
     { id: 3, title: 'Survey Quotation', description: 'Prepare and send survey quotation to client', icon: <FileText className="w-5 h-5" />, color: 'yellow' },
     { id: 4, title: 'Ongoing Challenges After Survey', description: 'Address any issues that arise post-survey', icon: <AlertCircle className="w-5 h-5" />, color: 'red' },
     { id: 5, title: 'Quotation (Only Show)', description: 'Present final quotation to client', icon: <Eye className="w-5 h-5" />, color: 'purple' },
@@ -123,8 +118,6 @@ const DevelopmentDashboard = () => {
     { id: 17, title: 'Opening Visit Verification', description: 'Verify opening visit completion', icon: <DoorOpen className="w-5 h-5" />, color: 'rose' },
     { id: 18, title: 'Monthly Sites Opening Report', description: 'Generate monthly opening reports', icon: <BarChart3 className="w-5 h-5" />, color: 'slate' },
   ];
-
-
 
   const moveToNextStep = (projectId, additionalData = {}) => {
     setProjects(projects =>
@@ -267,23 +260,17 @@ const DevelopmentDashboard = () => {
     return (project.completedSteps.length / workflowSteps.length) * 100;
   };
 
-  // Step Action Component
   const StepActionCard = ({ project, step }) => {
     const status = getStepStatus(project, step.id);
     const stepData = project.stepData[step.id] || {};
 
     const formRoutes = {
-      'owner-material': '/development/owner-material-checklist',
-      'warranty-period': '/development/warranty-period',
-      'work-steps': '/development/work-steps',
-      'civil-work': '/development/civil-work-checklist',
-      'material-checklist-form': '/development/material-checklist-form',
-      'warranty': '/development/warranty',
-      'construction': '/development/construction-form',
-      'fifteenday': '/development/fifteen-day-form',
-      'inspection': '/development/inspection-checklist',
-      'civil-noc': '/development/civil-work-checklist', // Assuming Civil NOC uses CivilWorkChecklistForm
-      'Material Order For Dispatch': '/development/material-checklist', // Assuming this uses MaterialChecklistForm
+      'fifteenday': project.engineer?.toLowerCase().includes('nadbramha')
+        ? '/development/nadbramha/fifteen-days-target'
+        : '/development/yewale/fifteen-days-target',
+      'civil-noc': project.engineer?.toLowerCase().includes('nadbramha')
+        ? '/development/nadbramha/civil-work-noc'
+        : '/development/yewale/civil-work-noc',
     };
 
     const handleFormSelect = (formId) => {
@@ -468,54 +455,6 @@ const DevelopmentDashboard = () => {
               )}
             </div>
           );
-        case 7:
-          return (
-            <div className="space-y-4">
-              <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                <h4 className="font-semibold text-lg mb-3">Project Details</h4>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div><strong>Project Name:</strong> {project.name}</div>
-                  <div><strong>Client:</strong> {project.client}</div>
-                  <div><strong>Contact:</strong> {project.contact}</div>
-                  <div><strong>Phone:</strong> {project.phone}</div>
-                  <div><strong>Current Step:</strong> {workflowSteps.find(s => s.id === project.currentStep)?.title}</div>
-                  <div><strong>Progress:</strong> {Math.round(getProjectProgress(project))}%</div>
-                  <div><strong>Engineer:</strong> {project.engineer || 'Not assigned'}</div>
-                  <div><strong>Last Updated:</strong> {project.lastUpdated}</div>
-                </div>
-              </div>
-
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                <h4 className="font-semibold text-lg mb-3">Plan Explanation Forms</h4>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {[
-                    { id: 'owner-material', label: 'Owner Material Checklist' },
-                    { id: 'warranty-period', label: 'Warranty Period' },
-                    { id: 'work-steps', label: 'Work Steps' },
-                    { id: 'material-checklist', label: 'Material Checklist' },
-                    { id: 'warranty', label: 'Warranty Form' },
-                    { id: 'construction', label: 'Construction Form' },
-                  ].map(form => (
-                    <button
-                      key={form.id}
-                      onClick={() => handleFormSelect(form.id)}
-                      className="px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    >
-                      {form.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              {status === 'current' && (
-                <button
-                  onClick={() => moveToNextStep(project.id)}
-                  className={`w-full bg-${step.color}-500 text-white px-4 py-2 rounded-lg hover:bg-${step.color}-600 transition-colors mt-4`}
-                >
-                  Complete Plan Explanation
-                </button>
-              )}
-            </div>
-          );
         case 9:
           return (
             <div className="space-y-3">
@@ -536,10 +475,10 @@ const DevelopmentDashboard = () => {
               <p className="text-sm text-gray-600">{step.description}</p>
               {status === 'current' && (
                 <button
-                  onClick={() => handleFormSelect('inspection')}
+                  onClick={() => moveToNextStep(project.id)}
                   className={`w-full bg-${step.color}-500 text-white px-4 py-2 rounded-lg hover:bg-${step.color}-600 transition-colors`}
                 >
-                  Start Inspection
+                  Complete Inspection
                 </button>
               )}
             </div>
@@ -632,6 +571,7 @@ const DevelopmentDashboard = () => {
         onClose();
       }
     };
+
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
@@ -828,391 +768,368 @@ const DevelopmentDashboard = () => {
     );
   };
 
-
-
-
-
-  // Main dashboard rendering
   return (
     <ErrorBoundary>
       <div className="min-h-screen bg-gray-50 flex">
-   
-
-        <main className="flex-1 p-6 ">
-          {loading ? (
-            <div className="text-center py-12">
-              <p className="text-gray-600">Loading...</p>
-            </div>
-          ) : (
-            <>
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="lg:hidden mb-4 p-2 bg-red-500 text-white rounded-lg"
-              >
-                <Menu className="w-6 h-6" />
-              </button>
-
-              {activeView === 'dashboard' && (
-                <div className="space-y-6">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h2 className="text-3xl font-bold text-red-600 mb-2">DEVELOPMENT DASHBOARD</h2>
-                      <p className="text-gray-600">18-Step Complete Workflow Management</p>
-                    </div>
-                    <button
-                      onClick={() => setShowProjectForm(true)}
-                      className="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2"
-                    >
-                      <Plus className="w-5 h-5" />
-                      <span>New Project</span>
-                    </button>
-                  </div>
-
-                  <div className="bg-white rounded-xl shadow-lg p-6">
-                    <h3 className="text-xl font-semibold mb-6 text-center">Complete 18-Step Workflow</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                      {workflowSteps.map((step, index) => (
-                        <div key={step.id} className="text-center">
-                          <div className={`w-12 h-12 mx-auto rounded-full bg-${step.color}-500 text-white flex items-center justify-center mb-2 text-sm font-bold`}>
-                            {step.id}
-                          </div>
-                          <p className="text-xs font-medium text-gray-900 leading-tight">{step.title}</p>
-                          {index < workflowSteps.length - 1 && index % 6 !== 5 && (
-                            <ArrowRight className="w-3 h-3 text-gray-400 mx-auto mt-1" />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="space-y-8">
-                    {projects.length === 0 && (
-                      <div className="text-center py-12 bg-white rounded-xl shadow-lg">
-                        <p className="text-gray-600">No projects yet. Add a new project to get started.</p>
+        <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+        <div className="flex-1 flex flex-col">
+          <Navbar toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+          <main className="flex-1 p-6">
+            {loading ? (
+              <div className="text-center py-12">
+                <p className="text-gray-600">Loading...</p>
+              </div>
+            ) : (
+              <>
+                {activeView === 'dashboard' && (
+                  <div className="space-y-6">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h2 className="text-3xl font-bold text-red-600 mb-2">DEVELOPMENT DASHBOARD</h2>
+                        <p className="text-gray-600">18-Step Complete Workflow Management</p>
                       </div>
-                    )}
-                    {projects.map(project => {
-                      const progress = getProjectProgress(project);
-                      const currentStep = workflowSteps.find(step => step.id === project.currentStep);
-
-                      return (
-                        <div key={project.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
-                          <div className="bg-gradient-to-r from-red-500 to-red-600 text-white p-6">
-                            <div className="flex justify-between items-start">
-                              <div>
-                                <h3 className="text-2xl font-bold">{project.name}</h3>
-                                <p className="opacity-90">Client: {project.client} • Contact: {project.contact}</p>
-                                <p className="text-sm opacity-75">Phone: {project.phone}</p>
-                              </div>
-                              <div className="text-right">
-                                <div className="text-sm opacity-75">Overall Progress</div>
-                                <div className="text-3xl font-bold">{Math.round(progress)}%</div>
-                                <div className="text-sm opacity-75">{project.completedSteps.length}/{workflowSteps.length} Steps</div>
-                              </div>
-                            </div>
-                            <div className="mt-4">
-                              <div className="w-full bg-red-400 rounded-full h-2">
-                                <div
-                                  className="bg-white h-2 rounded-full transition-all duration-500"
-                                  style={{ width: `${progress}%` }}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="bg-gray-50 border-b border-gray-200 p-4">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center space-x-3">
-                                <div className={`p-3 rounded-full bg-${currentStep?.color}-500 text-white`}>
-                                  {currentStep?.icon}
-                                </div>
-                                <div>
-                                  <h4 className="font-bold text-lg">Current Step: {currentStep?.title}</h4>
-                                  <p className="text-gray-600">{currentStep?.description}</p>
-                                </div>
-                              </div>
-                              <div className="text-right">
-                                <div className="text-2xl font-bold text-gray-900">Step {project.currentStep}</div>
-                                <div className="text-sm text-gray-500">of {workflowSteps.length}</div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="p-6">
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                              {workflowSteps.map(step => (
-                                <StepActionCard key={step.id} project={project} step={step} />
-                              ))}
-                            </div>
-
-                            {project.completedSteps.length > 0 && (
-                              <div className="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
-                                <h5 className="font-semibold text-green-900 mb-3">✅ Completed Steps ({project.completedSteps.length})</h5>
-                                <div className="flex flex-wrap gap-2">
-                                  {project.completedSteps.map(stepId => {
-                                    const step = workflowSteps.find(s => s.id === stepId);
-                                    return (
-                                      <div key={stepId} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm flex items-center space-x-1">
-                                        <CheckCircle className="w-3 h-3" />
-                                        <span>{stepId}) {step?.title}</span>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                            )}
-
-                            {(project.challenges || []).filter(c => !c.resolved).length > 0 && (
-                              <div className="mt-6 bg-red-50 border border-red-200 rounded-lg p-4">
-                                <h5 className="font-semibold text-red-900 mb-3">
-                                  ⚠️ Active Challenges ({project.challenges.filter(c => !c.resolved).length})
-                                </h5>
-                                <div className="space-y-2">
-                                  {project.challenges
-                                    .filter(c => !c.resolved)
-                                    .map(challenge => (
-                                      <div key={challenge.id} className="bg-white border border-red-200 rounded-lg p-3">
-                                        <div className="flex justify-between items-start">
-                                          <div className="flex-1">
-                                            <p className="text-sm font-medium">
-                                              Step {challenge.step}: {challenge.description}
-                                            </p>
-                                            <p className="text-xs text-gray-500">Created: {challenge.createdDate}</p>
-                                          </div>
-                                          <button
-                                            onClick={() => resolveChallenge(project.id, challenge.id)}
-                                            className="ml-3 bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
-                                          >
-                                            Resolve
-                                          </button>
-                                        </div>
-                                      </div>
-                                    ))}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-
-
-              
-
-
-              
-
-              {activeView === 'projects' && (
-                <div className="space-y-6">
-                  <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold text-gray-900">All Projects Overview</h2>
-                    <button
-                      onClick={() => setShowProjectForm(true)}
-                      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2"
-                    >
-                      <Plus className="w-4 h-4" />
-                      <span>Add Project</span>
-                    </button>
-                  </div>
-
-                  {projects.length === 0 && (
-                    <div className="text-center py-12 bg-white rounded-xl shadow-lg">
-                      <p className="text-gray-600">No projects yet. Add a new project above.</p>
+                      <button
+                        onClick={() => setShowProjectForm(true)}
+                        className="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2"
+                      >
+                        <Plus className="w-5 h-5" />
+                        <span>New Project</span>
+                      </button>
                     </div>
-                  )}
 
-                  <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {projects.map(project => {
-                      const progress = getProjectProgress(project);
-                      const currentStep = workflowSteps.find(step => step.id === project.currentStep);
+                    <div className="bg-white rounded-xl shadow-lg p-6">
+                      <h3 className="text-xl font-semibold mb-6 text-center">Complete 18-Step Workflow</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                        {workflowSteps.map((step, index) => (
+                          <div key={step.id} className="text-center">
+                            <div className={`w-12 h-12 mx-auto rounded-full bg-${step.color}-500 text-white flex items-center justify-center mb-2 text-sm font-bold`}>
+                              {step.id}
+                            </div>
+                            <p className="text-xs font-medium text-gray-900 leading-tight">{step.title}</p>
+                            {index < workflowSteps.length - 1 && index % 6 !== 5 && (
+                              <ArrowRight className="w-3 h-3 text-gray-400 mx-auto mt-1" />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
-                      return (
-                        <div key={project.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                          <div className="p-6">
-                            <h3 className="font-semibold text-lg text-gray-900 mb-2">{project.name}</h3>
-                            <p className="text-gray-600 mb-4">{project.client}</p>
-                            <div className="space-y-3">
-                              <div className="flex items-center justify-between">
-                                <span className="text-sm text-gray-600">Current Step:</span>
-                                <span className="text-sm font-medium">
-                                  {project.currentStep}. {currentStep?.title}
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between">
-                                <span className="text-sm text-gray-600">Engineer:</span>
-                                <span className="text-sm font-medium">
-                                  {project.engineer || 'Not assigned'}
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between">
-                                <span className="text-sm text-gray-600">Active Challenges:</span>
-                                <span className="text-sm font-medium">
-                                  {(project.challenges || []).filter(c => !c.resolved).length}
-                                </span>
-                              </div>
-                              <div>
-                                <div className="flex justify-between text-sm text-gray-600 mb-1">
-                                  <span>Progress</span>
-                                  <span>{Math.round(progress)}%</span>
+                    <div className="space-y-8">
+                      {projects.length === 0 && (
+                        <div className="text-center py-12 bg-white rounded-xl shadow-lg">
+                          <p className="text-gray-600">No projects yet. Add a new project to get started.</p>
+                        </div>
+                      )}
+                      {projects.map(project => {
+                        const progress = getProjectProgress(project);
+                        const currentStep = workflowSteps.find(step => step.id === project.currentStep);
+
+                        return (
+                          <div key={project.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div className="bg-gradient-to-r from-red-500 to-red-600 text-white p-6">
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <h3 className="text-2xl font-bold">{project.name}</h3>
+                                  <p className="opacity-90">Client: {project.client} • Contact: {project.contact}</p>
+                                  <p className="text-sm opacity-75">Phone: {project.phone}</p>
                                 </div>
-                                <div className="w-full bg-gray-200 rounded-full h-3">
+                                <div className="text-right">
+                                  <div className="text-sm opacity-75">Overall Progress</div>
+                                  <div className="text-3xl font-bold">{Math.round(progress)}%</div>
+                                  <div className="text-sm opacity-75">{project.completedSteps.length}/{workflowSteps.length} Steps</div>
+                                </div>
+                              </div>
+                              <div className="mt-4">
+                                <div className="w-full bg-red-400 rounded-full h-2">
                                   <div
-                                    className="bg-gradient-to-r from-red-400 to-red-600 h-3 rounded-full transition-all duration-300"
+                                    className="bg-white h-2 rounded-full transition-all duration-500"
                                     style={{ width: `${progress}%` }}
                                   />
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {activeView === 'engineers' && (
-                <div className="space-y-6">
-                  <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold text-gray-900">Engineers Management</h2>
-                    <button
-                      onClick={() => setShowEngineerForm(true)}
-                      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2"
-                    >
-                      <Plus className="w-4 h-4" />
-                      <span>Add Engineer</span>
-                    </button>
-                  </div>
-
-                  {engineers.length === 0 && (
-                    <div className="text-center py-12 bg-white rounded-xl shadow-lg">
-                      <p className="text-gray-600">No engineers yet. Add a new engineer above.</p>
-                    </div>
-                  )}
-
-                  <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead className="bg-gray-50">
-                          <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Engineer</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact Info</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Specialization</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Active Projects</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                          {engineers.map(engineer => (
-                            <tr key={engineer.id} className="hover:bg-gray-50">
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex items-center">
-                                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center mr-3">
-                                    <User className="w-5 h-5 text-white" />
+                            <div className="bg-gray-50 border-b border-gray-200 p-4">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-3">
+                                  <div className={`p-3 rounded-full bg-${currentStep?.color}-500 text-white`}>
+                                    {currentStep?.icon}
                                   </div>
-                                  <div className="font-medium text-gray-900">{engineer.name}</div>
+                                  <div>
+                                    <h4 className="font-bold text-lg">Current Step: {currentStep?.title}</h4>
+                                    <p className="text-gray-600">{currentStep?.description}</p>
+                                  </div>
                                 </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-600">
-                                  <div>{engineer.email}</div>
-                                  <div>{engineer.phone}</div>
+                                <div className="text-right">
+                                  <div className="text-2xl font-bold text-gray-900">Step {project.currentStep}</div>
+                                  <div className="text-sm text-gray-500">of {workflowSteps.length}</div>
                                 </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{engineer.specialization}</td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
-                                  {engineer.activeProjects}
-                                </span>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                  engineer.available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                }`}>
-                                  {engineer.available ? 'Available' : 'Busy'}
-                                </span>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-
-
-
-              
-
-              {activeView === 'challenges' && (
-                <div className="space-y-6">
-                  <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold text-gray-900">Active Challenges Management</h2>
-                  </div>
-                  <div className="space-y-4">
-                    {projects.map(project => {
-                      const activeChallenges = (project.challenges || []).filter(c => !c.resolved);
-                      if (activeChallenges.length === 0) return null;
-
-                      return (
-                        <div key={project.id} className="bg-white rounded-xl shadow-lg p-6">
-                          <div className="flex justify-between items-start mb-4">
-                            <div>
-                              <h3 className="text-lg font-semibold text-gray-900">{project.name}</h3>
-                              <p className="text-gray-600">Client: {project.client}</p>
+                              </div>
                             </div>
-                            <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
-                              {activeChallenges.length} Active Challenge{activeChallenges.length !== 1 ? 's' : ''}
-                            </span>
-                          </div>
-                          <div className="space-y-3">
-                            {activeChallenges.map(challenge => {
-                              const step = workflowSteps.find(s => s.id === challenge.step);
-                              return (
-                                <div key={challenge.id} className="bg-red-50 border border-red-200 rounded-lg p-4">
-                                  <div className="flex justify-between items-start">
-                                    <div className="flex-1">
-                                      <div className="flex items-center space-x-2 mb-2">
-                                        <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-medium">
-                                          Step {challenge.step}: {step?.title}
-                                        </span>
-                                      </div>
-                                      <p className="text-sm text-gray-900 mb-1">{challenge.description}</p>
-                                      <p className="text-xs text-gray-500">Created: {challenge.createdDate}</p>
-                                    </div>
-                                    <button
-                                      onClick={() => resolveChallenge(project.id, challenge.id)}
-                                      className="ml-4 bg-green-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-600 transition-colors"
-                                    >
-                                      Mark Resolved
-                                    </button>
+
+                            <div className="p-6">
+                              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                {workflowSteps.map(step => (
+                                  <StepActionCard key={step.id} project={project} step={step} />
+                                ))}
+                              </div>
+
+                              {project.completedSteps.length > 0 && (
+                                <div className="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
+                                  <h5 className="font-semibold text-green-900 mb-3">✅ Completed Steps ({project.completedSteps.length})</h5>
+                                  <div className="flex flex-wrap gap-2">
+                                    {project.completedSteps.map(stepId => {
+                                      const step = workflowSteps.find(s => s.id === stepId);
+                                      return (
+                                        <div key={stepId} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm flex items-center space-x-1">
+                                          <CheckCircle className="w-3 h-3" />
+                                          <span>{stepId}) {step?.title}</span>
+                                        </div>
+                                      );
+                                    })}
                                   </div>
                                 </div>
-                              );
-                            })}
+                              )}
+
+                              {(project.challenges || []).filter(c => !c.resolved).length > 0 && (
+                                <div className="mt-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                                  <h5 className="font-semibold text-red-900 mb-3">
+                                    ⚠️ Active Challenges ({project.challenges.filter(c => !c.resolved).length})
+                                  </h5>
+                                  <div className="space-y-2">
+                                    {project.challenges
+                                      .filter(c => !c.resolved)
+                                      .map(challenge => (
+                                        <div key={challenge.id} className="bg-white border border-red-200 rounded-lg p-3">
+                                          <div className="flex justify-between items-start">
+                                            <div className="flex-1">
+                                              <p className="text-sm font-medium">
+                                                Step {challenge.step}: {challenge.description}
+                                              </p>
+                                              <p className="text-xs text-gray-500">Created: {challenge.createdDate}</p>
+                                            </div>
+                                            <button
+                                              onClick={() => resolveChallenge(project.id, challenge.id)}
+                                              className="ml-3 bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
+                                            >
+                                              Resolve
+                                            </button>
+                                          </div>
+                                        </div>
+                                      ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                    {projects.every(project => (project.challenges || []).filter(c => !c.resolved).length === 0) && (
-                      <div className="text-center py-12">
-                        <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">No Active Challenges</h3>
-                        <p className="text-gray-600">All challenges have been resolved!</p>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {activeView === 'projects' && (
+                  <div className="space-y-6">
+                    <div className="flex justify-between items-center">
+                      <h2 className="text-2xl font-bold text-gray-900">All Projects Overview</h2>
+                      <button
+                        onClick={() => setShowProjectForm(true)}
+                        className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2"
+                      >
+                        <Plus className="w-4 h-4" />
+                        <span>Add Project</span>
+                      </button>
+                    </div>
+
+                    {projects.length === 0 && (
+                      <div className="text-center py-12 bg-white rounded-xl shadow-lg">
+                        <p className="text-gray-600">No projects yet. Add a new project above.</p>
                       </div>
                     )}
-                  </div>
-                </div>
-              )}
 
-            </>
-          )}
-        </main>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                      {projects.map(project => {
+                        const progress = getProjectProgress(project);
+                        const currentStep = workflowSteps.find(step => step.id === project.currentStep);
+
+                        return (
+                          <div key={project.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                            <div className="p-6">
+                              <h3 className="font-semibold text-lg text-gray-900 mb-2">{project.name}</h3>
+                              <p className="text-gray-600 mb-4">{project.client}</p>
+                              <div className="space-y-3">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-sm text-gray-600">Current Step:</span>
+                                  <span className="text-sm font-medium">
+                                    {project.currentStep}. {currentStep?.title}
+                                  </span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                  <span className="text-sm text-gray-600">Engineer:</span>
+                                  <span className="text-sm font-medium">
+                                    {project.engineer || 'Not assigned'}
+                                  </span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                  <span className="text-sm text-gray-600">Active Challenges:</span>
+                                  <span className="text-sm font-medium">
+                                    {(project.challenges || []).filter(c => !c.resolved).length}
+                                  </span>
+                                </div>
+                                <div>
+                                  <div className="flex justify-between text-sm text-gray-600 mb-1">
+                                    <span>Progress</span>
+                                    <span>{Math.round(progress)}%</span>
+                                  </div>
+                                  <div className="w-full bg-gray-200 rounded-full h-3">
+                                    <div
+                                      className="bg-gradient-to-r from-red-400 to-red-600 h-3 rounded-full transition-all duration-300"
+                                      style={{ width: `${progress}%` }}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {activeView === 'engineers' && (
+                  <div className="space-y-6">
+                    <div className="flex justify-between items-center">
+                      <h2 className="text-2xl font-bold text-gray-900">Engineers Management</h2>
+                      <button
+                        onClick={() => setShowEngineerForm(true)}
+                        className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2"
+                      >
+                        <Plus className="w-4 h-4" />
+                        <span>Add Engineer</span>
+                      </button>
+                    </div>
+
+                    {engineers.length === 0 && (
+                      <div className="text-center py-12 bg-white rounded-xl shadow-lg">
+                        <p className="text-gray-600">No engineers yet. Add a new engineer above.</p>
+                      </div>
+                    )}
+
+                    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead className="bg-gray-50">
+                            <tr>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Engineer</th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact Info</th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Specialization</th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Active Projects</th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody className="bg-white divide-y divide-gray-200">
+                            {engineers.map(engineer => (
+                              <tr key={engineer.id} className="hover:bg-gray-50">
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                  <div className="flex items-center">
+                                    <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center mr-3">
+                                      <User className="w-5 h-5 text-white" />
+                                    </div>
+                                    <div className="font-medium text-gray-900">{engineer.name}</div>
+                                  </div>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                  <div className="text-sm text-gray-600">
+                                    <div>{engineer.email}</div>
+                                    <div>{engineer.phone}</div>
+                                  </div>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{engineer.specialization}</td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
+                                    {engineer.activeProjects}
+                                  </span>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                    engineer.available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                                  }`}>
+                                    {engineer.available ? 'Available' : 'Busy'}
+                                  </span>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeView === 'challenges' && (
+                  <div className="space-y-6">
+                    <div className="flex justify-between items-center">
+                      <h2 className="text-2xl font-bold text-gray-900">Active Challenges Management</h2>
+                    </div>
+                    <div className="space-y-4">
+                      {projects.map(project => {
+                        const activeChallenges = (project.challenges || []).filter(c => !c.resolved);
+                        if (activeChallenges.length === 0) return null;
+
+                        return (
+                          <div key={project.id} className="bg-white rounded-xl shadow-lg p-6">
+                            <div className="flex justify-between items-start mb-4">
+                              <div>
+                                <h3 className="text-lg font-semibold text-gray-900">{project.name}</h3>
+                                <p className="text-gray-600">Client: {project.client}</p>
+                              </div>
+                              <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
+                                {activeChallenges.length} Active Challenge{activeChallenges.length !== 1 ? 's' : ''}
+                              </span>
+                            </div>
+                            <div className="space-y-3">
+                              {activeChallenges.map(challenge => {
+                                const step = workflowSteps.find(s => s.id === challenge.step);
+                                return (
+                                  <div key={challenge.id} className="bg-red-50 border border-red-200 rounded-lg p-4">
+                                    <div className="flex justify-between items-start">
+                                      <div className="flex-1">
+                                        <div className="flex items-center space-x-2 mb-2">
+                                          <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-medium">
+                                            Step {challenge.step}: {step?.title}
+                                          </span>
+                                        </div>
+                                        <p className="text-sm text-gray-900 mb-1">{challenge.description}</p>
+                                        <p className="text-xs text-gray-500">Created: {challenge.createdDate}</p>
+                                      </div>
+                                      <button
+                                        onClick={() => resolveChallenge(project.id, challenge.id)}
+                                        className="ml-4 bg-green-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-600 transition-colors"
+                                      >
+                                        Mark Resolved
+                                      </button>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {projects.every(project => (project.challenges || []).filter(c => !c.resolved).length === 0) && (
+                        <div className="text-center py-12">
+                          <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2">No Active Challenges</h3>
+                          <p className="text-gray-600">All challenges have been resolved!</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </main>
+        </div>
 
         {showProjectForm && (
           <ProjectForm
@@ -1241,13 +1158,6 @@ const DevelopmentDashboard = () => {
               setCurrentProject(null);
               setSelectedStep(null);
             }}
-          />
-        )}
-
-        {sidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
           />
         )}
       </div>
