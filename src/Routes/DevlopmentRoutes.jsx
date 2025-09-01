@@ -7,32 +7,44 @@ import FifteenDay from '../Components/DEVELOPMENT_DASHBOARD/FifteenDay.jsx';
 import MaterialChecklistForm from '../Components/DEVELOPMENT_DASHBOARD/planexplanation/yewalecomponents/MaterialChecklistForm.jsx';
 import WarrantyForm from '../Components/DEVELOPMENT_DASHBOARD/planexplanation/yewalecomponents/WarrantyForm.jsx';
 import ConstructionForm from '../Components/DEVELOPMENT_DASHBOARD/planexplanation/yewalecomponents/ConstructionForm.jsx';
-import CivilWorkChecklistForm from '../Components/DEVELOPMENT_DASHBOARD/CivilWorkChecklistForm/CivilWorkChecklistForm.jsx';
 import InspectionChecklist from '../Components/DEVELOPMENT_DASHBOARD/InspectionChecklist/InspectionChecklist.jsx';
-import MaterialChecklist from '../Components/DEVELOPMENT_DASHBOARD/CivilWorkChecklistForm/CivilWorkChecklistForm.jsx';
-
-
-
+import CIVILWORKNOCNaadbramha from '../Components/DEVELOPMENT_DASHBOARD/CIVILWORKNOC/CIVILWORKNOCNaadbramha.jsx';
+import CIVILWORKNOCYewale from '../Components/DEVELOPMENT_DASHBOARD/CIVILWORKNOC/CIVILWORKNOCYewale.jsx';
+import FifteenDaysTargetFormNadbramha from '../Components/DEVELOPMENT_DASHBOARD/15DaysTargetForm/FifteenDaysTargetFormNadbramha.jsx';
+import FifteenDaysTargetFormYewale from '../Components/DEVELOPMENT_DASHBOARD/15DaysTargetForm/FifteenDaysTargetFormYewale.jsx';
 
 const DevelopmentRoutes = () => {
   return (
     <Routes>
-      <Route index element={<DevelopmentDashboard />} /> {/* Default route for /development */}
+      {/* Dashboard Routes */}
+      <Route index element={<DevelopmentDashboard />} />
       <Route path="dashboard" element={<DevelopmentDashboard />} />
-   
-      <Route path="owner-material-checklist" element={<OwnerMaterialChecklistForm />} />
-      <Route path="warranty-period" element={<WarrantyPeriodForm />} />
-      <Route path="work-steps" element={<WorkStepsForm />} />
-      <Route path="civil-work-checklist" element={<CivilWorkChecklistForm />} />
-      <Route path="material-checklist-form" element={<MaterialChecklistForm />} />
-      <Route path="warranty" element={<WarrantyForm />} />
-      <Route path="construction-form" element={<ConstructionForm />} />
+
+      {/* Nadbramha Components */}
+      <Route path="nadbramha">
+        <Route path="owner-material-checklist" element={<OwnerMaterialChecklistForm />} />
+        <Route path="warranty-period" element={<WarrantyPeriodForm />} />
+        <Route path="work-steps" element={<WorkStepsForm />} />
+        <Route path="civil-work-noc" element={<CIVILWORKNOCNaadbramha />} />
+        <Route path="fifteen-days-target" element={<FifteenDaysTargetFormNadbramha />} />
+      </Route>
+
+      {/* Yewale Components */}
+      <Route path="yewale">
+        <Route path="material-checklist-form" element={<MaterialChecklistForm />} />
+        <Route path="warranty" element={<WarrantyForm />} />
+        <Route path="construction-form" element={<ConstructionForm />} />
+        <Route path="civil-work-noc" element={<CIVILWORKNOCYewale />} />
+        <Route path="fifteen-days-target" element={<FifteenDaysTargetFormYewale />} />
+      </Route>
+
+      {/* General Components */}
       <Route path="inspection-checklist" element={<InspectionChecklist />} />
+      {/* <Route path="civil-work-checklist" element={<MaterialChecklist />} /> */}
       <Route path="fifteen-day-form" element={<FifteenDay />} />
-      <Route
-        path="material-checklist"
-        element={<MaterialChecklist/>} // Placeholder for MaterialChecklistForm   
-      />
+     {/* <Route path="material-checklist" element={<MaterialChecklist />} /> */}
+
+      {/* Fallback Route */}
       <Route
         path="*"
         element={<div className="p-6 text-center text-red-500">404 - Page Not Found</div>}
