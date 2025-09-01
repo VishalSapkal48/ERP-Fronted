@@ -1401,6 +1401,9 @@ const AddEmployee = () => {
                 )}
               </div>
 
+
+ <div>
+
             <div>
   <label className="block text-sm font-medium text-gray-700 mb-1">Employee Type</label>
   <div className="relative">
@@ -1408,7 +1411,8 @@ const AddEmployee = () => {
       name="employeeType"
       value={formData.employeeType}
       onChange={handleChange}
-      className="w-full p-2 pr-10 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+
+      className="w-full p-2 pr-10 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
     >
       <option value="">Select</option>
       <option value="Employee">Employee</option>
