@@ -1,110 +1,72 @@
-// import React from 'react';
-// import { X, BarChart3, Building, Users, AlertTriangle, FileText, Settings, User, LogOut } from 'lucide-react';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { BarChart3, FileText, Users, AlertTriangle, Settings, X, LogOut } from "lucide-react";
 
-// const Sidebar = ({ activeView, setActiveView, navigationItems, onLogout }) => {
-//   return (
-//     <div className="h-full w-64 bg-white shadow-lg">
-//       <div className="flex items-center justify-between h-16 px-6 bg-blue-600 text-white">
-//         <h1 className="text-xl font-bold">DEVELOPMENT DASHBOARD</h1>
-//       </div>
-
-//       <nav className="mt-6 px-4">
-//         {navigationItems.map((item) => (
-//           <button
-//             key={item.id}
-//             onClick={() => setActiveView(item.id)}
-//             className={`w-full flex items-center justify-between px-4 py-3 mb-2 text-left rounded-lg transition-colors ${
-//               activeView === item.id
-//                 ? 'bg-blue-50 text-blue-600 border-r-4 border-blue-600'
-//                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-//             }`}
-//           >
-//             <div className="flex items-center space-x-3">
-//               {item.icon}
-//               <span className="font-medium">{item.label}</span>
-//             </div>
-//             {item.count !== undefined && item.count > 0 && (
-//               <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs font-medium">
-//                 {item.count}
-//               </span>
-//             )}
-//           </button>
-//         ))}
-//       </nav>
-
-//       <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
-//         <div className="flex items-center space-x-3 mb-3">
-//           <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-//             <User className="w-6 h-6 text-white" />
-//           </div>
-//           <div>
-//             <p className="font-medium text-gray-900">Admin User</p>
-//             <p className="text-sm text-gray-500">Project Manager</p>
-//           </div>
-//         </div>
-//         <button
-//           onClick={onLogout}
-//           className="w-full flex items-center space-x-2 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg"
-//         >
-//           <LogOut className="w-4 h-4" />
-//           <span>Sign Out</span>
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Sidebar;
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import {
-  BarChart3,
-  Settings,
-  Users,
-  AlertTriangle,
-  X,
-  FileText,
-} from 'lucide-react';
-
-const Sidebar = ({ isOpen, toggleSidebar }) => {
+const Sidebar = ({ activeView, setActiveView, closeSidebar, onLogout }) => {
   const navItems = [
-    { path: '/development/dashboard', icon: <BarChart3 className="w-5 h-5" />, label: 'Dashboard' },
-    { path: '/development/projects', icon: <FileText className="w-5 h-5" />, label: 'Projects' },
-    { path: '/development/engineers', icon: <Users className="w-5 h-5" />, label: 'Engineers' },
-    { path: '/development/challenges', icon: <AlertTriangle className="w-5 h-5" />, label: 'Challenges' },
-    { path: '/development/settings', icon: <Settings className="w-5 h-5" />, label: 'Settings' },
+    { path: "/development/dashboard", icon: <BarChart3 className="w-5 h-5" />, label: "Dashboard" },
+    { path: "/development/leadgeneration", icon: <FileText className="w-5 h-5" />, label: "Lead Generation" },
+    { path: "/development/assignengineer", icon: <Users className="w-5 h-5" />, label: "Assign Engineer" },
+    { path: "/development/surveyquotation", icon: <AlertTriangle className="w-5 h-5" />, label: "Survey Quotation" },
+    { path: "/development/ongoingchallengesaftersurvey", icon: <FileText className="w-5 h-5" />, label: "Ongoing Challenges After Survey" },
+    { path: "/development/quotationonlyshow", icon: <Settings className="w-5 h-5" />, label: "Quotation (Only Show)" },
+    { path: "/development/layoutpreparation", icon: <Settings className="w-5 h-5" />, label: "Layout Preparation" },
+    { path: "/development/planexplanation", icon: <FileText className="w-5 h-5" />, label: "Plan Explanation" },
+    { path: "/development/challengesafterplanexplanation", icon: <Settings className="w-5 h-5" />, label: "Challenges After Plan Explanation" },
+    { path: "/development/fifteendaysverification", icon: <Settings className="w-5 h-5" />, label: "15 Days Verification" },
+    { path: "/development/inspection", icon: <FileText className="w-5 h-5" />, label: "Inspection" },
+    { path: "/development/civilnoc", icon: <Settings className="w-5 h-5" />, label: "Civil NOC" },
+    { path: "/development/materialorderfordispatch", icon: <Settings className="w-5 h-5" />, label: "Material Order For Dispatch" },
+    { path: "/development/materialcheckingvisitinspection", icon: <FileText className="w-5 h-5" />, label: "Material Checking Visit/Inspection" },
+    { path: "/development/pendingfollowup", icon: <Settings className="w-5 h-5" />, label: "Pending Follow-up" },
+    { path: "/development/nocverification", icon: <Settings className="w-5 h-5" />, label: "NOC Verification" },
+    { path: "/development/openingdate", icon: <Settings className="w-5 h-5" />, label: "Opening Date" },
+    { path: "/development/openingvisitverification", icon: <Settings className="w-5 h-5" />, label: "Opening Visit Verification" },
+    { path: "/development/monthlysitesopeningreport", icon: <Settings className="w-5 h-5" />, label: "Monthly Sites Opening Report" },
   ];
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform ${
-        isOpen ? 'translate-x-0' : '-translate-x-full'
-      } lg:translate-x-0 transition-transform duration-300 ease-in-out z-50`}
+      className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform z-50 transition-transform duration-300 ease-in-out
+        ${activeView ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
     >
-      <div className="flex items-center justify-between p-4 border-b border-gray-200">
-        <h2 className="text-lg font-semibold text-red-600">Workflow</h2>
-        <button onClick={toggleSidebar} className="lg:hidden">
-          <X className="w-6 h-6 text-gray-600" />
+      <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200">
+        <h2 className="text-base sm:text-lg font-semibold text-red-600">Workflow</h2>
+        <button
+          onClick={closeSidebar}
+          className="lg:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+        >
+          <X className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
       </div>
-      <nav className="p-4 space-y-2">
+      <nav className="p-3 sm:p-4 space-y-1 sm:space-y-2 h-[calc(100vh-64px)] overflow-y-auto">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) =>
-              `flex items-center space-x-3 px-4 py-2 rounded-lg transition-colors ${
-                isActive
-                  ? 'bg-red-100 text-red-600'
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`
+              `flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base
+                ${isActive ? "bg-red-100 text-red-600" : "text-gray-600 hover:bg-gray-100"}`
             }
-            onClick={() => isOpen && toggleSidebar()}
+            onClick={() => {
+              setActiveView(item.label.toLowerCase().replace(/\s+/g, ""));
+              closeSidebar();
+            }}
           >
             {item.icon}
             <span>{item.label}</span>
           </NavLink>
         ))}
+        <button
+          onClick={() => {
+            onLogout();
+            closeSidebar();
+          }}
+          className="flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base text-gray-600 hover:bg-gray-100 w-full"
+        >
+          <LogOut className="w-5 h-5" />
+          <span>Logout</span>
+        </button>
       </nav>
     </aside>
   );
