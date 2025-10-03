@@ -1,62 +1,74 @@
-// import { Routes, Route, Navigate } from "react-router-dom";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 
-// // Nadbrahma Components
-// import CALL1 from "../Components/Froms/FeedbackFrom/nadbramhacomponents/call1folder1/CALL1";
-// import CALL2 from "../Components/Froms/FeedbackFrom/nadbramhacomponents/call2folder2/CALL2";
-// import CALL3 from "../Components/Froms/FeedbackFrom/nadbramhacomponents/call3folder3/CALL3";
-// import CALL4 from "../Components/Froms/FeedbackFrom/nadbramhacomponents/call4folder4/CALL4";
-// import CALL5 from "../Components/Froms/FeedbackFrom/nadbramhacomponents/call5folder5/CALL5";
-// import CALL6 from "../Components/Froms/FeedbackFrom/nadbramhacomponents/call6folder6/CALL6";
+// Component Imports
+import FeedbackDashboard from "../Components/Feedback_Module/Pages/FeedbackDashboard.jsx";
+import ServiceFeedbackForm from "../Components/Feedback_Module/ServiceFeedback/ServiceFeedbackForm.jsx";
 
-// // Yewale Components
-// import YewaleCALL1 from "../Components/Froms/FeedbackFrom/yewalecomponents/call1folder1/CALL1";
-// import YewaleCALL2 from "../Components/Froms/FeedbackFrom/yewalecomponents/call2folder2/CALL2";
-// import YewaleCALL3 from "../Components/Froms/FeedbackFrom/yewalecomponents/call3folder3/CALL3";
-// import YewaleCALL4 from "../Components/Froms/FeedbackFrom/yewalecomponents/call4folder4/CALL4";
-// import YewaleCALL5 from "../Components/Froms/FeedbackFrom/yewalecomponents/call5folder5/CALL5";
-// import YewaleCALL6 from "../Components/Froms/FeedbackFrom/yewalecomponents/call6folder6/YewaleCALL6";
-// import YewaleCALL7 from "../Components/Froms/FeedbackFrom/yewalecomponents/call7folder7/CALL7";
-// import YewaleCALL8 from "../Components/Froms/FeedbackFrom/yewalecomponents/call8folder8/CALL8";
-// import YewaleCALL9 from "../Components/Froms/FeedbackFrom/yewalecomponents/call9folder9/CALL9";
+// --- Yewale Imports ---
+import YewaleGreetingCall from "../Components/Feedback_Module/Yewale/GreetingCall/PRE_GREETING.jsx";
+import YewaleCall1 from "../Components/Feedback_Module/Yewale/call1folder1/CALL1.jsx";
+import YewaleCall2 from "../Components/Feedback_Module/Yewale/call2folder2/CALL2.jsx";
+import YewaleCall3 from "../Components/Feedback_Module/Yewale/call3folder3/CALL3.jsx";
+import YewaleCall4 from "../Components/Feedback_Module/Yewale/call4folder4/CALL4.jsx";
+import YewaleCall5 from "../Components/Feedback_Module/Yewale/call5folder5/CALL5.jsx";
+import YewaleCall6 from "../Components/Feedback_Module/Yewale/call6folder6/YewaleCALL6.jsx";
+// YewaleCall7 आता थेट वापरला जाणार नाही, पण इम्पोर्ट ठेवला आहे.
+import YewaleCall7 from "../Components/Feedback_Module/Yewale/call7folder7/CALL7.jsx";
+import YewaleCall8 from "../Components/Feedback_Module/Yewale/call8folder8/CALL8.jsx";
+import YewaleCall9 from "../Components/Feedback_Module/Yewale/call9folder9/CALL9.jsx";
 
-// // 404 Component
-// const NotFound = () => {
-//   return (
-//     <div className="flex items-center justify-center h-screen bg-gray-100">
-//       <div className="text-center">
-//         <h1 className="text-6xl font-bold text-red-600">404</h1>
-//         <p className="text-xl text-gray-700">Page Not Found</p>
-//         <p className="mt-2 text-gray-500">The page you are looking for does not exist.</p>
-//         <a href="/" className="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-//           Go Back Home
-//         </a>
-//       </div>
-//     </div>
-//   );
-// };
+// --- Nadbrahma Imports ---
+import NadbrahmaGreetingCall from "../Components/Feedback_Module/Nadbramha/GreetingCall/PRE_GREETING.jsx";
+import NadbrahmaCall1 from "../Components/Feedback_Module/Nadbramha/call1folder1/CALL1.jsx";
+import NadbrahmaCall2 from "../Components/Feedback_Module/Nadbramha/call2folder2/CALL2.jsx";
+import NadbrahmaCall3 from "../Components/Feedback_Module/Nadbramha/call3folder3/CALL3.jsx";
+import NadbrahmaCall4 from "../Components/Feedback_Module/Nadbramha/call4folder4/CALL4.jsx";
+import NadbrahmaCall5 from "../Components/Feedback_Module/Nadbramha/call5folder5/CALL5.jsx";
+import NadbrahmaCall6 from "../Components/Feedback_Module/Nadbramha/call6folder6/CALL6.jsx";
 
-// export default function AppRoutes({ role, onLogin }) {
-//   return (
-//     <Routes>
-//       {/* Nadbrahma Component Routes */}
-//       <Route path="/nadbramhacomponents/call1folder1" element={<CALL1 />} />
-//       <Route path="/nadbramhacomponents/call2folder2" element={<CALL2 />} />
-//       <Route path="/nadbramhacomponents/call3folder3" element={<CALL3 />} />
-//       <Route path="/nadbramhacomponents/call4folder4" element={<CALL4 />} />
-//       <Route path="/nadbramhacomponents/call5folder5" element={<CALL5 />} />
-//       <Route path="/nadbramhacomponents/call6folder6" element={<CALL6 />} />
-//       {/* Yewale Component Routes */}
-//       <Route path="/yewalecomponents/call1folder1" element={<YewaleCALL1 />} />
-//       <Route path="/yewalecomponents/call2folder2" element={<YewaleCALL2 />} />
-//       <Route path="/yewalecomponents/call3folder3" element={<YewaleCALL3 />} />
-//       <Route path="/yewalecomponents/call4folder4" element={<YewaleCALL4 />} />
-//       <Route path="/yewalecomponents/call5folder5" element={<YewaleCALL5 />} />
-//       <Route path="/yewalecomponents/call6folder6" element={<YewaleCALL6 />} />
-//       <Route path="/yewalecomponents/call7folder7" element={<YewaleCALL7 />} />
-//       <Route path="/yewalecomponents/call8folder8" element={<YewaleCALL8 />} />
-//       <Route path="/yewalecomponents/call9folder9" element={<YewaleCALL9 />} />
-//       {/* 404 Route */}
-//       <Route path="*" element={<NotFound />} />
-//     </Routes>
-//   );
-// }
+const FeedbackRoutes = () => {
+  return (
+    <Routes>
+      <Route index element={<FeedbackDashboard />} />
+      <Route path="dashboard" element={<FeedbackDashboard />} />
+      <Route path="office" element={<ServiceFeedbackForm />} />
+      <Route path="service" element={<ServiceFeedbackForm />} />
+
+      {/* Yewale Feedback Form Routes */}
+      <Route path="yewale/greeting" element={<YewaleGreetingCall />} />
+      <Route path="yewale/call1" element={<YewaleCall1 />} />
+      <Route path="yewale/call2" element={<YewaleCall2 />} />
+      <Route path="yewale/call3" element={<YewaleCall3 />} />
+      <Route path="yewale/call4" element={<YewaleCall4 />} />
+      <Route path="yewale/call5" element={<YewaleCall5 />} />
+      <Route path="yewale/call6" element={<YewaleCall6 />} />
+
+      {/* --- बदल येथे केला आहे --- */}
+      <Route path="yewale/call7" element={<ServiceFeedbackForm />} />
+
+      <Route path="yewale/call8" element={<YewaleCall8 />} />
+      <Route path="yewale/call9" element={<YewaleCall9 />} />
+
+      {/* Nadbrahma Feedback Form Routes */}
+      <Route path="nadbrahma/greeting" element={<NadbrahmaGreetingCall />} />
+      <Route path="nadbrahma/call1" element={<NadbrahmaCall1 />} />
+      <Route path="nadbrahma/call2" element={<NadbrahmaCall2 />} />
+      <Route path="nadbrahma/call3" element={<NadbrahmaCall3 />} />
+      <Route path="nadbrahma/call4" element={<NadbrahmaCall4 />} />
+      <Route path="nadbrahma/call5" element={<NadbrahmaCall5 />} />
+      <Route path="nadbrahma/call6" element={<NadbrahmaCall6 />} />
+
+      <Route
+        path="*"
+        element={
+          <div className="p-6 text-center text-red-500">
+            404 - Page Not Found
+          </div>
+        }
+      />
+    </Routes>
+  );
+};
+
+export default FeedbackRoutes;

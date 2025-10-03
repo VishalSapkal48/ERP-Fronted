@@ -1,13 +1,13 @@
-// src/Components/DEVELOPMENT_DASHBOARD/Pages/CivilNOC.jsx
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function CivilNOC() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Dummy data
-  const allDummyData = {
+  // Dummy data relevant to Civil NOC
+  const allDummyData = useMemo(() => ({
     nadbramha: [
       {
         id: 1,
@@ -40,119 +40,106 @@ function CivilNOC() {
         details: 'Civil NOC under review',
       },
     ],
-  };
+  }), []);
 
-  // combine all data for table
-  const allData = [...allDummyData.nadbramha, ...allDummyData.yewale];
+  // Combine all data for table
+  const allData = useMemo(() => [
+    ...allDummyData.nadbramha,
+    ...allDummyData.yewale,
+  ], [allDummyData]);
 
-  // search filter
-  const filteredData = allData.filter(
-    (item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.contact.includes(searchTerm)
+  // Search filter
+  const filteredData = useMemo(() =>
+    allData.filter(
+      (item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.contact.includes(searchTerm) ||
+        item.details.toLowerCase().includes(searchTerm.toLowerCase())
+    ),
+    [allData, searchTerm]
   );
 
-  // navigate to proper page
+  // Navigate to proper page
   const handleOptionSelect = (option) => {
-    if (option === 'nadbramha') {
-      navigate('/development/nadbramha/civil-work-noc'); // Nadbramha page
-    } else if (option === 'yewale') {
-      navigate('/development/yewale/civil-work-noc'); // Yewale page
+    setIsLoading(true);
+    try {
+      if (option === 'nadbramha') {
+        navigate('/development/nadbramha/civil-work-noc');
+      } else if (option === 'yewale') {
+        navigate('/development/yewale/civil-work-noc');
+      }
+    } catch (error) {
+      console.error('Navigation error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h2>Civil NOC</h2>
+    <div className="p-6 font-sans max-w-7xl mx-auto">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">Civil NOC</h2>
 
       {/* Cards */}
-      <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <div
           onClick={() => handleOptionSelect('nadbramha')}
-          style={{
-            padding: '20px',
-            border: '2px solid #007bff',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            width: '200px',
-            textAlign: 'center',
-          }}
+          className="p-6 border-2 border-blue-500 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors text-center"
         >
-          <h3>Nadbramha</h3>
-          <p>Click to open Nadbramha Civil Work NOC Form</p>
+          <h3 className="text-lg font-semibold text-blue-600">Nadbramha</h3>
+          <p className="text-sm text-gray-600">View Nadbramha Civil Work NOC Form</p>
         </div>
-
         <div
           onClick={() => handleOptionSelect('yewale')}
-          style={{
-            padding: '20px',
-            border: '2px solid #28a745',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            width: '200px',
-            textAlign: 'center',
-          }}
+          className="p-6 border-2 border-green-500 rounded-lg cursor-pointer hover:bg-green-50 transition-colors text-center"
         >
-          <h3>Yewale</h3>
-          <p>Click to open Yewale Civil Work NOC Form</p>
+          <h3 className="text-lg font-semibold text-green-600">Yewale</h3>
+          <p className="text-sm text-gray-600">View Yewale Civil Work NOC Form</p>
         </div>
       </div>
 
       {/* Search */}
       <input
         type="text"
-        placeholder="Search by Name, Email, or Contact..."
+        placeholder="Search by Name, Email, Contact, or Details..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        style={{
-          padding: '8px',
-          border: '1px solid #ccc',
-          borderRadius: '4px',
-          width: '300px',
-          marginBottom: '15px',
-        }}
+        className="w-full max-w-md p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+        disabled={isLoading}
       />
 
-      {/* Table */}
-      <div style={{ width: '100%' }}>
-        <table
-          style={{
-            width: '100%',
-            borderCollapse: 'collapse',
-            border: '1px solid #ddd',
-          }}
-        >
+    {/* Table */}
+      <div className="overflow-x-auto mb-6">
+        <table className="w-full border-collapse border border-gray-200">
           <thead>
-            <tr style={{ backgroundColor: '#f2f2f2' }}>
-              <th style={{ border: '1px solid #ddd', padding: '8px' }}>ID</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px' }}>Name</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px' }}>Email</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px' }}>Contact</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px' }}>Details</th>
+            <tr className="bg-gray-100">
+              <th className="border border-gray-200 p-3 text-left text-sm font-bold text-gray-700">ID</th>
+              <th className="border border-gray-200 p-3 text-left text-sm font-bold text-gray-700">Name</th>
+              <th className="border border-gray-200 p-3 text-left text-sm font-bold text-gray-700">Email</th>
+              <th className="border border-gray-200 p-3 text-left text-sm font-bold text-gray-700">Contact</th>
+              <th className="border border-gray-200 p-3 text-left text-sm font-bold text-gray-700">Plan Details</th>
             </tr>
           </thead>
           <tbody>
-            {filteredData.length > 0 ? (
+            {isLoading ? (
+              <tr>
+                <td colSpan="5" className="border border-gray-200 p-3 text-center text-gray-600">
+                  Loading...
+                </td>
+              </tr>
+            ) : filteredData.length > 0 ? (
               filteredData.map((item, index) => (
-                <tr key={`${item.email}-${index}`}>
-                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{item.id}</td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{item.name}</td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{item.email}</td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{item.contact}</td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{item.details}</td>
+                <tr key={`${item.email}-${index}`} className="hover:bg-gray-50">
+                  <td className="border border-gray-200 p-3 text-sm text-gray-600">{item.id}</td>
+                  <td className="border border-gray-200 p-3 text-sm text-gray-600">{item.name}</td>
+                  <td className="border border-gray-200 p-3 text-sm text-gray-600">{item.email}</td>
+                  <td className="border border-gray-200 p-3 text-sm text-gray-600">{item.contact}</td>
+                  <td className="border border-gray-200 p-3 text-sm text-gray-600">{item.details}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td
-                  colSpan="5"
-                  style={{
-                    border: '1px solid #ddd',
-                    padding: '8px',
-                    textAlign: 'center',
-                  }}
-                >
+                <td colSpan="5" className="border border-gray-200 p-3 text-center text-gray-600">
                   No data found matching the search.
                 </td>
               </tr>
@@ -160,6 +147,7 @@ function CivilNOC() {
           </tbody>
         </table>
       </div>
+
     </div>
   );
 }

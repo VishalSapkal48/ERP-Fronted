@@ -675,7 +675,7 @@ const Leaves = () => {
           </div>
 
           {/* Admin Panel for Pending Requests */}
-          <div className="bg-white p-3 sm:p-4 md:p-6 rounded-xl shadow border">
+          {/* <div className="bg-white p-3 sm:p-4 md:p-6 rounded-xl shadow border">
             <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-3 sm:mb-4 text-blue-600 flex items-center gap-2">
               <FilePlus className="w-4 h-4 sm:w-5 sm:h-5" /> Admin: Pending Leave Approvals
             </h3>
@@ -799,7 +799,7 @@ const Leaves = () => {
                 </div>
               </>
             )}
-          </div>
+          </div> */}
         </>
       )}
     </div>

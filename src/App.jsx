@@ -284,7 +284,7 @@
 // export default App;
 
 //=====================================================
-//main 
+// main 
 
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
@@ -298,16 +298,19 @@ import AdminLayout from './Layout/AdminLayout';
 import PurchaseLayout from './Layout/PurcheseLayout';
 import FormsLayout from './Layout/FormsLayout';
 import DevelopmentLayout from './Layout/DevelopmentLayout';
+import FeedbackLayout from './Layout/FeedbackLayout';
+
+
+
+
 const App = () => {
-  const [role, setRole] = useState(null); // Start as null (don't auto-load from localStorage)
+  const [role, setRole] = useState(null); // Start as null
   const [username, setUsername] = useState(null);
 
   const handleLogin = (role, username) => {
     console.log('Login:', { role, username });
     setRole(role);
     setUsername(username);
-
-    // Store in localStorage for persistence
     localStorage.setItem('role', role);
     localStorage.setItem('username', username);
   };
@@ -315,8 +318,6 @@ const App = () => {
   const handleLogout = () => {
     setRole(null);
     setUsername(null);
-
-    // Clear all authentication-related storage
     localStorage.removeItem('role');
     localStorage.removeItem('username');
     localStorage.removeItem('authToken');
@@ -326,16 +327,11 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        {/* Root route: Redirect to role-specific dashboard if logged in, else show Login */}
         <Route
           path="/"
           element={role ? <Navigate to={`/${role}`} replace /> : <Login onLogin={handleLogin} />}
         />
-
-        {/* Always show Login first */}
-        <Route path="/" element={<Login onLogin={handleLogin} />} />
-
-        {/* After login, redirect to their dashboard */}
-        {role && <Route path="/" element={<Navigate to={`/${role}`} replace />} />}
 
         {/* Protected Routes */}
         <Route
@@ -375,6 +371,10 @@ const App = () => {
           element={role === 'development' ? <DevelopmentLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
         />
         <Route
+          path="/feedback/*"
+          element={role === 'feedback' ? <FeedbackLayout onLogout={handleLogout} /> : <Navigate to="/" replace />}
+        />
+        <Route
           path="*"
           element={
             <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -390,12 +390,11 @@ const App = () => {
 };
 
 export default App;
-  
 //======================================
 
 // import React from 'react'
-// import CivilWorkChecklistForm from './Components/DEVELOPMENT_DASHBOARD/CHALLENGESFrom/CHALLENGESFORYEWALE'
-// function App() {
+// import CivilWorkChecklistForm from './Components/DEVELOPMENT_DASHBOARD/OnlineSurveyForm/OnlineSurveyForm'
+// function App() { 
 //   return (
 //     <div>
 //       <CivilWorkChecklistForm/>

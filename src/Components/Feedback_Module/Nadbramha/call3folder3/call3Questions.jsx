@@ -1,0 +1,130 @@
+const call3Questions = [
+  {
+    id: 1,
+    mr: "नमस्कार सर, मी YNK ग्रुपमधून बोलत आहे. फीडबॅकसाठी कॉल आहे, तुमच्याकडे २ मिनिटे वेळ आहे का?",
+    en: "Hello Sir, I’m calling from YNK Group for feedback. Do you have 2 minutes?",
+    type: "yesno",
+  },
+  {
+    id: 2,
+    mr: "सर, मॅनेजरने आपल्याला मटेरियल पाठवण्याबद्दल पूर्ण माहिती दिली होती का?",
+    en: "Did the manager provide you with complete information about sending the materials?",
+    type: "yesno",
+  },
+  {
+    id: 3,
+    mr: "सर, मॅनेजरने आपल्याला मटेरियल उतरवून घेण्यास सांगितले होते का?",
+    en: "Did the manager instruct you to unload the materials?",
+    type: "yesno",
+  },
+  {
+    id: 4,
+    mr: "सर, तुमच्या शॉपमध्ये सर्व मटेरियल व्यवस्थित पोहोचले का?",
+    en: "Did all the materials arrive at your shop in good condition?",
+    type: "yesno",
+  },
+  {
+    id: 5,
+    mr: "सर, तुम्ही सर्व मटेरियल उतरवून घेतले का?",
+    en: "Have you unloaded all the materials?",
+    type: "yesno",
+  },
+  {
+    id: 6,
+    mr: "सर, तुम्हाला मटेरिअलबद्दल पूर्ण माहिती आहे का?",
+    en: "Do you have complete information about the materials?",
+    type: "yesno",
+  },
+  {
+    id: 7,
+    mr: "सर, तुम्ही सर्व मटेरियल मोजून घेतले आहे का?",
+    en: "Have you counted all the materials?",
+    type: "yesno",
+  },
+  {
+    id: 8,
+    mr: "सर, तुम्हाला कोणते मटेरियल मिळाले नाही?",
+    en: "Which materials did you not receive?",
+    type: "text",
+  },
+  {
+    id: 9,
+    mr: "सर, मटेरियल उतरवताना कोणते इंजिनिअर तुमच्या साइटवर हजर होते?",
+    en: "Which engineer was present at your site while unloading the materials?",
+    type: "text",
+  },
+  {
+    id: 10,
+    mr: "सर, इंजिनिअरने तुम्हाला मटेरियलची सर्व वॉरंटी कार्ड दिली आहेत का? कोणते वॉरंटी कार्ड द्यायचे राहिले आहे?",
+    en: "Did the engineer provide all the warranty cards for the materials? Are any warranty cards missing?",
+    type: "text",
+  },
+  {
+    id: 11,
+    mr: "सर, इंजिनिअरने तुमच्या शॉपमध्ये सर्व सेटअप व्यवस्थित लावला आहे का?",
+    en: "Did the engineer set up everything correctly in your shop?",
+    type: "yesno",
+  },
+  {
+    id: 12,
+    mr: "सर, तुम्ही सर्व वस्तू इंजिनिअरकडून तपासून आणि चालू करून घेतल्या आहेत का? त्या वस्तूंमध्ये काही समस्या आहेत का?",
+    en: "Have you checked and tested all the items with the engineer? Are there any problems with them?",
+    type: "text",
+  },
+  {
+    id: 13,
+    mr: "सर, तुमच्या शॉपमध्ये एखादी वस्तू तुटलेल्या स्थितीत आली आहे का?",
+    en: "Did any item arrive at your shop in a damaged condition?",
+    type: "yesno",
+  },
+  {
+    id: 14,
+    mr: "सर, तुम्ही सर्व वस्तूंची क्षमता तपासली आहे का? कोणत्या वस्तू तपासायच्या राहिल्या आहेत?",
+    en: "Have you checked the capacity of all the items? Which items were not checked?",
+    type: "text",
+  },
+  {
+    id: 15,
+    mr: "सर, इंजिनिअरने दिलेल्या सर्व वस्तूंबद्दलची माहिती तुम्हाला योग्य वाटते का?",
+    en: "Do you find the information provided by the engineer about all the items to be accurate?",
+    type: "yesno",
+  },
+  {
+    id: 16,
+    mr: "सर, तुमच्या शॉपमध्ये इंजिनिअरने दिलेल्या प्लॅननुसार सेटअप केला आहे का?",
+    en: "Has the setup in your shop been done according to the plan provided by the engineer?",
+    type: "yesno",
+  },
+  {
+    id: 17,
+    mr: "सर, शॉप प्लॅन किंवा साइट इंजिनिअरच्या प्लॅनमध्ये काही चूक आहे का?",
+    en: "Are there any mistakes in the shop plan or the site engineer's plan?",
+    type: "text",
+  },
+  {
+    id: 18,
+    mr: "सर, इंजिनिअर तुमच्याशी व्यवस्थित बोलत होते का?",
+    en: "Did the engineer communicate with you properly?",
+    type: "yesno",
+  },
+  {
+    id: 19,
+    mr: "सर, इंजिनिअरने तुम्हाला सर्व वस्तूंची माहिती असलेले बुकलेट दिले आहे का?",
+    en: "Did the engineer provide you with a booklet containing information about all the items?",
+    type: "yesno",
+  },
+  {
+    id: 20,
+    mr: "सर, तुम्ही इंजिनिअरकडून वस्तूंबद्दल कोणती उपयुक्त माहिती घेतली आणि इंजिनिअरचे कोणते गुण तुम्हाला चांगले वाटले?",
+    en: "What useful information did you receive from the engineer about the items, and what qualities in the engineer did you appreciate?",
+    type: "text",
+  },
+  {
+    id: 21,
+    mr: "सर, तुम्ही इंजिनिअरला १ ते ५ पैकी किती रेटिंग द्याल?",
+    en: "How would you rate the engineer on a scale of 1 to 5?",
+    type: "rating",
+  },
+];
+
+export default call3Questions;

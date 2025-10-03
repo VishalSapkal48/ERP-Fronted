@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import formConfig from "./MaterialDispatchNBQuestions";
-import logo from "../../../public/logo.png"; // Adjust the path as needed
+import logo from "../../../../public/Images/BoardWorksListForm/logo.png"; // Adjust the path as needed
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

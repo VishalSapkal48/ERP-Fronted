@@ -59,7 +59,7 @@ const Navbar = ({ toggleSidebar, notificationCount, onLogout }) => {
           <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
         <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-red-600">
-          Development Dashboard
+          Development Module 
         </h1>
       </div>
       <div className="flex items-center space-x-2 sm:space-x-4">
@@ -73,11 +73,7 @@ const Navbar = ({ toggleSidebar, notificationCount, onLogout }) => {
         </div>
         <div className="relative">
           <Bell className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 cursor-pointer hover:text-gray-800" />
-          {notificationCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-              {notificationCount}
-            </span>
-          )}
+         
         </div>
         <button
           onClick={onLogout}

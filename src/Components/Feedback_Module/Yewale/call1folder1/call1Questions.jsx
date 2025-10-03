@@ -1,0 +1,136 @@
+const call1Questions = [
+  {
+    id: 1,
+    mr: "नमस्कार सर/मॅडम, मी YNK ग्रुपमधून बोलत आहे. तुमच्याकडून फीडबॅक घेण्यासाठी कॉल केला आहे, तुमच्याकडे २ मिनिटे वेळ आहे का?",
+    en: "Hello Sir/Ma'am, I’m calling from YNK Group for feedback. Do you have 2 minutes?",
+    type: "yesno",
+  },
+  {
+    id: 2,
+    mr: "सर/मॅडम, आपण जो ----- प्रोजेक्ट घेतला आहे, त्याबद्दल आपल्याला संपूर्ण माहिती मिळाली आहे का?",
+    en: "Sir/Ma'am, have you received complete information about the ----- project you have undertaken?",
+    type: "yesno",
+  },
+  {
+    id: 3,
+    mr: "सर/मॅडम, आपल्याला YNK ऑफिसपर्यंत पोहोचायला काही अडचण आली का?",
+    en: "Sir/Ma'am, did you face any difficulty in reaching the YNK office?",
+    type: "yesno",
+  },
+  {
+    id: 4,
+    mr: "सर/मॅडम, आमच्या इंजिनिअरने सर्वेक्षण करताना आपल्याला योग्य माहिती दिली का?",
+    en: "Sir/Ma'am, did our engineer provide you with the correct information during the survey?",
+    type: "yesno",
+  },
+  {
+    id: 5,
+    mr: "सर/मॅडम, आमच्या ऑफिसमधील रिसेप्शनिस्टने तुम्हाला चहा, कॉफी किंवा पाण्याची विचारणा केली का?",
+    en: "Sir/Ma'am, did the receptionist at our office offer you tea, coffee, or water?",
+    type: "yesno",
+  },
+  {
+    id: 6,
+    mr: "सर/मॅडम, रिसेप्शनिस्टने तुम्हाला कोणाला भेटायचे आहे, हे विचारले का?",
+    en: "Sir/Ma'am, did the receptionist ask whom you wanted to meet?",
+    type: "yesno",
+  },
+  {
+    id: 7,
+    mr: "सर/मॅडम, आमच्या ऑफिसमध्ये आपल्याला जास्त वेळ थांबावे लागले का?",
+    en: "Sir/Ma'am, did you have to wait for a long time at our office?",
+    type: "yesno",
+  },
+  {
+    id: 8,
+    mr: "सर/मॅडम, आपण ज्यांना भेटायला आला होतात, त्यांनी तुमच्यासोबत वेळेवर मीटिंग घेतली का?",
+    en: "Sir/Ma'am, did the person you came to meet hold the meeting with you on time?",
+    type: "yesno",
+  },
+  {
+    id: 9,
+    mr: "सर/मॅडम, आमच्या कंपनीच्या मॅनेजरने तुम्हाला योग्यप्रकारे नमस्कार केला का?",
+    en: "Sir/Ma'am, did our company's manager greet you properly?",
+    type: "yesno",
+  },
+  {
+    id: 10,
+    mr: "सर/मॅडम, आमच्या कंपनीच्या मॅनेजरने तुम्हाला चहा किंवा पाण्याची विचारणा केली का?",
+    en: "Sir/Ma'am, did the manager offer you tea or water?",
+    type: "yesno",
+  },
+  {
+    id: 11,
+    mr: "सर/मॅडम, YNK मॅनेजरने तुम्हाला प्रोजेक्टचे प्रेझेंटेशन दाखवले का?",
+    en: "Sir/Ma'am, did the YNK manager show you the project presentation?",
+    type: "yesno",
+  },
+  {
+    id: 12,
+    mr: "सर/मॅडम, आपल्याला नादब्रह्म प्रोजेक्टचे प्रेझेंटेशन पूर्णपणे समजले का?",
+    en: "Sir/Ma'am, did you fully understand the Nadbrahma project presentation?",
+    type: "yesno",
+  },
+  {
+    id: 13,
+    mr: "सर/मॅडम, मॅनेजरने तुम्हाला ॲग्रीमेंटबद्दल संपूर्ण माहिती दिली का?",
+    en: "Sir/Ma'am, did the manager give you complete information about the agreement?",
+    type: "yesno",
+  },
+  {
+    id: 14,
+    mr: "सर/मॅडम, मॅनेजरने तुम्हाला शॉपमधील सर्व वस्तूंबद्दल माहिती दिली का?",
+    en: "Sir/Ma'am, did the manager inform you about all the items in the shop?",
+    type: "yesno",
+  },
+  {
+    id: 15,
+    mr: "सर/मॅडम, तुम्ही घेतलेल्या शॉपमधील सर्व कामांचा 2D प्लॅन सिव्हिल टीमने तुम्हाला दिला का?",
+    en: "Sir/Ma'am, did the civil team provide you with the 2D plan for all the work in the shop you have acquired?",
+    type: "yesno",
+  },
+  {
+    id: 16,
+    mr: "सर/मॅडम, मॅनेजरने काही चुकीची माहिती दिली आहे, असे आपल्याला वाटते का?",
+    en: "Sir/Ma'am, do you feel that the manager provided any incorrect information?",
+    type: "yesno",
+  },
+  {
+    id: 17,
+    mr: "सर/मॅडम, आमच्या ऑफिसमध्ये आपल्याला कोणताही त्रास झाला का?",
+    en: "Sir/Ma'am, did you face any trouble at our office?",
+    type: "yesno",
+  },
+  {
+    id: 18,
+    mr: "सर/मॅडम, आपल्याकडून कोणी कमिशन किंवा पैशांची मागणी केली का?",
+    en: "Sir/Ma'am, did anyone demand a commission or payment from you?",
+    type: "yesno",
+  },
+  {
+    id: 19,
+    mr: "सर/मॅडम, आपल्याला ऑफिसमधील कोणाबद्दल तक्रार करायची आहे का?",
+    en: "Sir/Ma'am, do you have a complaint against anyone in the office?",
+    type: "yesno",
+  },
+  {
+    id: 20,
+    mr: "सर/मॅडम, माझे सर्व प्रश्न आपल्याला व्यवस्थित समजले का?",
+    en: "Sir/Ma'am, did you understand all of my questions correctly?",
+    type: "yesno",
+  },
+  {
+    id: 21,
+    mr: "सर/मॅडम, तुम्ही तुमचा बहुमूल्य वेळ आम्हाला दिल्याबद्दल आम्ही आपले आभारी आहोत.",
+    en: "Sir/Ma'am, we thank you for giving us your valuable time.",
+    type: "info",
+  },
+  {
+    id: 22,
+    mr: "सर/मॅडम, तुम्ही मॅनेजरला ५ पैकी किती रेटिंग द्याल?",
+    en: "Sir/Ma'am, how would you rate the manager on a scale of 1 to 5?",
+    type: "rating",
+  },
+];
+
+export default call1Questions;
